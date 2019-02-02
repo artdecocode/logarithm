@@ -1,10 +1,28 @@
 <types>
   <type name="Config" desc="Options for the program.">
-    <prop boolean name="shouldRun" default="true">
-      A boolean option.
+    <prop string name="app">
+      The name of the website application.
     </prop>
-    <prop string name="text">
-      A text to return.
+    <prop string name="url">
+      ElasticSearch endpoint URL, e.g., `192.168.0.1:9200`.
+    </prop>
+    <prop type="('http'|'https')" name="proto" default="http">
+      The protocol to use.
+    </prop>
+    <prop number name="timeout" default="5000">
+      Timeout for the connection after which an error is shown.
+    </prop>
+    <prop string name="type" default="hit">
+      The type of the document.
+    </prop>
+    <prop string name="pipeline" default="info">
+      The pipeline in ElasticSearch, for example to parse GeoIP info and User-Agent.
+    </prop>
+    <prop opt string name="index">
+      The name of the index. Defaults to the app name if not specified as well as monthly strategy.
+    </prop>
+    <prop type="('monthly')" name="strategy" default="monthly">
+      How to construct the index name. E.g., the monthly strategy will result in `${index}-${y}.${m}` indexes.
     </prop>
   </type>
 </types>

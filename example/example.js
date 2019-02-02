@@ -1,9 +1,24 @@
 /* yarn example/ */
+import core from '@idio/core'
 import logarithm from '../src'
 
 (async () => {
-  const res = await logarithm({
-    text: 'example',
+  const { url } = await core({
+    logarithm: {
+      middlewareConstructor(app, config) {
+        const mw = logarithm(config)
+        return mw
+      },
+      config: {
+        url: process.env.ELASTIC,
+        app: 'logarithm',
+        index: 'clients',
+      },
+      use: true,
+    },
+    async index(ctx) {
+      ctx.body = 'hello world'
+    },
   })
-  console.log(res)
+  console.log(url)
 })()
