@@ -59,7 +59,7 @@
     "zoroaster": "3.6.6"
   },
   "dependencies": {
-    "rqt": "3.1.1",
+    "rqt": "3.1.2",
     "uniqid": "5.0.3"
   }
 }

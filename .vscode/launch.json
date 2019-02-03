@@ -53,7 +53,8 @@
       "args": [
         "$ELASTIC:9200",
         // "-p", "info2",
-        "-P",
+        "-rp", "info2",
+        // "-P",
       ],
       "skipFiles": [
         "<node_internals>/**/*.js"

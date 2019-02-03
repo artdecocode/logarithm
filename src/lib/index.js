@@ -31,6 +31,17 @@ export const listPipelines = async (url) => {
   return res
 }
 
+export const deletePipeline = async (url, id) => {
+  const u = `${url}/_ingest/pipeline/${id}`
+  const res = await req(u, {
+    spec: {
+      method: 'DELETE',
+      timeout: 5000,
+    },
+  })
+  return res
+}
+
 /**
  * Make the request.
  * @param {string} url The URL.

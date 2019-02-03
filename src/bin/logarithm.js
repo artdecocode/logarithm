@@ -1,10 +1,10 @@
 #!/usr/bin/env node
-import { _url, _pipeline, _version, _help, _listPipelines } from './get-args'
+import { _url, _pipeline, _version, _help, _listPipelines, _removePipeline } from './get-args'
 import loading from 'indicatrix'
 import { c, b } from 'erte'
 import { version, nextVersion } from '../../package.json'
 import usage from './usage'
-import { setupPipeline } from '../lib'
+import { setupPipeline, deletePipeline } from '../lib'
 import listPipelines from './commands/list-pipelines'
 
 if (_version) {
@@ -32,6 +32,14 @@ if (_version) {
         setupPipeline(_url, _pipeline),
       )
       console.log('Pipeline %s created.', c(_pipeline, 'green'))
+    } else if (_removePipeline) {
+      await loading(
+        `Removing ${
+          c(_removePipeline, 'yellow')
+        } pipeline `,
+        deletePipeline(_url, _removePipeline),
+      )
+      console.log('Pipeline %s removed.', b(_removePipeline, 'red'))
     }
   } catch (err) {
     console.log(process.env['DEBUG'] ? err.stack : b(err.message, 'red'))

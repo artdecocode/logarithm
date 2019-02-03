@@ -4,7 +4,8 @@ const args = argufy({
   'url': { command: true },
   'help': { short: 'h', boolean: true },
   'pipeline': { short: 'p' },
-  'list-pipelines': { short: 'P', boolean: true },
+  'pipelines': { short: 'P', boolean: true },
+  'remove-pipeline': { short: 'rp' },
   'version': { short: 'v', boolean: true },
 })
 
@@ -32,4 +33,9 @@ export const _pipeline = args['pipeline']
  * List existing pipelines.
  * @type {string}
  */
-export const _listPipelines = args['list-pipelines']
+export const _listPipelines = args['pipelines']
+/**
+ * List existing pipelines.
+ * @type {string}
+ */
+export const _removePipeline = args['remove-pipeline']
