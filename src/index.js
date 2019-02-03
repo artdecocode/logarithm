@@ -1,6 +1,6 @@
 import uniqid from 'uniqid'
-import rqt, { aqt } from 'rqt'
-import { stringify } from 'querystring'
+import { aqt } from 'rqt'
+import { req } from './lib'
 
 /**
  * Create a middleware for logging requests.
@@ -16,7 +16,7 @@ import { stringify } from 'querystring'
 const logarithm = (options) => {
   if (!options) throw new Error('Options are not given')
   const {
-    app, index = app, pipeline = 'info', url, type = 'hit', proto = 'http',
+    app, index = app, pipeline = 'info', url, type = 'hit',
   } = options
   if (!app) throw new Error('The app is not defined')
   /** @type {import('koa').Middleware} */
@@ -42,15 +42,14 @@ const logarithm = (options) => {
 
     const id = uniqid()
     const i = getIndex(index, date)
-    const query = pipeline ? stringify({ pipeline }) : ''
-    const u = `${url}/${i}/${type}/${id}/_create?${query}`
-    rqt(u, {
-      method: 'POST',
-      data: body,
-      timeout: 5000,
-    }).then(({ error }) => {
-      if (error) throw new Error(error.reason)
-    }).catch(({ message }) => {
+    const u = `${url}/${i}/${type}/${id}/_create`
+    req(u, {
+      spec: {
+        method: 'POST',
+        timeout: 5000,
+      },
+      query: { pipeline },
+    }, body).catch(({ message }) => {
       console.log(`Logarithm ERROR: ${message}`)
     })
 

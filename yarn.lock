@@ -793,6 +793,11 @@ ieee754@^1.1.4:
   resolved "https://registry.yarnpkg.com/ieee754/-/ieee754-1.1.12.tgz#50bf24e5b9c8bb98af4964c941cdb0918da7b60b"
   integrity sha512-GguP+DRY+pJ3soyIiGPTvdiVXjZ+DbXOxGpXn3eMvNW4x4irjqXm4wHKscC+TfxSJ0yw/S1F24tqdMNsMZTiLA==
 
+indicatrix@1.0.0:
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/indicatrix/-/indicatrix-1.0.0.tgz#c8a688b91d051b7a4c311607a802dc813dc93daf"
+  integrity sha512-YYWzYbrLl7ub8AfNjp5/SLwdTN0BYyok4xcWVNOhgOFrpT+OZkh8k/j/daDBO2koqxGbjQ1hKby5j5wNKtPthw==
+
 inflation@^2.0.0:
   version "2.0.0"
   resolved "https://registry.yarnpkg.com/inflation/-/inflation-2.0.0.tgz#8b417e47c28f925a45133d914ca1fd389107f30f"

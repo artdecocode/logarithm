@@ -1,8 +1,10 @@
 {
   "name": "logarithm",
   "version": "0.0.0",
-  "description": "The Logs.Page Middleware For Web-Server To Record Hits.",
+  "nextVersion": "1.0.0",
+  "description": "The Middleware For Web-Server To Record Hits In ElasticSearch.",
   "main": "build",
+  "module": "src/index.js",
   "scripts": {
     "t": "zoroaster -a",
     "test": "yarn t test/spec test/mask",
@@ -11,17 +13,24 @@
     "test-build": "ALAMODE_ENV=test-build yarn test",
     "lint": "eslint .",
     "doc": "NODE_DEBUG=doc doc documentary -o README.md",
+    "dev": "node src/bin",
     "b": "alamode src -o build",
     "d": "yarn-s d1",
     "d1": "NODE_DEBUG=doc doc src/index.js -g",
     "build": "yarn-s d b doc",
+    "depack": "GOOGLE_CLOSURE_COMPILER=/Volumes/backup/closure-compiler/target/closure-compiler-1.0-SNAPSHOT.jar depack src/bin/logarithm.js -o depack -I 2018 -O 2017 -a",
     "rec": "NODE_DEBUG=appshot appshot -T 23 -a Terminal -y 150 -f",
     "e": "node example",
     "example/": "yarn e example/example.js"
   },
   "files": [
-    "build"
+    "build",
+    "src"
   ],
+  "bin": {
+    "logarithm-dev": "src/index.js",
+    "logarithm": "depack/logarithm.js"
+  },
   "repository": {
     "type": "git",
     "url": "git://github.com/artdecocode/logarithm.git"
@@ -39,8 +48,12 @@
     "@demimonde/dotenv": "1.0.0",
     "@idio/core": "1.2.0",
     "alamode": "1.7.3",
+    "argufy": "1.3.2",
     "documentary": "1.21.1",
+    "erte": "1.1.6",
     "eslint-config-artdeco": "1.0.1",
+    "indicatrix": "1.0.0",
+    "usually": "1.1.0",
     "yarn-s": "1.1.0",
     "zoroaster": "3.6.6"
   },
