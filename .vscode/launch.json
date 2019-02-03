@@ -55,7 +55,8 @@
         // "-p", "info2",
         // "-rp", "info2",
         // "-P",
-        "-t", "clients"
+        // "-t", "clients"
+        "-T",
       ],
       "skipFiles": [
         "<node_internals>/**/*.js"

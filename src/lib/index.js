@@ -30,6 +30,15 @@ export const listPipelines = async (url) => {
   })
   return res
 }
+export const listTemplates = async (url) => {
+  const u = `${url}/_template`
+  const res = await req(u, {
+    spec: {
+      timeout: 5000,
+    },
+  })
+  return res
+}
 
 export const deletePipeline = async (url, id) => {
   const u = `${url}/_ingest/pipeline/${id}`

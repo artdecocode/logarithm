@@ -46,3 +46,14 @@ export const putHitsTemplate = async (url, appName, {
 
   return res
 }
+
+export const deleteIndex = async (url, index) => {
+  const u = `${url}/${index}`
+  const res = await req(u, {
+    spec: {
+      method: 'DELETE',
+      timeout: 5000,
+    },
+  })
+  return res
+}

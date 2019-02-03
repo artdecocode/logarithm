@@ -1233,6 +1233,13 @@ readable-stream@^2.2.2:
     string_decoder "~1.1.1"
     util-deprecate "~1.0.1"
 
+reloquent@1.2.3:
+  version "1.2.3"
+  resolved "https://registry.yarnpkg.com/reloquent/-/reloquent-1.2.3.tgz#d6f8aec7bbf13c4acee61973f09b40ce34c860bf"
+  integrity sha512-ArNXaQQicvG/ZgccVV0N29HyzkiCATNBwV3Y0GBI/bHoj/oLaEzUHE3c6RPVSmudAGvc9+hUhpDiDB/EDATymg==
+  dependencies:
+    promto "1.0.1"
+
 resolve-path@^1.4.0:
   version "1.4.0"
   resolved "https://registry.yarnpkg.com/resolve-path/-/resolve-path-1.4.0.tgz#c4bda9f5efb2fce65247873ab36bb4d834fe16f7"

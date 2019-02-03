@@ -4,6 +4,8 @@ const args = argufy({
   'url': { command: true },
   'help': { short: 'h', boolean: true },
   'template': { short: 't' },
+  'templates': { short: 'T', boolean: true },
+  'delete': { short: 'd' },
   'shards': { short: 's', type: 'number' },
   'replicas': { short: 'r', type: 'number' },
   'pipeline': { short: 'p' },
@@ -38,6 +40,11 @@ export const _pipeline = args['pipeline']
  */
 export const _template = args['template']
 /**
+ * Delete index.
+ * @type {string}
+ */
+export const _delete = args['delete']
+/**
  * Shards in the index template.
  * @type {string}
  */
@@ -52,6 +59,11 @@ export const _replicas = args['replicas']
  * @type {boolean}
  */
 export const _listPipelines = args['pipelines']
+/**
+ * List existing templates.
+ * @type {boolean}
+ */
+export const _listTemplates = args['templates']
 /**
  * Removes the pipeline.
  * @type {string}
