@@ -3,10 +3,12 @@ import { b } from 'erte'
 
 export default () => {
   const u = usually({
-    description: `ElasticSearch utility for creating a pipeline and indexes for logging request using ${b('logarithm', 'green')} middleware.`,
-    line: 'logarithm $ELASTIC [-i clients] [-P] [-p|rp pipeline]',
+    description: `ElasticSearch utility for creating a pipeline and index templates\nfor logging request using ${b('logarithm', 'green')} middleware.`,
+    line: 'logarithm $ELASTIC [-t clients -sr] [-P] [-p|rp pipeline]',
     usage: {
-      '-i, --index': 'Create an index for storing log data.',
+      '-t, --template name': 'Create an index template for storing\nlog data in name-* index.',
+      '-s, --shards': 'Number of shards for index template.\nDefault 1.',
+      '-r, --replicas': 'Number of replicas for index template.\nDefault 0.',
       '-P, --pipelines': 'Display installed pipelines.',
       '-p, --pipeline name': 'Create a pipeline with User-Agent\nand GeoIp plugins.',
       '-rp name': 'Removes the pipeline.',

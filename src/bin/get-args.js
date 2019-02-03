@@ -3,6 +3,9 @@ import argufy from 'argufy'
 const args = argufy({
   'url': { command: true },
   'help': { short: 'h', boolean: true },
+  'template': { short: 't' },
+  'shards': { short: 's', type: 'number' },
+  'replicas': { short: 'r', type: 'number' },
   'pipeline': { short: 'p' },
   'pipelines': { short: 'P', boolean: true },
   'remove-pipeline': { short: 'rp' },
@@ -30,12 +33,27 @@ export const _version = args['version']
  */
 export const _pipeline = args['pipeline']
 /**
- * List existing pipelines.
+ * Create index template.
  * @type {string}
+ */
+export const _template = args['template']
+/**
+ * Shards in the index template.
+ * @type {string}
+ */
+export const _shards = args['shards']
+/**
+ * Replicas in the index template.
+ * @type {string}
+ */
+export const _replicas = args['replicas']
+/**
+ * List existing pipelines.
+ * @type {boolean}
  */
 export const _listPipelines = args['pipelines']
 /**
- * List existing pipelines.
+ * Removes the pipeline.
  * @type {string}
  */
 export const _removePipeline = args['remove-pipeline']
