@@ -5,6 +5,7 @@ const args = argufy({
   'help': { short: 'h', boolean: true },
   'template': { short: 't' },
   'templates': { short: 'T', boolean: true },
+  'stats': { short: 'S', boolean: true },
   'delete': { short: 'd' },
   'shards': { short: 's', type: 'number' },
   'replicas': { short: 'r', type: 'number' },
@@ -59,6 +60,11 @@ export const _replicas = args['replicas']
  * @type {boolean}
  */
 export const _listPipelines = args['pipelines']
+/**
+ * Shows stats for indices.
+ * @type {boolean}
+ */
+export const _stats = args['stats']
 /**
  * List existing templates.
  * @type {boolean}

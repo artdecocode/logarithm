@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-import { _url, _pipeline, _version, _help, _listPipelines, _removePipeline, _replicas, _shards, _template, _delete, _listTemplates } from './get-args'
+import { _url, _pipeline, _version, _help, _listPipelines, _removePipeline, _replicas, _shards, _template, _delete, _listTemplates, _stats } from './get-args'
 import loading from 'indicatrix'
 import { c, b } from 'erte'
 import { version, nextVersion } from '../../package.json'
@@ -9,6 +9,7 @@ import listPipelines from './commands/list-pipelines'
 import { putHitsTemplate, deleteIndex } from './commands/put-index'
 import { confirm } from 'reloquent'
 import listTemplates from './commands/list-templates'
+import stats from './commands/stats'
 
 if (_version) {
   const v = nextVersion ? nextVersion : version
@@ -67,6 +68,8 @@ if (_version) {
       console.log('Successfully deleted index %s', c(_delete, 'red'))
     } else if (_listTemplates) {
       return await listTemplates(_url)
+    } else if (_stats) {
+      return await stats(_url)
     }
   } catch (err) {
     console.log(process.env['DEBUG'] ? err.stack : b(err.message, 'red'))
