@@ -86,10 +86,10 @@
   dependencies:
     vary "^1.1.2"
 
-"@rqt/aqt@1.2.1":
-  version "1.2.1"
-  resolved "https://registry.yarnpkg.com/@rqt/aqt/-/aqt-1.2.1.tgz#3b09d52242b78f0e0da4e14b8fc8ee5b76e8d4c8"
-  integrity sha512-uAQXVD3qIwPuNHCQkF/5oRcPAFTcdy6QRVDxAwnF+EZZQC+0yYSKLdkruvblGB9AX51/+K0qawnJdYSs4FC9mQ==
+"@rqt/aqt@1.2.2":
+  version "1.2.2"
+  resolved "https://registry.yarnpkg.com/@rqt/aqt/-/aqt-1.2.2.tgz#2000c010374448e4ddd7e986da787a06016a21a5"
+  integrity sha512-B9lg3PO3SxABHf3hFnHho7bqJZFoONYKvRuL4sjZ9hM+ucPN/3qbt29ky8NTOxTW8g2w3Gr/sJkqk1M5iclNMg==
   dependencies:
     catchment "3.2.2"
     erotic "2.0.2"
@@ -1277,12 +1277,12 @@ rndm@1.2.0:
   resolved "https://registry.yarnpkg.com/rndm/-/rndm-1.2.0.tgz#f33fe9cfb52bbfd520aa18323bc65db110a1b76c"
   integrity sha1-8z/pz7Urv9UgqhgyO8ZdsRCht2w=
 
-rqt@3.1.0:
-  version "3.1.0"
-  resolved "https://registry.yarnpkg.com/rqt/-/rqt-3.1.0.tgz#ef1978d64593fbc3d36a8243b4591fe435f66292"
-  integrity sha512-3PMl5/jRw6BWJyC39PzNnBBY2d+a1kmzmKgEpXziMF0bqfl5aOOTstXCSh6uQTTI/+YfQDcNe64SUBQ3ihakOA==
+rqt@3.1.1:
+  version "3.1.1"
+  resolved "https://registry.yarnpkg.com/rqt/-/rqt-3.1.1.tgz#04186304e9aa1da3624a5939a33d4cb8e84a7024"
+  integrity sha512-sE3lhCJw89P9yTShTxdjCCHFS7M4aSTWeQilgMu3VBYKekEuHlW7+OSnIgzZxyhUn2YcVpM+ZzyMALBuZaxqQg==
   dependencies:
-    "@rqt/aqt" "1.2.1"
+    "@rqt/aqt" "1.2.2"
 
 safe-buffer@5.1.2, safe-buffer@~5.1.0, safe-buffer@~5.1.1:
   version "5.1.2"

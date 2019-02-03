@@ -1,8 +1,10 @@
 /* yarn example/ */
 import core from '@idio/core'
-import logarithm from '../src'
+import logarithm, { ping } from '../src'
 
 (async () => {
+  await ping(process.env.ELASTIC)
+
   const { url } = await core({
     logarithm: {
       middlewareConstructor(app, config) {
@@ -11,7 +13,7 @@ import logarithm from '../src'
       },
       config: {
         url: process.env.ELASTIC,
-        app: 'logarithm',
+        app: 'idio.cc',
         index: 'clients',
       },
       use: true,

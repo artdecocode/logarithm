@@ -1,13 +1,12 @@
 import uniqid from 'uniqid'
-import rqt from 'rqt'
+import rqt, { aqt } from 'rqt'
 import { stringify } from 'querystring'
 
 /**
  * Create a middleware for logging requests.
  * @param {Config} options Options for the program.
  * @param {string} options.app The name of the website application.
- * @param {string} options.url ElasticSearch endpoint URL, e.g., `192.168.0.1:9200`.
- * @param {('http'|'https')} [options.proto="http"] The protocol to use. Default `http`.
+ * @param {string} options.url ElasticSearch endpoint URL, e.g., `http://192.168.0.1:9200`.
  * @param {number} [options.timeout=5000] Timeout for the connection after which an error is shown. Default `5000`.
  * @param {string} [options.type="hit"] The type of the document. Default `hit`.
  * @param {string} [options.pipeline="info"] The pipeline in ElasticSearch, for example to parse GeoIP info and User-Agent. Default `info`.
@@ -44,7 +43,7 @@ const logarithm = (options) => {
     const id = uniqid()
     const i = getIndex(index, date)
     const query = pipeline ? stringify({ pipeline }) : ''
-    const u = `${proto}://${url}/${i}/${type}/${id}/_create?${query}`
+    const u = `${url}/${i}/${type}/${id}/_create?${query}`
     rqt(u, {
       method: 'POST',
       data: body,
@@ -60,6 +59,16 @@ const logarithm = (options) => {
   return es
 }
 
+/**
+ * Check that a connection to the server can be established.
+ * @param {string} url The ElasticSearch URL.
+ * @param {number} [timeout=30000] The timeout for the request in ms. Default `30000`.
+ */
+export const ping = async (url, timeout = 30000) => {
+  const { statusCode } = await aqt(url, { timeout, justHeaders: true, method: 'HEAD' })
+  if (statusCode != 200) throw new Error(`Server responded with status code ${statusCode}`)
+}
+
 const getIndex = (index, date) => {
   const y = date.getFullYear()
   const m = date.getMonth() + 1
@@ -72,8 +81,7 @@ export default logarithm
 /**
  * @typedef {Object} Config Options for the program.
  * @prop {string} app The name of the website application.
- * @prop {string} url ElasticSearch endpoint URL, e.g., `192.168.0.1:9200`.
- * @prop {('http'|'https')} [proto="http"] The protocol to use. Default `http`.
+ * @prop {string} url ElasticSearch endpoint URL, e.g., `http://192.168.0.1:9200`.
  * @prop {number} [timeout=5000] Timeout for the connection after which an error is shown. Default `5000`.
  * @prop {string} [type="hit"] The type of the document. Default `hit`.
  * @prop {string} [pipeline="info"] The pipeline in ElasticSearch, for example to parse GeoIP info and User-Agent. Default `info`.
