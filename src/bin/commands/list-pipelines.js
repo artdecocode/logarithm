@@ -11,11 +11,11 @@ export default async (url) => {
   const d = Object.keys(pipelines).map((key) => {
     const v = pipelines[key]
     return {
-      name: key,
-      description: v.description,
-      processors: v.processors.map((proc) => {
+      'name': key,
+      'description': v['description'],
+      'processors': v['processors'].map((proc) => {
         return Object.keys(proc).map((k) => {
-          return `${c(k, 'magenta')}: ${proc[k].field}`
+          return `${c(k, 'magenta')}: ${proc[k]['field']}`
         }).join(', ')
       }).join('\n'),
     }
@@ -24,9 +24,9 @@ export default async (url) => {
     keys: ['name', 'description', 'processors'],
     data: d,
     headings: {
-      name: 'Name',
-      description: 'Description',
-      processors: 'Processors',
+      'name': 'Name',
+      'description': 'Description',
+      'processors': 'Processors',
     },
   })
   console.log(s)

@@ -13,10 +13,10 @@ export const setupPipeline = async (url, id) => {
       timeout: 5000,
     },
   }, {
-    description: 'IP Address And UserAgent',
-    processors: [
-      { geoip: { field: 'ip' } },
-      { user_agent: { field: 'headers.user-agent' } },
+    'description': 'IP Address And UserAgent',
+    'processors': [
+      { 'geoip': { 'field': 'ip' } },
+      { 'user_agent': { 'field': 'headers.user-agent' } },
     ],
   })
 }
@@ -54,9 +54,9 @@ export const req = async (url, { spec, query = {} } = {}, body) => {
   const res = await rqt(u, {
     ...spec,
     data: body,
-  }).then(({ error, ...rest }) => {
+  }).then(({ 'error': error, ...rest }) => {
     if (error) {
-      const e = typeof error == 'string' ? error : error.reason
+      const e = typeof error == 'string' ? error : error['reason']
       throw new Error(e)
     }
     return rest
