@@ -9,211 +9,8 @@ const zlib = require('zlib');
 const stream = require('stream');
 const readline = require('readline');
 'use strict';
-const {request:m} = https;
-const {request:p} = http;
-const {debuglog:aa} = util;
-const r = (a, b = 0, c = !1) => {
-  if (0 === b && !c) {
-    return a;
-  }
-  a = a.split("\n", c ? b + 1 : Number.Infinity);
-  return c ? a[a.length - 1] : a.slice(b).join("\n");
-}, w = (a) => {
-  ({callee:{caller:a}} = a);
-  return a;
-};
-const {homedir:x} = os;
-const y = /\s+at.*(?:\(|\s)(.*)\)?/, ba = /^(?:(?:(?:node|(?:internal\/[\w/]*|.*node_modules\/(?:IGNORED_MODULES)\/.*)?\w+)\.js:\d+:\d+)|native)/, ca = x(), da = (a) => {
-  const {w:b = !1, v:c = ["pirates"]} = {}, d = c.join("|"), e = new RegExp(ba.source.replace("IGNORED_MODULES", d));
-  return a.replace(/\\/g, "/").split("\n").filter((a) => {
-    a = a.match(y);
-    if (null === a || !a[1]) {
-      return !0;
-    }
-    a = a[1];
-    return a.includes(".app/Contents/Resources/electron.asar") || a.includes(".app/Contents/Resources/default_app.asar") ? !1 : !e.test(a);
-  }).filter((a) => "" !== a.trim()).map((a) => b ? a.replace(y, (a, b) => a.replace(b, b.replace(ca, "~"))) : a).join("\n");
-};
-function ea(a, b, c = !1) {
-  return function(d) {
-    var e = w(arguments), {stack:f} = Error();
-    const g = r(f, 2, !0), h = (f = d instanceof Error) ? d.message : d;
-    e = [`Error: ${h}`, ...null !== e && a === e || c ? [b] : [g, b]].join("\n");
-    e = da(e);
-    return Object.assign(f ? d : Error(), {message:h, stack:e});
-  };
-}
-;function B(a) {
-  var {stack:b} = Error();
-  const c = w(arguments);
-  b = r(b, 2 + (a ? 1 : 0));
-  return ea(c, b, a);
-}
-;const {parse:fa} = url;
-const {Writable:ha} = stream;
-const C = /\s+at.*(?:\(|\s)(.*)\)?/, ia = /^(?:(?:(?:node|(?:internal\/[\w/]*|.*node_modules\/(?:IGNORED_MODULES)\/.*)?\w+)\.js:\d+:\d+)|native)/, ja = x(), ka = (a) => {
-  const {w:b = !1, v:c = ["pirates"]} = {}, d = c.join("|"), e = new RegExp(ia.source.replace("IGNORED_MODULES", d));
-  return a.replace(/\\/g, "/").split("\n").filter((a) => {
-    a = a.match(C);
-    if (null === a || !a[1]) {
-      return !0;
-    }
-    a = a[1];
-    return a.includes(".app/Contents/Resources/electron.asar") || a.includes(".app/Contents/Resources/default_app.asar") ? !1 : !e.test(a);
-  }).filter((a) => "" !== a.trim()).map((a) => b ? a.replace(C, (a, b) => a.replace(b, b.replace(ja, "~"))) : a).join("\n");
-};
-const la = (a, b) => {
-  b.once("error", (b) => {
-    a.emit("error", b);
-  });
-  return b;
-};
-class ma extends ha {
-  constructor(a) {
-    a = void 0 === a ? {} : a;
-    var b = Object.assign({}, a);
-    void 0 === a.g && B(!0);
-    a = (delete b.g, delete b.R, b);
-    super(a);
-    const {b:c, D:d} = a;
-    this.h = [];
-    this.s = new Promise((a, b) => {
-      this.on("finish", () => {
-        let b;
-        c ? b = Buffer.concat(this.h) : b = this.h.join("");
-        a(b);
-        this.h = [];
-      });
-      this.once("error", (a) => {
-        if (-1 != a.stack.indexOf("\n")) {
-          const b = ka(a.stack);
-          a.stack = b;
-        }
-        b(a);
-      });
-      d && la(this, d).pipe(this);
-    });
-  }
-  _write(a, b, c) {
-    this.h.push(a);
-    c();
-  }
-  get j() {
-    return this.s;
-  }
-}
-const na = async(a, b) => {
-  b = void 0 === b ? {} : b;
-  ({j:a} = new ma(Object.assign({}, {D:a}, b, {g:B(!0)})));
-  return await a;
-};
-const {createGunzip:oa} = zlib;
-const ra = (a, b, c) => {
-  c = void 0 === c ? {} : c;
-  const {l:d, b:e, g:f = B(!0)} = c;
-  let g, h, k, l, q = 0, t = 0;
-  c = (new Promise((c, z) => {
-    g = a(b, async(a) => {
-      ({headers:h} = a);
-      const {statusMessage:b, statusCode:f} = a;
-      k = {statusMessage:b, statusCode:f};
-      if (d) {
-        a.destroy();
-      } else {
-        var g = "gzip" == a.headers["content-encoding"];
-        a.on("data", (a) => q += a.byteLength);
-        a = g ? a.pipe(oa()) : a;
-        l = await na(a, {b:e});
-        t = l.length;
-      }
-      c();
-    }).on("error", (a) => {
-      a = f(a);
-      z(a);
-    }).on("timeout", () => {
-      g.abort();
-    });
-  })).then(() => Object.assign({}, {body:l, headers:h}, k, {A:q, byteLength:t, o:null}));
-  return {C:g, j:c};
-};
-const sa = (a = {}) => Object.keys(a).reduce((b, c) => {
-  const d = a[c];
-  c = `${encodeURIComponent(c)}=${encodeURIComponent(d)}`;
-  return [...b, c];
-}, []).join("&").replace(/%20/g, "+"), ta = async(a, b, {data:c, l:d, b:e, g:f = B(!0)}) => {
-  const {C:g, j:h} = ra(a, b, {l:d, b:e, g:f});
-  g.end(c);
-  a = await h;
-  if (a.headers["content-type"].startsWith("application/json") && a.body) {
-    try {
-      a.o = JSON.parse(a.body);
-    } catch (k) {
-      throw f = f(k), f.response = a.body, f;
-    }
-  }
-  return a;
-};
-const ua = aa("aqt"), D = async(a, b) => {
-  b = void 0 === b ? {} : b;
-  const {data:c, type:d = "json", headers:e = {"User-Agent":"Mozilla/5.0 (Node.js) aqt/1.2.3"}, L:f = !0, b:g = !1, l:h = !1, method:k, timeout:l} = b;
-  b = B(!0);
-  const {hostname:q, protocol:t, port:u, path:z} = fa(a), pa = "https:" === t ? m : p, A = {hostname:q, port:u, path:z, headers:Object.assign({}, e), timeout:l, method:k};
-  if (c) {
-    var v = d;
-    var n = c;
-    switch(v) {
-      case "json":
-        n = JSON.stringify(n);
-        v = "application/json";
-        break;
-      case "form":
-        n = sa(n), v = "application/x-www-form-urlencoded";
-    }
-    n = {data:n, contentType:v};
-    ({data:v} = n);
-    ({contentType:n} = n);
-    A.method = k || "POST";
-    A.headers["Content-Type"] = n;
-    A.headers["Content-Length"] = Buffer.byteLength(v);
-  }
-  f && (A.headers["Accept-Encoding"] = "gzip, deflate");
-  const {body:qa, headers:va, byteLength:O, statusCode:wa, statusMessage:xa, A:P, o:Q} = await ta(pa, A, {data:v, l:h, b:g, g:b});
-  ua("%s %s B%s", a, O, `${O != P ? ` (raw ${P} B)` : ""}`);
-  return {body:Q ? Q : qa, headers:va, statusCode:wa, statusMessage:xa};
-};
-const ya = async(a, b) => {
-  b = void 0 === b ? {} : b;
-  ({body:a} = await D(a, b));
-  return a;
-}, za = async(a, b) => {
-  b = void 0 === b ? {} : b;
-  ({body:a} = await D(a, b));
-  return a;
-}, Aa = async(a, b) => {
-  b = Object.assign({}, b, {b:!0});
-  ({body:a} = await D(a, b));
-  return a;
-};
-class Ba {
-  constructor(a) {
-    a = void 0 === a ? {} : a;
-    const {host:b, headers:c = {}} = a;
-    this.host = b;
-    this.headers = c;
-  }
-}
-;var Ca = {get H() {
-  return D;
-}, get default() {
-  return ya;
-}, get I() {
-  return Aa;
-}, get O() {
-  return za;
-}, get G() {
-  return Ba;
-}};
-const E = (a, b, c, d, e) => {
+const {createInterface:m} = readline;
+const p = (a, b, c, d, e) => {
   d = void 0 === d ? !1 : d;
   e = void 0 === e ? !1 : e;
   const f = new RegExp(`^-(${c}|-${b})`);
@@ -231,7 +28,7 @@ const E = (a, b, c, d, e) => {
   }
   e && (c = parseInt(c, 10));
   return {value:c, argv:[...a.slice(0, b), ...a.slice(d + 1)]};
-}, Da = (a) => {
+}, r = (a) => {
   const b = [];
   for (let c = 0; c < a.length; c++) {
     const d = a[c];
@@ -242,30 +39,346 @@ const E = (a, b, c, d, e) => {
   }
   return b;
 };
-const Ea = (a) => ({value:`\x1b[1m${a}\x1b[0m`, length:a.length}), F = (a) => a.reduce((a, c) => Object.assign({}, a, {[c]:!0}), {});
-function G(a) {
-  const {keys:b = [], data:c = [], m:d = {}, S:e = {}, K:f = [], J:g = []} = a;
+const {request:w} = https;
+const {request:aa} = http;
+const {debuglog:ba} = util;
+const x = (a, b = 0, c = !1) => {
+  if (0 === b && !c) {
+    return a;
+  }
+  a = a.split("\n", c ? b + 1 : Number.Infinity);
+  return c ? a[a.length - 1] : a.slice(b).join("\n");
+}, y = (a) => {
+  ({callee:{caller:a}} = a);
+  return a;
+};
+const {homedir:B} = os;
+const C = /\s+at.*(?:\(|\s)(.*)\)?/, ca = /^(?:(?:(?:node|(?:internal\/[\w/]*|.*node_modules\/(?:IGNORED_MODULES)\/.*)?\w+)\.js:\d+:\d+)|native)/, da = B(), ea = (a) => {
+  const {C:b = !1, A:c = ["pirates"]} = {}, d = c.join("|"), e = new RegExp(ca.source.replace("IGNORED_MODULES", d));
+  return a.replace(/\\/g, "/").split("\n").filter((a) => {
+    a = a.match(C);
+    if (null === a || !a[1]) {
+      return !0;
+    }
+    a = a[1];
+    return a.includes(".app/Contents/Resources/electron.asar") || a.includes(".app/Contents/Resources/default_app.asar") ? !1 : !e.test(a);
+  }).filter((a) => "" !== a.trim()).map((a) => b ? a.replace(C, (a, b) => a.replace(b, b.replace(da, "~"))) : a).join("\n");
+};
+function fa(a, b, c = !1) {
+  return function(d) {
+    var e = y(arguments), {stack:f} = Error();
+    const g = x(f, 2, !0), h = (f = d instanceof Error) ? d.message : d;
+    e = [`Error: ${h}`, ...null !== e && a === e || c ? [b] : [g, b]].join("\n");
+    e = ea(e);
+    return Object.assign(f ? d : Error(), {message:h, stack:e});
+  };
+}
+;function D(a) {
+  var {stack:b} = Error();
+  const c = y(arguments);
+  b = x(b, 2 + (a ? 1 : 0));
+  return fa(c, b, a);
+}
+;const {parse:ha} = url;
+const {Writable:ia} = stream;
+const E = /\s+at.*(?:\(|\s)(.*)\)?/, ja = /^(?:(?:(?:node|(?:internal\/[\w/]*|.*node_modules\/(?:IGNORED_MODULES)\/.*)?\w+)\.js:\d+:\d+)|native)/, ka = B(), la = (a) => {
+  const {C:b = !1, A:c = ["pirates"]} = {}, d = c.join("|"), e = new RegExp(ja.source.replace("IGNORED_MODULES", d));
+  return a.replace(/\\/g, "/").split("\n").filter((a) => {
+    a = a.match(E);
+    if (null === a || !a[1]) {
+      return !0;
+    }
+    a = a[1];
+    return a.includes(".app/Contents/Resources/electron.asar") || a.includes(".app/Contents/Resources/default_app.asar") ? !1 : !e.test(a);
+  }).filter((a) => "" !== a.trim()).map((a) => b ? a.replace(E, (a, b) => a.replace(b, b.replace(ka, "~"))) : a).join("\n");
+};
+const ma = (a, b) => {
+  b.once("error", (b) => {
+    a.emit("error", b);
+  });
+  return b;
+};
+class na extends ia {
+  constructor(a) {
+    a = void 0 === a ? {} : a;
+    var b = Object.assign({}, a);
+    void 0 === a.h && D(!0);
+    a = (delete b.h, delete b.U, b);
+    super(a);
+    const {b:c, H:d} = a;
+    this.i = [];
+    this.s = new Promise((a, b) => {
+      this.on("finish", () => {
+        let b;
+        c ? b = Buffer.concat(this.i) : b = this.i.join("");
+        a(b);
+        this.i = [];
+      });
+      this.once("error", (a) => {
+        if (-1 != a.stack.indexOf("\n")) {
+          const b = la(a.stack);
+          a.stack = b;
+        }
+        b(a);
+      });
+      d && ma(this, d).pipe(this);
+    });
+  }
+  _write(a, b, c) {
+    this.i.push(a);
+    c();
+  }
+  get c() {
+    return this.s;
+  }
+}
+const oa = async(a, b) => {
+  b = void 0 === b ? {} : b;
+  ({c:a} = new na(Object.assign({}, {H:a}, b, {h:D(!0)})));
+  return await a;
+};
+const {createGunzip:pa} = zlib;
+const sa = (a, b, c) => {
+  c = void 0 === c ? {} : c;
+  const {l:d, b:e, h:f = D(!0)} = c;
+  let g, h, k, l, q = 0, t = 0;
+  c = (new Promise((c, z) => {
+    g = a(b, async(a) => {
+      ({headers:h} = a);
+      const {statusMessage:b, statusCode:f} = a;
+      k = {statusMessage:b, statusCode:f};
+      if (d) {
+        a.destroy();
+      } else {
+        var g = "gzip" == a.headers["content-encoding"];
+        a.on("data", (a) => q += a.byteLength);
+        a = g ? a.pipe(pa()) : a;
+        l = await oa(a, {b:e});
+        t = l.length;
+      }
+      c();
+    }).on("error", (a) => {
+      a = f(a);
+      z(a);
+    }).on("timeout", () => {
+      g.abort();
+    });
+  })).then(() => Object.assign({}, {body:l, headers:h}, k, {D:q, byteLength:t, o:null}));
+  return {G:g, c};
+};
+const ta = (a = {}) => Object.keys(a).reduce((b, c) => {
+  const d = a[c];
+  c = `${encodeURIComponent(c)}=${encodeURIComponent(d)}`;
+  return [...b, c];
+}, []).join("&").replace(/%20/g, "+"), ua = async(a, b, {data:c, l:d, b:e, h:f = D(!0)}) => {
+  const {G:g, c:h} = sa(a, b, {l:d, b:e, h:f});
+  g.end(c);
+  a = await h;
+  if (a.headers["content-type"].startsWith("application/json") && a.body) {
+    try {
+      a.o = JSON.parse(a.body);
+    } catch (k) {
+      throw f = f(k), f.response = a.body, f;
+    }
+  }
+  return a;
+};
+const va = ba("aqt"), F = async(a, b) => {
+  b = void 0 === b ? {} : b;
+  const {data:c, type:d = "json", headers:e = {"User-Agent":"Mozilla/5.0 (Node.js) aqt/1.2.3"}, P:f = !0, b:g = !1, l:h = !1, method:k, timeout:l} = b;
+  b = D(!0);
+  const {hostname:q, protocol:t, port:u, path:z} = ha(a), qa = "https:" === t ? w : aa, A = {hostname:q, port:u, path:z, headers:Object.assign({}, e), timeout:l, method:k};
+  if (c) {
+    var v = d;
+    var n = c;
+    switch(v) {
+      case "json":
+        n = JSON.stringify(n);
+        v = "application/json";
+        break;
+      case "form":
+        n = ta(n), v = "application/x-www-form-urlencoded";
+    }
+    n = {data:n, contentType:v};
+    ({data:v} = n);
+    ({contentType:n} = n);
+    A.method = k || "POST";
+    A.headers["Content-Type"] = n;
+    A.headers["Content-Length"] = Buffer.byteLength(v);
+  }
+  f && (A.headers["Accept-Encoding"] = "gzip, deflate");
+  const {body:ra, headers:wa, byteLength:O, statusCode:xa, statusMessage:ya, D:P, o:Q} = await ua(qa, A, {data:v, l:h, b:g, h:b});
+  va("%s %s B%s", a, O, `${O != P ? ` (raw ${P} B)` : ""}`);
+  return {body:Q ? Q : ra, headers:wa, statusCode:xa, statusMessage:ya};
+};
+const za = async(a, b) => {
+  b = void 0 === b ? {} : b;
+  ({body:a} = await F(a, b));
+  return a;
+}, Aa = async(a, b) => {
+  b = void 0 === b ? {} : b;
+  ({body:a} = await F(a, b));
+  return a;
+}, Ba = async(a, b) => {
+  b = Object.assign({}, b, {b:!0});
+  ({body:a} = await F(a, b));
+  return a;
+};
+class Ca {
+  constructor(a) {
+    a = void 0 === a ? {} : a;
+    const {host:b, headers:c = {}} = a;
+    this.host = b;
+    this.headers = c;
+  }
+}
+;var Da = {get L() {
+  return F;
+}, get default() {
+  return za;
+}, get M() {
+  return Ba;
+}, get S() {
+  return Aa;
+}, get K() {
+  return Ca;
+}};
+function Ea(a, b, c) {
+  try {
+    if (!(a instanceof Promise)) {
+      throw Error("Promise expected");
+    }
+    if ("number" !== (typeof b).toLowerCase()) {
+      throw Error("Timeout must be a number");
+    }
+    if (0 > b) {
+      throw Error("Timeout cannot be negative");
+    }
+  } catch (d) {
+    return Promise.reject(d);
+  }
+  b = Fa(c, b);
+  return Promise.race([a, b.c]).then(G.bind(null, b.timeout), G.bind(null, b.timeout, null));
+}
+function Ga(a, b, c) {
+  return setTimeout(() => {
+    const d = `${"string" === (typeof a).toLowerCase() ? a : "Promise"} has timed out after ${b}ms`, e = Error(d);
+    e.stack = `Error: ${d}`;
+    c(e);
+  }, b);
+}
+function Fa(a, b) {
+  let c;
+  const d = new Promise((e, d) => {
+    c = Ga(a, b, d);
+  });
+  return {timeout:c, c:d};
+}
+function G(a, b, c) {
+  clearTimeout(a);
+  if (c) {
+    throw c;
+  }
+  return b;
+}
+;function Ha(a, b) {
+  var c = b = void 0 === b ? {} : b, d = Object.assign({}, c);
+  b = c.timeout;
+  var e = void 0 === c.password ? !1 : c.password;
+  const f = void 0 === c.output ? process.stdout : c.output;
+  c = void 0 === c.input ? process.stdin : c.input;
+  d = (delete d.timeout, delete d.password, delete d.output, delete d.input, d);
+  const g = m(Object.assign({}, {input:c, output:f}, d));
+  e && (g.i = (b) => {
+    if (["\r\n", "\n", "\r"].includes(b)) {
+      return g.output.write(b);
+    }
+    b = b.split(a);
+    "2" == b.length ? (g.output.write(a), g.output.write("*".repeat(b[1].length))) : g.output.write("*");
+  });
+  e = new Promise(g.question.bind(g, a));
+  b = b ? Ea(e, b, `reloquent: ${a}`) : e;
+  g.c = Ia(b, g);
+  return g;
+}
+const Ia = async(a, b) => {
+  try {
+    return await a;
+  } finally {
+    b.close();
+  }
+};
+async function Ja(a, b) {
+  if ("object" != typeof a) {
+    throw Error("Please give an object with questions");
+  }
+  return await Object.keys(a).reduce(async(c, d) => {
+    c = await c;
+    var e = a[d];
+    switch(typeof e) {
+      case "object":
+        e = Object.assign({}, e);
+        break;
+      case "string":
+        e = {text:e};
+        break;
+      default:
+        throw Error("A question must be a string or an object.");
+    }
+    e.text = `${e.text}${e.text.endsWith("?") ? "" : ":"} `;
+    var f;
+    if (e.defaultValue) {
+      var g = e.defaultValue;
+    }
+    e.w && (f = await e.w());
+    let h = g || "";
+    g && f && g != f ? h = `\x1b[90m${g}\x1b[0m` : g && g == f && (h = "");
+    g = f || "";
+    ({c:g} = Ha(`${e.text}${h ? `[${h}] ` : ""}${g ? `[${g}] ` : ""}`, {timeout:b, password:e.password}));
+    f = await g || f || e.defaultValue;
+    "function" == typeof e.J && e.J(f);
+    "function" == typeof e.B && (f = await e.B(f));
+    return Object.assign({}, c, {[d]:f});
+  }, {});
+}
+;async function Ka() {
+  var a = `Are you sure you want to delete index ${H(I, "yellow")}`;
+  const {v:b = !0, timeout:c} = {v:!1}, d = a.endsWith("?");
+  a = `${d ? a.replace(/\?$/, "") : a} (y/n)${d ? "?" : ""}`;
+  ({question:a} = await Ja({question:{text:a, defaultValue:b ? "y" : "n"}}, c));
+  return "y" == a;
+}
+;const La = {black:30, red:31, green:32, yellow:33, blue:34, magenta:35, cyan:36, white:37, grey:90}, Ma = {black:40, red:41, green:42, yellow:43, blue:44, magenta:45, cyan:46, white:47};
+function H(a, b) {
+  return (b = La[b]) ? `\x1b[${b}m${a}\x1b[0m` : a;
+}
+function J(a, b) {
+  return (b = Ma[b]) ? `\x1b[${b}m${a}\x1b[0m` : a;
+}
+;const Na = (a) => ({value:`\x1b[1m${a}\x1b[0m`, length:a.length}), K = (a) => a.reduce((a, c) => Object.assign({}, a, {[c]:!0}), {});
+function L(a) {
+  const {keys:b = [], data:c = [], m:d = {}, V:e = {}, O:f = [], N:g = []} = a;
   var [h] = c;
   if (!h) {
     return "";
   }
-  const k = F(f);
-  a = F(g);
+  const k = K(f);
+  a = K(g);
   h = Object.keys(h).reduce((a, b) => {
     const c = d[b];
     return Object.assign({}, a, {[b]:c ? c.length : b.length});
   }, {});
   const l = c.reduce((a, b) => Object.keys(b).reduce((c, d) => {
-    const f = a[d], {length:g} = H(e, d)(b[d]);
-    return Object.assign({}, c, {[d]:Math.max(g, f)});
+    const g = a[d], {length:f} = M(e, d)(b[d]);
+    return Object.assign({}, c, {[d]:Math.max(f, g)});
   }, {}), h);
   h = b.reduce((a, b) => Object.assign({}, a, {[b]:d[b] || b}), {});
-  const q = b.reduce((a, b) => Object.assign({}, a, {[b]:Ea}), {});
-  a = I(b, h, l, q, a);
-  h = c.map((a) => I(b, a, l, e, k));
+  const q = b.reduce((a, b) => Object.assign({}, a, {[b]:Na}), {});
+  a = N(b, h, l, q, a);
+  h = c.map((a) => N(b, a, l, e, k));
   return [a, ...h].join("\n");
 }
-const J = (a, b, c, d) => {
+const R = (a, b, c, d) => {
   if (void 0 === a) {
     return " ".repeat(b);
   }
@@ -283,7 +396,7 @@ const J = (a, b, c, d) => {
   }
   d = " ".repeat(b);
   return `${e}${d}`;
-}, H = (a, b) => (a = a[b]) ? a : (a) => ({value:a, length:a.replace(/\033\[.*?m/g, "").length}), I = (a, b, c, d, e) => {
+}, M = (a, b) => (a = a[b]) ? a : (a) => ({value:a, length:a.replace(/\033\[.*?m/g, "").length}), N = (a, b, c, d, e) => {
   d = void 0 === d ? {} : d;
   e = void 0 === e ? {} : e;
   let f = 0;
@@ -292,26 +405,19 @@ const J = (a, b, c, d) => {
     if (!g) {
       throw Error(`Unknown field ${a}`);
     }
-    const k = H(d, a), l = e[a], [q, ...t] = b[a].split("\n");
-    a = J(q, g, k, l);
+    const k = M(d, a), l = e[a], [q, ...t] = b[a].split("\n");
+    a = R(q, g, k, l);
     let u = "";
     t.length && (u = "\n" + t.map((a) => {
       const b = " ".repeat(f);
-      a = J(a, g, k, l);
+      a = R(a, g, k, l);
       return `${b}${a}`;
     }).join("\n"));
     f += g + 2;
     return `${a}${u}`;
   }).join("  ");
 };
-const Fa = {black:30, red:31, green:32, yellow:33, blue:34, magenta:35, cyan:36, white:37, grey:90}, Ga = {black:40, red:41, green:42, yellow:43, blue:44, magenta:45, cyan:46, white:47};
-function K(a, b) {
-  return (b = Fa[b]) ? `\x1b[${b}m${a}\x1b[0m` : a;
-}
-function L(a, b) {
-  return (b = Ga[b]) ? `\x1b[${b}m${a}\x1b[0m` : a;
-}
-;async function M(a, b) {
+async function S(a, b) {
   const {interval:c = 250, writable:d = process.stdout} = {};
   b = "function" == typeof b ? b() : b;
   const e = d.write.bind(d);
@@ -329,49 +435,9 @@ function L(a, b) {
     clearInterval(h), e(`\r${" ".repeat(a.length + 3)}\r`);
   }
 }
-;function N(a, b, c) {
-  try {
-    if (!(a instanceof Promise)) {
-      throw Error("Promise expected");
-    }
-    if ("number" !== (typeof b).toLowerCase()) {
-      throw Error("Timeout must be a number");
-    }
-    if (0 > b) {
-      throw Error("Timeout cannot be negative");
-    }
-  } catch (d) {
-    return Promise.reject(d);
-  }
-  b = Ha(c, b);
-  return Promise.race([a, b.j]).then(R.bind(null, b.timeout), R.bind(null, b.timeout, null));
-}
-function Ia(a, b, c) {
-  return setTimeout(() => {
-    const d = `${"string" === (typeof a).toLowerCase() ? a : "Promise"} has timed out after ${b}ms`, e = Error(d);
-    e.stack = `Error: ${d}`;
-    c(e);
-  }, b);
-}
-function Ha(a, b) {
-  let c;
-  const d = new Promise((d, f) => {
-    c = Ia(a, b, f);
-  });
-  return {timeout:c, j:d};
-}
-function R(a, b, c) {
-  clearTimeout(a);
-  if (c) {
-    throw c;
-  }
-  return b;
-}
-;N && N.h && (N = N.default);
-var Ja = {};
-function Ka() {
-  const {usage:a = {}, description:b, line:c, N:d} = {description:`ElasticSearch utility for creating a pipeline and index templates\nfor logging request using ${L("logarithm", "green")} middleware.`, line:"logarithm $ELASTIC [-TP] [-t index -sr] [-p|rp pipeline] [-d index]", usage:{"-t, --template name":"Create an index template for storing\nlog data in name-* index.", "-T, --templates":"List index templates.", "-s, --shards":"Number of shards for index template.\nDefault 1.", "-r, --replicas":"Number of replicas for index template.\nDefault 0.", 
-  "-d, --delete name":"Delete an index.", "-P, --pipelines":"Display installed pipelines.", "-p, --pipeline name":"Create a pipeline with User-Agent\nand GeoIp plugins.", "-rp name":"Removes the pipeline.", "-h, --help":"Show the help message.", "-v, --version":"Show the version information."}};
+;function Oa() {
+  const {usage:a = {}, description:b, line:c, R:d} = {description:`ElasticSearch utility for creating a pipeline and index templates\nfor logging request using ${J("logarithm", "green")} middleware.`, line:"logarithm $ELASTIC [-TPS] [-t index -sr] [-p|rp pipeline] [-d index]", usage:{"-t, --template name":"Create an index template for storing\nlog data in name-* index.", " -s, --shards":"Number of shards for index template.\nDefault 1.", " -r, --replicas":"Number of replicas for index template.\nDefault 0.", 
+  "-T, --templates":"List index templates.", "-S, --stats":"Display statistics by indices.", "-d, --delete name":"Delete an index.", "-P, --pipelines":"Display installed pipelines.", "-p, --pipeline name":"Create a pipeline with User-Agent\nand GeoIp plugins.", "-rp name":"Removes the pipeline.", "-h, --help":"Show the help message.", "-v, --version":"Show the version information."}};
   var e = Object.keys(a);
   const f = Object.values(a), [g] = e.reduce(([b = 0, c = 0], d) => {
     const e = a[d].split("\n").reduce((a, b) => b.length > a ? b.length : a, 0);
@@ -400,14 +466,14 @@ function Ka() {
     ${d}
   ` : e;
 }
-;const {stringify:La} = querystring;
-const Ma = async() => {
-  await S(`${T}/_ingest/pipeline/${U}`, {c:{method:"PUT", timeout:5000}}, {description:"IP Address And UserAgent", processors:[{geoip:{field:"ip"}}, {user_agent:{field:"headers.user-agent"}}]});
-}, Na = async() => await S(`${T}/_ingest/pipeline`, {c:{timeout:5000}}), Oa = async() => await S(`${T}/_template`, {c:{timeout:5000}}), Pa = async() => await S(`${T}/_stats`, {c:{timeout:10000}}), Qa = async() => await S(`${T}/_ingest/pipeline/${V}`, {c:{method:"DELETE", timeout:5000}}), S = async(a, b, c) => {
-  var {c:d, query:e = {}} = void 0 === b ? {} : b;
-  b = La(e);
+;const {stringify:Pa} = querystring;
+const Qa = async() => {
+  await T(`${U}/_ingest/pipeline/${V}`, {f:{method:"PUT", timeout:5000}}, {description:"IP Address And UserAgent", processors:[{geoip:{field:"ip"}}, {user_agent:{field:"headers.user-agent"}}]});
+}, Ra = async() => await T(`${U}/_ingest/pipeline`, {f:{timeout:5000}}), Sa = async() => await T(`${U}/_template`, {f:{timeout:5000}}), Ta = async() => await T(`${U}/_stats`, {f:{timeout:10000}}), Ua = async() => await T(`${U}/_ingest/pipeline/${W}`, {f:{method:"DELETE", timeout:5000}}), T = async(a, b, c) => {
+  var {f:d, query:e = {}} = void 0 === b ? {} : b;
+  b = Pa(e);
   a = `${/^https?:\/\//.test(a) ? a : `http://${a}`}${b ? `?${b}` : ""}`;
-  return await Ca.default(a, Object.assign({}, d, {data:c})).then((a) => {
+  return await Da.default(a, Object.assign({}, d, {data:c})).then((a) => {
     var b = Object.assign({}, a);
     a = a.error;
     b = (delete b.error, b);
@@ -417,129 +483,129 @@ const Ma = async() => {
     return b;
   });
 };
-var Ra = async() => {
-  const a = await M("Fetching stats", Pa());
+var Va = async() => {
+  const a = await S("Fetching stats", Ta());
   var b = Object.keys(a.indices).map((b) => {
     if (!b.startsWith(".")) {
       var c = a.indices[b].total;
-      return {name:b, memory:W(c.segments.memory_in_bytes), docs:`${c.docs.count}`, size:`${W(c.store.size_in_bytes)}`};
+      return {name:b, memory:X(c.segments.memory_in_bytes), docs:`${c.docs.count}`, size:`${X(c.store.size_in_bytes)}`};
     }
   }).filter(Boolean);
-  b = G({keys:["name", "memory", "docs", "size"], data:b, m:{name:"Name", memory:"Memory", docs:"Docs", size:"Size"}});
+  b = L({keys:["name", "memory", "docs", "size"], data:b, m:{name:"Name", memory:"Memory", docs:"Docs", size:"Size"}});
   console.log(b);
 };
-const W = (a) => {
+const X = (a) => {
   let b = 0;
   for (; 1023 < a && 3 > b;) {
     b += 1, a /= 1024;
   }
-  return `${Math.floor(10 * a) / 10} ${Sa[b]}`;
-}, Sa = ["B", "KB", "MB", "GB"];
-var Ta = async() => {
-  const a = await M("Fetching the list of templates", Oa());
+  return `${Math.floor(10 * a) / 10} ${Wa[b]}`;
+}, Wa = ["B", "KB", "MB", "GB"];
+var Xa = async() => {
+  const a = await S("Fetching the list of templates", Sa());
   var b = Object.keys(a).map((b) => {
     const c = a[b];
     return {name:b, patterns:c.index_patterns.join("\n"), shards:c.settings.index.number_of_shards, replicas:c.settings.index.number_of_replicas || ""};
   });
-  b = G({keys:["name", "patterns", "shards", "replicas"], data:b, m:{name:"Name", patterns:"Patterns", shards:"Shards", replicas:"Replicas"}});
+  b = L({keys:["name", "patterns", "shards", "replicas"], data:b, m:{name:"Name", patterns:"Patterns", shards:"Shards", replicas:"Replicas"}});
   console.log(b);
 };
-const Va = () => {
-  var a = Ua;
+const Za = () => {
+  var a = Ya;
   return Object.keys(a).reduce((b, c) => {
     b[c] = {type:a[c]};
     return b;
   }, {});
-}, Ua = {ip:"ip", date:"date"}, Ya = async() => {
-  var a = T, b = X, {F:c = 1, B:d = 0} = {F:Wa, B:Xa};
+}, Ya = {ip:"ip", date:"date"}, bb = async() => {
+  var a = U, b = Y, {I:c = 1, F:d = 0} = {I:$a, F:ab};
   const e = `${b}-*`, f = `hits-${b}`;
-  b = {properties:Va()};
-  a = await S(`${a}/_template/${f}`, {c:{method:"PUT", timeout:5000}}, {settings:{number_of_shards:c, number_of_replicas:d}, version:1, mappings:{hit:b}, index_patterns:[e]});
+  b = {properties:Za()};
+  a = await T(`${a}/_template/${f}`, {f:{method:"PUT", timeout:5000}}, {settings:{number_of_shards:c, number_of_replicas:d}, version:1, mappings:{hit:b}, index_patterns:[e]});
   setTimeout(() => {
-    console.log("Created %s%s", K(f, "red"), " template");
-    console.log("%s%s indices with %s shards and %s replicas", "for     ", K(e, "grey"), c, d);
+    console.log("Created %s%s", H(f, "red"), " template");
+    console.log("%s%s indices with %s shards and %s replicas", "for     ", H(e, "grey"), c, d);
   }, 1);
   return a;
-}, Za = async() => await S(`${T}/${Y}`, {c:{method:"DELETE", timeout:5000}});
-var $a = async() => {
-  const a = await M("Fetching the list of pipelines", Na());
+}, cb = async() => await T(`${U}/${I}`, {f:{method:"DELETE", timeout:5000}});
+var db = async() => {
+  const a = await S("Fetching the list of pipelines", Ra());
   var b = Object.keys(a).map((b) => {
     const c = a[b];
-    return {name:b, description:c.description, processors:c.processors.map((a) => Object.keys(a).map((b) => `${K(b, "magenta")}: ${a[b].field}`).join(", ")).join("\n")};
+    return {name:b, description:c.description, processors:c.processors.map((a) => Object.keys(a).map((b) => `${H(b, "magenta")}: ${a[b].field}`).join(", ")).join("\n")};
   });
-  b = G({keys:["name", "description", "processors"], data:b, m:{name:"Name", description:"Description", processors:"Processors"}});
+  b = L({keys:["name", "description", "processors"], data:b, m:{name:"Name", description:"Description", processors:"Processors"}});
   console.log(b);
 };
 const Z = function(a, b) {
   a = void 0 === a ? {} : a;
   b = void 0 === b ? process.argv : b;
   [, , ...b] = b;
-  const c = Da(b);
+  const c = r(b);
   b = b.slice(c.length);
   let d = !c.length;
   return Object.keys(a).reduce((b, f) => {
     var e = Object.assign({}, b);
-    b = b.f;
-    e = (delete e.f, e);
+    b = b.g;
+    e = (delete e.g, e);
     if (0 == b.length && d) {
-      return Object.assign({}, {f:b}, e);
+      return Object.assign({}, {g:b}, e);
     }
     const h = a[f];
     let k;
     if ("string" == typeof h) {
-      ({value:k, argv:b} = E(b, f, h));
+      ({value:k, argv:b} = p(b, f, h));
     } else {
       try {
-        const {a, i:e, P:g, u, multiple:z} = h;
-        u && z && c.length ? (k = c, d = !0) : u && c.length ? (k = c[0], d = !0) : {value:k, argv:b} = E(b, f, a, e, g);
+        const {a, j:e, T:g, u, multiple:z} = h;
+        u && z && c.length ? (k = c, d = !0) : u && c.length ? (k = c[0], d = !0) : {value:k, argv:b} = p(b, f, a, e, g);
       } catch (l) {
-        return Object.assign({}, {f:b}, e);
+        return Object.assign({}, {g:b}, e);
       }
     }
-    return void 0 === k ? Object.assign({}, {f:b}, e) : Object.assign({}, {f:b}, e, {[f]:k});
-  }, {f:b});
-}({url:{u:!0}, help:{a:"h", i:!0}, template:{a:"t"}, templates:{a:"T", i:!0}, stats:{a:"S", i:!0}, "delete":{a:"d"}, shards:{a:"s", type:"number"}, replicas:{a:"r", type:"number"}, pipeline:{a:"p"}, pipelines:{a:"P", i:!0}, "remove-pipeline":{a:"rp"}, version:{a:"v", i:!0}}), T = Z.url, ab = Z.help, U = Z.pipeline, X = Z.template, Y = Z["delete"], Wa = Z.shards, Xa = Z.replicas, bb = Z.pipelines, cb = Z.stats, db = Z.templates, V = Z["remove-pipeline"];
+    return void 0 === k ? Object.assign({}, {g:b}, e) : Object.assign({}, {g:b}, e, {[f]:k});
+  }, {g:b});
+}({url:{u:!0}, help:{a:"h", j:!0}, template:{a:"t"}, templates:{a:"T", j:!0}, stats:{a:"S", j:!0}, "delete":{a:"d"}, shards:{a:"s", type:"number"}, replicas:{a:"r", type:"number"}, pipeline:{a:"p"}, pipelines:{a:"P", j:!0}, "remove-pipeline":{a:"rp"}, version:{a:"v", j:!0}}), U = Z.url, eb = Z.help, V = Z.pipeline, Y = Z.template, I = Z["delete"], $a = Z.shards, ab = Z.replicas, fb = Z.pipelines, gb = Z.stats, hb = Z.templates, W = Z["remove-pipeline"];
 if (Z.version) {
   console.log("1.0.0"), process.exit();
 } else {
-  if (ab) {
-    const a = Ka();
+  if (eb) {
+    const a = Oa();
     console.log(a);
     process.exit();
   }
 }
 (async() => {
   try {
-    if (!T) {
+    if (!U) {
       throw Error("No ElasticSearch URL.");
     }
-    if (bb) {
-      return await $a();
+    if (fb) {
+      return await db();
     }
-    if (U) {
-      await M(`Creating a pipeline ${K(U, "yellow")}`, Ma()), console.log("Pipeline %s created.", K(U, "green"));
+    if (V) {
+      await S(`Creating a pipeline ${H(V, "yellow")}`, Qa()), console.log("Pipeline %s created.", H(V, "green"));
     } else {
-      if (V) {
-        await M(`Removing ${K(V, "yellow")} pipeline`, Qa()), console.log("Pipeline %s removed.", L(V, "red"));
+      if (W) {
+        await S(`Removing ${H(W, "yellow")} pipeline`, Ua()), console.log("Pipeline %s removed.", J(W, "red"));
       } else {
-        if (X) {
-          await M(`Creating ${K(X, "yellow")} template`, Ya());
+        if (Y) {
+          await S(`Creating ${H(Y, "yellow")} template`, bb());
         } else {
-          if (Y) {
-            await Ja.confirm(`Are you sure you want to delete index ${K(Y, "yellow")}`, {M:!1}) && (await M(`Deleting ${K(Y, "yellow")} index`, Za()), console.log("Successfully deleted index %s", K(Y, "red")));
+          if (I) {
+            await Ka() && (await S(`Deleting ${H(I, "yellow")} index`, cb()), console.log("Successfully deleted index %s", H(I, "red")));
           } else {
-            if (db) {
-              return await Ta();
+            if (hb) {
+              return await Xa();
             }
-            if (cb) {
-              return await Ra();
+            if (gb) {
+              return await Va();
             }
           }
         }
       }
     }
   } catch (a) {
-    console.log(process.env.DEBUG ? a.stack : L(a.message, "red"));
+    console.log(process.env.DEBUG ? a.stack : J(a.message, "red"));
   }
 })();
 

@@ -5,9 +5,10 @@ import logarithm, { ping } from '../src'
 (async () => {
   await ping(process.env.ELASTIC)
 
-  const { url } = await core({
+  // setup for idio web-server
+  const { url, app } = await core({
     logarithm: {
-      middlewareConstructor(app, config) {
+      middlewareConstructor(_, config) {
         const mw = logarithm(config)
         return mw
       },
@@ -16,11 +17,18 @@ import logarithm, { ping } from '../src'
         app: 'idio.cc',
         index: 'clients',
       },
-      use: true,
+      // use: true,
     },
     async index(ctx) {
       ctx.body = 'hello world'
     },
   })
+
+  // or using standard koa setup
+  app.use(logarithm({
+    app: 'idio.cc',
+    url: process.env.ELASTIC,
+    index: 'clients',
+  }))
   console.log(url)
 })()

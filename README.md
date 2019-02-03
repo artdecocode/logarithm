@@ -16,6 +16,10 @@ yarn add -E logarithm
     * [`Config`](#type-config)
   * [`async ping(url: string, timeout: number)`](#async-pingurl-stringtimeout-number-void)
 - [CLI](#cli)
+  * [Create Template, `-t`](#create-template--t)
+  * [List Templates, `-T`](#list-templates--t)
+  * [Statistics, `-S`](#statistics--s)
+  * [Delete Index, `-d`](#delete-index--d)
 - [Copyright](#copyright)
 
 <p align="center"><a href="#table-of-contents"><img src=".documentary/section-breaks/0.svg?sanitize=true"></a></p>
@@ -54,9 +58,10 @@ import logarithm, { ping } from 'logarithm'
 (async () => {
   await ping(process.env.ELASTIC)
 
-  const { url } = await core({
+  // setup for idio web-server
+  const { url, app } = await core({
     logarithm: {
-      middlewareConstructor(app, config) {
+      middlewareConstructor(_, config) {
         const mw = logarithm(config)
         return mw
       },
@@ -65,12 +70,19 @@ import logarithm, { ping } from 'logarithm'
         app: 'idio.cc',
         index: 'clients',
       },
-      use: true,
+      // use: true,
     },
     async index(ctx) {
       ctx.body = 'hello world'
     },
   })
+
+  // or using standard koa setup
+  app.use(logarithm({
+    app: 'idio.cc',
+    url: process.env.ELASTIC,
+    index: 'clients',
+  }))
   console.log(url)
 })()
 ```
@@ -91,19 +103,20 @@ _Logarithm_ also provides a CLI tool to be able to install index patterns and a 
 logarithm -h
 ```
 
-```fs
+```Dockerfile
 ElasticSearch utility for creating a pipeline and index templates
 for logging request using [42mlogarithm[0m middleware.
 
-  logarithm $ELASTIC [-TP] [-t index -sr] [-p|rp pipeline] [-d index]
+  logarithm $ELASTIC [-TPS] [-t index -sr] [-p|rp pipeline] [-d index]
 
   	-t, --template name	Create an index template for storing
 	                   	log data in name-* index.
-	-T, --templates    	List index templates.
-	-s, --shards       	Number of shards for index template.
+	 -s, --shards      	Number of shards for index template.
 	                   	Default 1.
-	-r, --replicas     	Number of replicas for index template.
+	 -r, --replicas    	Number of replicas for index template.
 	                   	Default 0.
+	-T, --templates    	List index templates.
+	-S, --stats        	Display statistics by indices.
 	-d, --delete name  	Delete an index.
 	-P, --pipelines    	Display installed pipelines.
 	-p, --pipeline name	Create a pipeline with User-Agent
@@ -113,7 +126,75 @@ for logging request using [42mlogarithm[0m middleware.
 	-v, --version      	Show the version information.
 ```
 
-<p align="center"><a href="#table-of-contents"><img src=".documentary/section-breaks/4.svg?sanitize=true"></a></p>
+<p align="center"><a href="#table-of-contents"><img src=".documentary/section-breaks/4.svg?sanitize=true" width="15"></a></p>
+
+### Create Template, `-t`
+
+If an index for a particular client, e.g., `client` needs to be created and logs recorded in indices like `client-2019.2`, the template with a number of shards and replicas can be installed depending on the volume of data that the server is going to be receiving. This means that the default of 10 shards and 5 replicas might not be required for a small-volume website, so that a template with just 1 shard and no replicas can be created.
+
+```sh
+logarithm 192.168.0.1:9200 -t client [-s 1 -r 0]
+```
+
+```fs
+Created hits-client2 template
+for     client2-* indices with 1 shards and 0 replicas
+```
+
+<p align="center"><a href="#table-of-contents"><img src=".documentary/section-breaks/5.svg?sanitize=true" width="15"></a></p>
+
+### List Templates, `-T`
+
+To see what templates are installed.
+
+```sh
+logarithm 192.168.0.1:9200 -T
+```
+
+```fs
+Name                           Patterns            Shards  Replicas
+kibana_index_template:.kibana  .kibana             1
+hits-technation.sucks          technation.sucks-*  1       0
+hits-clients                   clients-*           1       0
+hits-client2                   client2-*           1       0
+```
+
+<p align="center"><a href="#table-of-contents"><img src=".documentary/section-breaks/6.svg?sanitize=true" width="15"></a></p>
+
+### Statistics, `-S`
+
+The stats can be used to monitor created indices.
+
+```sh
+logarithm 192.168.0.1:9200 -S
+```
+
+```sh
+Name                      Memory    Docs  Size
+technation.sucks          11.6 KB   1     21.6 KB
+technation.sucks-2018.12  60.4 KB   8859  3.3 MB
+technation.sucks-2018.11  64.4 KB   116   179.5 KB
+technation.sucks-2019.2   151.4 KB  63    279.1 KB
+technation.sucks-2019.1   120.7 KB  5747  2.2 MB
+```
+
+<p align="center"><a href="#table-of-contents"><img src=".documentary/section-breaks/7.svg?sanitize=true" width="15"></a></p>
+
+### Delete Index, `-d`
+
+When an index (or wildcard indices) need to be deleted, the delete option can be used
+
+```sh
+logarithm 192.168.0.1:9200 -d clients-2019.2
+```
+
+```fs
+Are you sure you want to delete index clients-2019.2 (y/n): [n] y
+Successfully deleted index clients-2019.2
+```
+
+
+<p align="center"><a href="#table-of-contents"><img src=".documentary/section-breaks/8.svg?sanitize=true"></a></p>
 
 ## Copyright
 
