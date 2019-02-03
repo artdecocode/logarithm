@@ -17,7 +17,7 @@ export default async (url) => {
         return Object.keys(proc).map((k) => {
           return `${c(k, 'magenta')}: ${proc[k].field}`
         }).join(', ')
-      }).join('; '),
+      }).join('\n'),
     }
   })
   const s = tablature({
@@ -27,14 +27,6 @@ export default async (url) => {
       name: 'Name',
       description: 'Description',
       processors: 'Processors',
-    },
-    replacements: {
-      processors(value) {
-        return {
-          value,
-          length: value.replace(/\033\[.*?m/g, '').length,
-        }
-      },
     },
   })
   console.log(s)
