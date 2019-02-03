@@ -2,7 +2,7 @@
 
 %NPM: logarithm%
 
-`logarithm` is The Logs.Page Middleware For Web-Server To Record Hits.
+`logarithm` Is A Koa Middleware That Records Logs In _ElasticSearch_.
 
 ```sh
 yarn add -E logarithm

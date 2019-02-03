@@ -1,25 +1,34 @@
 ## API
 
-The package is available by importing its default function:
+The package is available by importing its default function and a named function:
 
 ```js
-import logarithm from 'logarithm'
+import logarithm, { ping } from 'logarithm'
 ```
 
 %~%
 
-```## logarithm
+```### logarithm => Middleware
 [
-  ["arg1", "string"],
-  ["arg2?", "boolean"]
+  ["config", "Config"]
 ]
 ```
 
-Call this function to get the result you want.
+Sets up the middleware to be used in `Koa` web-server and returns it.
 
 %TYPEDEF types/index.xml%
 
 %EXAMPLE: example/example.js, ../src => logarithm%
-%FORK example example/example%
+
+%~ width="15"%
+
+```### async ping
+[
+  ["url", "string"],
+  ["timeout", "number"]
+]
+```
+
+Makes sure that `ElasticSearch` is available for connections. Will throw an error after the timeout (default `30000`).
 
 %~%
