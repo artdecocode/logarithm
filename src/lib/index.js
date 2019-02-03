@@ -21,6 +21,16 @@ export const setupPipeline = async (url, id) => {
   })
 }
 
+export const listPipelines = async (url) => {
+  const u = `${url}/_ingest/pipeline`
+  const res = await req(u, {
+    spec: {
+      timeout: 5000,
+    },
+  })
+  return res
+}
+
 /**
  * Make the request.
  * @param {string} url The URL.
@@ -30,7 +40,7 @@ export const req = async (url, { spec, query = {} } = {}, body) => {
   const q = stringify(query)
   const p = /^https?:\/\//.test(url) ? url : `http://${url}`
   const u = `${p}${q ? `?${q}` : ''}`
-  await rqt(u, {
+  const res = await rqt(u, {
     ...spec,
     data: body,
   }).then(({ error, ...rest }) => {
@@ -40,6 +50,7 @@ export const req = async (url, { spec, query = {} } = {}, body) => {
     }
     return rest
   })
+  return res
 }
 
 /**

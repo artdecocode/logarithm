@@ -1,10 +1,11 @@
 #!/usr/bin/env node
-import { _url, _pipeline, _version, _help } from './get-args'
+import { _url, _pipeline, _version, _help, _listPipelines } from './get-args'
 import loading from 'indicatrix'
 import { c, b } from 'erte'
 import { version, nextVersion } from '../../package.json'
 import usage from './usage'
 import { setupPipeline } from '../lib'
+import listPipelines from './commands/list-pipelines'
 
 if (_version) {
   const v = nextVersion ? nextVersion : version
@@ -21,7 +22,9 @@ if (_version) {
     if (!_url) {
       throw new Error('No ElasticSearch URL.')
     }
-    if (_pipeline) {
+    if (_listPipelines) {
+      return await listPipelines(_url)
+    } else if (_pipeline) {
       await loading(
         `Creating a pipeline ${
           c(_pipeline, 'yellow')
