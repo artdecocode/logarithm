@@ -20,6 +20,9 @@ yarn add -E logarithm
   * [List Templates, `-T`](#list-templates--t)
   * [Statistics, `-S`](#statistics--s)
   * [Delete Index, `-d`](#delete-index--d)
+  * [Pipelines, `-P`](#pipelines--p)
+  * [Add Pipeline, `-p`](#add-pipeline--p)
+  * [Remove Pipeline, `--remove-pipeline`](#remove-pipeline---remove-pipeline)
 - [Copyright](#copyright)
 
 <p align="center"><a href="#table-of-contents"><img src=".documentary/section-breaks/0.svg?sanitize=true"></a></p>
@@ -60,24 +63,11 @@ import logarithm, { ping } from 'logarithm'
 
   // setup for idio web-server
   const { url, app } = await core({
-    logarithm: {
-      middlewareConstructor(_, config) {
-        const mw = logarithm(config)
-        return mw
-      },
-      config: {
-        url: process.env.ELASTIC,
-        app: 'idio.cc',
-        index: 'clients',
-      },
-      // use: true,
-    },
     async index(ctx) {
       ctx.body = 'hello world'
     },
   })
 
-  // or using standard koa setup
   app.use(logarithm({
     app: 'idio.cc',
     url: process.env.ELASTIC,
@@ -193,8 +183,51 @@ Are you sure you want to delete index clients-2019.2 (y/n): [n] y
 Successfully deleted index clients-2019.2
 ```
 
+<p align="center"><a href="#table-of-contents"><img src=".documentary/section-breaks/8.svg?sanitize=true" width="15"></a></p>
 
-<p align="center"><a href="#table-of-contents"><img src=".documentary/section-breaks/8.svg?sanitize=true"></a></p>
+### Pipelines, `-P`
+
+Shows existing pipelines.
+
+```sh
+logarithm 192.168.0.1:9200 -P
+```
+
+```fs
+Name  Description               Processors
+info  IP Address And UserAgent  geoip: ip
+                                user_agent: headers.user-agent
+```
+
+<p align="center"><a href="#table-of-contents"><img src=".documentary/section-breaks/9.svg?sanitize=true" width="15"></a></p>
+
+### Add Pipeline, `-p`
+
+Creates a new pipeline with `geoip` and `user_agent` processors.
+
+```sh
+logarithm 192.168.0.1:9200 -p info2
+```
+
+```fs
+Pipeline info2 created.
+```
+
+<p align="center"><a href="#table-of-contents"><img src=".documentary/section-breaks/10.svg?sanitize=true" width="15"></a></p>
+
+### Remove Pipeline, `--remove-pipeline`
+
+Removes the pipeline with the given name.
+
+```sh
+logarithm 192.168.0.1:9200 --remove-pipeline info2
+```
+
+```fs
+Pipeline info2 removed.
+```
+
+<p align="center"><a href="#table-of-contents"><img src=".documentary/section-breaks/11.svg?sanitize=true"></a></p>
 
 ## Copyright
 

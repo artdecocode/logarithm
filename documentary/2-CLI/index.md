@@ -75,5 +75,48 @@ Are you sure you want to delete index clients-2019.2 (y/n): [n] y
 Successfully deleted index clients-2019.2
 ```
 
+%~ width="15"%
+
+### Pipelines, `-P`
+
+Shows existing pipelines.
+
+```sh
+logarithm 192.168.0.1:9200 -P
+```
+
+```fs
+Name  Description               Processors
+info  IP Address And UserAgent  geoip: ip
+                                user_agent: headers.user-agent
+```
+
+%~ width="15"%
+
+### Add Pipeline, `-p`
+
+Creates a new pipeline with `geoip` and `user_agent` processors.
+
+```sh
+logarithm 192.168.0.1:9200 -p info2
+```
+
+```fs
+Pipeline info2 created.
+```
+
+%~ width="15"%
+
+### Remove Pipeline, `--remove-pipeline`
+
+Removes the pipeline with the given name.
+
+```sh
+logarithm 192.168.0.1:9200 --remove-pipeline info2
+```
+
+```fs
+Pipeline info2 removed.
+```
 
 %~%

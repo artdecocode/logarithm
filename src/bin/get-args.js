@@ -5,13 +5,13 @@ const args = argufy({
   'help': { short: 'h', boolean: true },
   'template': { short: 't' },
   /*template*/ 'shards': { short: 's', type: 'number' },
-  /*template*/'replicas': { short: 'r', type: 'number' },
+  /*template*/ 'replicas': { short: 'r', type: 'number' },
   'templates': { short: 'T', boolean: true },
   'stats': { short: 'S', boolean: true },
   'delete': { short: 'd' },
   'pipeline': { short: 'p' },
   'pipelines': { short: 'P', boolean: true },
-  'remove-pipeline': { short: 'rp' },
+  'remove-pipeline': { },
   'version': { short: 'v', boolean: true },
 })
 
