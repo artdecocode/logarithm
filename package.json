@@ -3,7 +3,7 @@
   "version": "0.0.0",
   "nextVersion": "1.0.0",
   "description": "The Middleware For Web-Server To Record Hits In ElasticSearch.",
-  "main": "build",
+  "main": "build/index.js",
   "module": "src/index.js",
   "scripts": {
     "t": "zoroaster -a",
@@ -14,7 +14,7 @@
     "lint": "eslint .",
     "doc": "NODE_DEBUG=doc doc documentary -o README.md",
     "dev": "node src/bin",
-    "b": "alamode src -o build",
+    "b": "alamode src -o build -i bin -s",
     "d": "yarn-s d1",
     "d1": "NODE_DEBUG=doc doc src/index.js -g",
     "build": "yarn-s d b doc",
@@ -25,6 +25,7 @@
     "example/": "yarn e example/example.js"
   },
   "files": [
+    "depack",
     "build",
     "src"
   ],
@@ -37,7 +38,15 @@
     "url": "git://github.com/artdecocode/logarithm.git"
   },
   "keywords": [
-    "logarithm"
+    "logarithm",
+    "log",
+    "logs",
+    "koa",
+    "elastic",
+    "es",
+    "elasticsearch",
+    "elastic search",
+    "kibana"
   ],
   "author": "Anton <anton@adc.sh>",
   "license": "MIT",
