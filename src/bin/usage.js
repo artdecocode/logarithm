@@ -14,7 +14,7 @@ export default () => {
       '-d, --delete name': 'Delete an index.',
       '-P, --pipelines': 'Display installed pipelines.',
       '-p, --pipeline name': 'Create a pipeline with User-Agent\nand GeoIp plugins.',
-      '-rp name': 'Removes the pipeline.',
+      '--remove-pipeline': 'Removes the pipeline.',
       '-h, --help': 'Show the help message.',
       '-v, --version': 'Show the version information.',
     },

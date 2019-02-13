@@ -62,17 +62,16 @@ import logarithm, { ping } from 'logarithm'
   await ping(process.env.ELASTIC)
 
   // setup for idio web-server
-  const { url, app } = await core({
-    async index(ctx) {
-      ctx.body = 'hello world'
-    },
-  })
+  const { url, app } = await core()
 
   app.use(logarithm({
     app: 'idio.cc',
     url: process.env.ELASTIC,
     index: 'clients',
   }))
+  app.use(async (ctx) => {
+    ctx.body = 'hello world'
+  })
   console.log(url)
 })()
 ```
@@ -111,7 +110,7 @@ for logging request using [42mlogarithm[0m middleware.
 	-P, --pipelines    	Display installed pipelines.
 	-p, --pipeline name	Create a pipeline with User-Agent
 	                   	and GeoIp plugins.
-	-rp name           	Removes the pipeline.
+	--remove-pipeline  	Removes the pipeline.
 	-h, --help         	Show the help message.
 	-v, --version      	Show the version information.
 ```

@@ -49,7 +49,9 @@ const logarithm = (options) => {
         timeout: 5000,
       },
       query: { pipeline },
-    }, body).catch(({ message }) => {
+    }, body).then(() => {
+      // process.stdout.write('.')
+    }).catch(({ message }) => {
       console.log(`Logarithm ERROR: ${message}`)
     })
 

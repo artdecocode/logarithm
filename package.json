@@ -18,7 +18,7 @@
     "d": "yarn-s d1",
     "d1": "NODE_DEBUG=doc doc src/index.js -g",
     "build": "yarn-s d b doc",
-    "depack": "GOOGLE_CLOSURE_COMPILER=/Volumes/backup/closure-compiler/target/closure-compiler-1.0-SNAPSHOT.jar depack src/bin/logarithm.js -c -o depack -I 2018 -O 2017 -a -p -w -S -s",
+    "depack": "GOOGLE_CLOSURE_COMPILER=/Volumes/backup/closure-compiler/target/closure-compiler-1.0-SNAPSHOT.jar depack-dev src/bin/logarithm.js -c -o depack/logarithm.js -I 2018 -O 2017 -a -p -w -S -s",
     "logarithm": "node depack/logarithm.js $ELASTIC:9200",
     "rec": "NODE_DEBUG=appshot appshot -T 23 -a Terminal -y 150 -f",
     "e": "node example",

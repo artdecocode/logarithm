@@ -6,16 +6,15 @@ import logarithm, { ping } from '../src'
   await ping(process.env.ELASTIC)
 
   // setup for idio web-server
-  const { url, app } = await core({
-    async index(ctx) {
-      ctx.body = 'hello world'
-    },
-  })
+  const { url, app } = await core()
 
   app.use(logarithm({
     app: 'idio.cc',
     url: process.env.ELASTIC,
     index: 'clients',
   }))
+  app.use(async (ctx) => {
+    ctx.body = 'hello world'
+  })
   console.log(url)
 })()

@@ -8,7 +8,7 @@ const os = require('os');
 const zlib = require('zlib');
 const stream = require('stream');
 const readline = require('readline');
-'use strict';
+             
 const {createInterface:m} = readline;
 const p = (a, b, c, d, e) => {
   d = void 0 === d ? !1 : d;
@@ -437,7 +437,7 @@ async function S(a, b) {
 }
 ;function Oa() {
   const {usage:a = {}, description:b, line:c, R:d} = {description:`ElasticSearch utility for creating a pipeline and index templates\nfor logging request using ${J("logarithm", "green")} middleware.`, line:"logarithm $ELASTIC [-TPS] [-t index -sr] [-p|rp pipeline] [-d index]", usage:{"-t, --template name":"Create an index template for storing\nlog data in name-* index.", " -s, --shards":"Number of shards for index template.\nDefault 1.", " -r, --replicas":"Number of replicas for index template.\nDefault 0.", 
-  "-T, --templates":"List index templates.", "-S, --stats":"Display statistics by indices.", "-d, --delete name":"Delete an index.", "-P, --pipelines":"Display installed pipelines.", "-p, --pipeline name":"Create a pipeline with User-Agent\nand GeoIp plugins.", "-rp name":"Removes the pipeline.", "-h, --help":"Show the help message.", "-v, --version":"Show the version information."}};
+  "-T, --templates":"List index templates.", "-S, --stats":"Display statistics by indices.", "-d, --delete name":"Delete an index.", "-P, --pipelines":"Display installed pipelines.", "-p, --pipeline name":"Create a pipeline with User-Agent\nand GeoIp plugins.", "--remove-pipeline":"Removes the pipeline.", "-h, --help":"Show the help message.", "-v, --version":"Show the version information."}};
   var e = Object.keys(a);
   const f = Object.values(a), [g] = e.reduce(([b = 0, c = 0], d) => {
     const e = a[d].split("\n").reduce((a, b) => b.length > a ? b.length : a, 0);
@@ -564,7 +564,7 @@ const Z = function(a, b) {
     }
     return void 0 === k ? Object.assign({}, {g:b}, e) : Object.assign({}, {g:b}, e, {[f]:k});
   }, {g:b});
-}({url:{u:!0}, help:{a:"h", j:!0}, template:{a:"t"}, templates:{a:"T", j:!0}, stats:{a:"S", j:!0}, "delete":{a:"d"}, shards:{a:"s", type:"number"}, replicas:{a:"r", type:"number"}, pipeline:{a:"p"}, pipelines:{a:"P", j:!0}, "remove-pipeline":{a:"rp"}, version:{a:"v", j:!0}}), U = Z.url, eb = Z.help, V = Z.pipeline, Y = Z.template, I = Z["delete"], $a = Z.shards, ab = Z.replicas, fb = Z.pipelines, gb = Z.stats, hb = Z.templates, W = Z["remove-pipeline"];
+}({url:{u:!0}, help:{a:"h", j:!0}, template:{a:"t"}, shards:{a:"s", type:"number"}, replicas:{a:"r", type:"number"}, templates:{a:"T", j:!0}, stats:{a:"S", j:!0}, "delete":{a:"d"}, pipeline:{a:"p"}, pipelines:{a:"P", j:!0}, "remove-pipeline":{}, version:{a:"v", j:!0}}), U = Z.url, eb = Z.help, V = Z.pipeline, Y = Z.template, I = Z["delete"], $a = Z.shards, ab = Z.replicas, fb = Z.pipelines, gb = Z.stats, hb = Z.templates, W = Z["remove-pipeline"];
 if (Z.version) {
   console.log("1.0.0"), process.exit();
 } else {
