@@ -1,7 +1,7 @@
-import { equal, ok } from 'zoroaster/assert'
+import { equal } from 'zoroaster/assert'
+import rqt from 'rqt'
 import Context, { Elastic } from '../context'
 import logarithm from '../../src'
-import rqt from 'rqt'
 
 /** @type {Object.<string, (c: Context, e: Elastic)>} */
 const T = {
