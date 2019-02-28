@@ -34,7 +34,7 @@ const logarithm = (options) => {
     const body = {
       app,
       ip,
-      path,
+      path: decodeURI(path),
       headers,
       status,
       date,

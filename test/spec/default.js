@@ -1,21 +1,34 @@
 import { equal, ok } from 'zoroaster/assert'
-import Context from '../context'
+import Context, { Elastic } from '../context'
 import logarithm from '../../src'
+import rqt from 'rqt'
 
-/** @type {Object.<string, (c: Context)>} */
+/** @type {Object.<string, (c: Context, e: Elastic)>} */
 const T = {
-  context: Context,
+  context: [Context, Elastic],
   'is a function'() {
     equal(typeof logarithm, 'function')
   },
-  async 'calls package without error'() {
-    await logarithm()
-  },
-  async 'gets a link to the fixture'({ FIXTURE }) {
-    const res = await logarithm({
-      text: FIXTURE,
+  async '!logs the data'({ start }, { url, setDefer }) {
+    const u = await start({
+      log: {
+        use: true,
+        middlewareConstructor() {
+          return logarithm({
+            app: 'test.com',
+            url,
+          })
+        },
+      },
+      req(ctx) {
+        ctx.body = {}
+      },
     })
-    ok(res, FIXTURE)
+    const path = 'путь'
+    const uu = `${u}/${encodeURIComponent(path)}`
+    const [r] = await Promise.all([setDefer(), rqt(uu)])
+    const { body } = r
+    equal(body.path, `/${path}`)
   },
 }
 
