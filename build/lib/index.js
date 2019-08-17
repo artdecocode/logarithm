@@ -1,11 +1,11 @@
-let rqt = require('rqt'); if (rqt && rqt.__esModule) rqt = rqt.default;
+const rqt = require('rqt');
 const { stringify } = require('querystring');
 
 /**
  * Sets up the info pipeline for parsing of user-agent and extracting GEOIP info from IP address.
  * @param {string} url The ElasticSearch URL.
  */
-       const setupPipeline = async (url, id) => {
+const setupPipeline = async (url, id) => {
   const u = `${url}/_ingest/pipeline/${id}`
   await req(u, {
     spec: {
@@ -21,7 +21,7 @@ const { stringify } = require('querystring');
   })
 }
 
-       const listPipelines = async (url) => {
+const listPipelines = async (url) => {
   const u = `${url}/_ingest/pipeline`
   const res = await req(u, {
     spec: {
@@ -30,7 +30,7 @@ const { stringify } = require('querystring');
   })
   return res
 }
-       const listTemplates = async (url) => {
+const listTemplates = async (url) => {
   const u = `${url}/_template`
   const res = await req(u, {
     spec: {
@@ -39,7 +39,7 @@ const { stringify } = require('querystring');
   })
   return res
 }
-       const stats = async (url) => {
+const stats = async (url) => {
   const u = `${url}/_stats`
   const res = await req(u, {
     spec: {
@@ -49,7 +49,7 @@ const { stringify } = require('querystring');
   return res
 }
 
-       const deletePipeline = async (url, id) => {
+const deletePipeline = async (url, id) => {
   const u = `${url}/_ingest/pipeline/${id}`
   const res = await req(u, {
     spec: {
@@ -65,7 +65,7 @@ const { stringify } = require('querystring');
  * @param {string} url The URL.
  * @param {{ spec: Spec, query: Object.<string, string>}} spec The specification.
  */
-       const req = async (url, { spec, query = {} } = {}, body) => {
+const req = async (url, { spec, query = {} } = {}, body) => {
   const q = stringify(query)
   const p = /^https?:\/\//.test(url) ? url : `http://${url}`
   const u = `${p}${q ? `?${q}` : ''}`

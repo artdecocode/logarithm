@@ -65,7 +65,7 @@ const logarithm = (options) => {
  * @param {string} url The ElasticSearch URL.
  * @param {number} [timeout=30000] The timeout for the request in ms. Default `30000`.
  */
-       const ping = async (url, timeout = 30000) => {
+const ping = async (url, timeout = 30000) => {
   const { statusCode } = await aqt(url, { timeout, justHeaders: true, method: 'HEAD' })
   if (statusCode != 200) throw new Error(`Server responded with status code ${statusCode}`)
 }

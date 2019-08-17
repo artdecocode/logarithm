@@ -2,7 +2,6 @@
 import { _url, _pipeline, _version, _help, _listPipelines, _removePipeline, _replicas, _shards, _template, _delete, _listTemplates, _stats } from './get-args'
 import loading from 'indicatrix'
 import { c, b } from 'erte'
-import { version, nextVersion } from '../../package.json'
 import usage from './usage'
 import { setupPipeline, deletePipeline } from '../lib'
 import listPipelines from './commands/list-pipelines'
@@ -12,7 +11,7 @@ import listTemplates from './commands/list-templates'
 import stats from './commands/stats'
 
 if (_version) {
-  const v = nextVersion ? nextVersion : version
+  const v = require('../../package.json')
   console.log(v)
   process.exit()
 } else if (_help) {
