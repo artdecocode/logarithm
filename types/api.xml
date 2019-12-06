@@ -5,4 +5,13 @@
     </arg>
     Creates a middleware for logging requests in _Koa_/_Goa_ web-server and returns it.
   </method>
+  <method name="ping" async>
+    <arg string name="url">
+      The ElasticSearch URL.
+    </arg>
+    <arg number name="timeout" default="3000">
+      The timeout for the request in ms.
+    </arg>
+    Check that a connection to the _ElasticSearch_ server can be established. Will throw an error after timeout.
+  </method>
 </types>

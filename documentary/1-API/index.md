@@ -16,13 +16,6 @@ import logarithm, { ping } from 'logarithm'
 
 %~ width="15"%
 
-```### async ping
-[
-  ["url", "string"],
-  ["timeout", "number"]
-]
-```
-
-Makes sure that `ElasticSearch` is available for connections. Will throw an error after the timeout (default `30000`).
+<typedef name="ping">types/api.xml</typedef>
 
 %~%

@@ -5,7 +5,7 @@
 `logarithm` Is A Koa Middleware That Records Logs In _ElasticSearch_.
 
 ```sh
-yarn add -E logarithm
+yarn add logarithm
 ```
 
 ## Table Of Contents

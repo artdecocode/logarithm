@@ -1,4 +1,4 @@
-const { _logarithm } = require('./')
+const { _logarithm, _ping } = require('./logarithm')
 
 /**
  * Creates a middleware for logging requests in _Koa_/_Goa_ web-server and returns it.
@@ -15,7 +15,18 @@ function logarithm(options) {
   return _logarithm(options)
 }
 
+/**
+ * Check that a connection to the _ElasticSearch_ server can be established. Will throw an error after timeout.
+ * @param {string} url The ElasticSearch URL.
+ * @param {number} timeout The timeout for the request in ms.
+ * @return {Promise}
+ */
+function ping(url, timeout) {
+  return _ping(url, timeout)
+}
+
 module.exports = logarithm
+module.exports.ping = ping
 
 /* typal types/index.xml namespace */
 /**
