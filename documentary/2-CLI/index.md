@@ -6,7 +6,7 @@ _Logarithm_ also provides a CLI tool to be able to install index patterns and a 
 logarithm -h
 ```
 
-%FORK-Dockerfile depack/logarithm -h%
+%FORK-Dockerfile src/bin/logarithm -h%
 
 %~ width="15"%
 

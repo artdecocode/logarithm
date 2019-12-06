@@ -63,27 +63,20 @@ export const deletePipeline = async (url, id) => {
 /**
  * Make the request.
  * @param {string} url The URL.
- * @param {{ spec: Spec, query: Object.<string, string>}} spec The specification.
+ * @param {{ spec: { method: (string|undefined), timeout: (number|undefined) }, query: (!Object<string, string>|undefined)}} [spec] The specification.
+ * @param {!Object} [body]
  */
-export const req = async (url, { spec, query = {} } = {}, body) => {
+export const req = async (url, { spec, query = {} } = {}, body = undefined) => {
   const q = stringify(query)
   const p = /^https?:\/\//.test(url) ? url : `http://${url}`
   const u = `${p}${q ? `?${q}` : ''}`
-  const res = await rqt(u, {
+  const { 'error': error, ...rest } = await rqt(u, {
     ...spec,
     data: body,
-  }).then(({ 'error': error, ...rest }) => {
-    if (error) {
-      const e = typeof error == 'string' ? error : error['reason']
-      throw new Error(e)
-    }
-    return rest
   })
-  return res
+  if (error) {
+    const e = typeof error == 'string' ? error : error['reason']
+    throw new Error(e)
+  }
+  return rest
 }
-
-/**
- * @typedef {Object} Spec
- * @prop {string} method
- * @prop {number} timeout
- */

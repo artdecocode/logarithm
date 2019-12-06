@@ -8,17 +8,11 @@ import logarithm, { ping } from 'logarithm'
 
 %~%
 
-```### logarithm => Middleware
-[
-  ["config", "Config"]
-]
-```
+<typedef name="logarithm">types/api.xml</typedef>
 
-Sets up the middleware to be used in `Koa` web-server and returns it.
+<typedef>types/index.xml</typedef>
 
-%TYPEDEF types/index.xml%
-
-%EXAMPLE: example/example.js, ../src => logarithm%
+%EXAMPLE: example, ../src => logarithm%
 
 %~ width="15"%
 
