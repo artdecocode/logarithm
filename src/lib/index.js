@@ -77,7 +77,7 @@ export const snapshots = async (url) => {
  * @param {string} name The name of the snapshot.
  * @param {string} bucket The bucket name.
  */
-export const registerS3 = async (url, name, bucket) => {
+export const registerS3Repo = async (url, name, bucket) => {
   const u = `${url}/_snapshot/${name}`
   const res = await req(u, {
     spec: {
@@ -126,7 +126,9 @@ export const req = async (url, { spec, query = {} } = {}, body = undefined) => {
   })
   if (error) {
     const e = typeof error == 'string' ? error : error['reason']
-    throw new Error(e)
+    const E = new Error(e)
+    if (error['type']) E.type = error['type']
+    throw E
   }
   return rest
 }

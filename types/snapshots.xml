@@ -8,7 +8,16 @@
   <arg string name="bucket">
     The bucket name for the `s3` snapshot repository.
   </arg>
-  <arg name="snapshot">
-    The name of the snapshot, e.g., for deletion.
+  <arg name="repo" short="r">
+    The name of the repo.
+  </arg>
+  <arg name="snapshot" short="s">
+    The name of the snapshot.
+  </arg>
+  <arg boolean name="restore">
+    Restore this snapshot.
+  </arg>
+  <arg boolean name="status">
+    Fetch the status.
   </arg>
 </arguments>

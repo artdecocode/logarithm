@@ -11,11 +11,13 @@ export const argsConfig = {
   },
   'shards': {
     description: 'Number of shards for index template.',
+    number: true,
     default: '1',
     short: 's',
   },
   'replicas': {
     description: 'Number of replicas for index template.',
+    number: true,
     short: 'r',
   },
   'templates': {
@@ -56,7 +58,38 @@ export const argsConfig = {
     short: 'v',
   },
 }
-const args = argufy(argsConfig)
+
+export const argsConfigSnapshot = {
+  'snapshots': {
+    description: 'List registered snapshot repositories.',
+    boolean: true,
+  },
+  'repository-s3': {
+    description: 'Create a new `s3` snapshot repo with this name.',
+    short: 's3',
+  },
+  'bucket': {
+    description: 'The bucket name for the `s3` snapshot repository.',
+  },
+  'repo': {
+    description: 'The name of the repo.',
+    short: 'r',
+  },
+  'snapshot': {
+    description: 'The name of the snapshot.',
+    short: 's',
+  },
+  'restore': {
+    description: 'Restore this snapshot.',
+    boolean: true,
+  },
+  'status': {
+    description: 'Fetch the status.',
+    boolean: true,
+  },
+}
+
+const args = argufy({ ...argsConfig, ...argsConfigSnapshot })
 
 /**
  * The ElasticSearch URL.
@@ -73,12 +106,12 @@ export const _template = /** @type {string} */ (args['template'])
 /**
  * Number of shards for index template. Default `1`.
  */
-export const _shards = /** @type {string} */ (args['shards'] || '1')
+export const _shards = /** @type {number} */ (args['shards'] || 1)
 
 /**
  * Number of replicas for index template. Default `0`.
  */
-export const _replicas = /** @type {string} */ (args['replicas'] || '0')
+export const _replicas = /** @type {number} */ (args['replicas'] || 0)
 
 /**
  * List index templates.
@@ -122,45 +155,42 @@ export const _help = /** @type {boolean} */ (args['help'])
  */
 export const _version = /** @type {boolean} */ (args['version'])
 
-export const argsConfigSnapshot = {
-  'snapshots': {
-    description: 'List registered snapshot repositories.',
-    boolean: true,
-  },
-  'repository-s3': {
-    description: 'Create a new `s3` snapshot repo with this name.',
-    short: 's3',
-  },
-  'bucket': {
-    description: 'The bucket name for the `s3` snapshot repository.',
-  },
-  'snapshot': {
-    description: 'The name of the snapshot, e.g., for deletion.',
-  },
-}
-const argsSnapshot = argufy(argsConfigSnapshot, [process.argv[0], process.argv[1], ...args._argv])
-
 /**
  * List registered snapshot repositories.
  */
-export const _snapshots = /** @type {boolean} */ (argsSnapshot['snapshots'])
+export const _snapshots = /** @type {boolean} */ (args['snapshots'])
 
 /**
  * Create a new `s3` snapshot repo with this name.
  */
-export const _repositoryS3 = /** @type {string} */ (argsSnapshot['repository-s3'])
+export const _repositoryS3 = /** @type {string} */ (args['repository-s3'])
 
 /**
  * The bucket name for the `s3` snapshot repository.
  */
-export const _bucket = /** @type {string} */ (argsSnapshot['bucket'])
+export const _bucket = /** @type {string} */ (args['bucket'])
 
 /**
- * The name of the snapshot, e.g., for deletion.
+ * The name of the repo.
  */
-export const _snapshot = /** @type {string} */ (argsSnapshot['snapshot'])
+export const _repo = /** @type {string} */ (args['repo'])
+
+/**
+ * The name of the snapshot.
+ */
+export const _snapshot = /** @type {string} */ (args['snapshot'])
+
+/**
+ * Restore this snapshot.
+ */
+export const _restore = /** @type {boolean} */ (args['restore'])
+
+/**
+ * Fetch the status.
+ */
+export const _status = /** @type {boolean} */ (args['status'])
 
 /**
  * The additional arguments passed to the program.
  */
-export const _argv = /** @type {!Array<string>} */ (argsSnapshot._argv)
+export const _argv = /** @type {!Array<string>} */ (args._argv)

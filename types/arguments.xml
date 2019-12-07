@@ -7,10 +7,10 @@
     Create an index template for storing
     log data in `name-*` index.
   </arg>
-  <arg name="shards" short="s" default="1">
+  <arg name="shards" number short="s" default="1">
     Number of shards for index template.
   </arg>
-  <arg name="replicas" short="r" default="0">
+  <arg name="replicas" number short="r" default="0">
     Number of replicas for index template.
   </arg>
   <arg boolean name="templates" short="T">

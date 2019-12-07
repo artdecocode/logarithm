@@ -52,13 +52,14 @@
       },
       "console": "integratedTerminal",
       "args": [
-        "$ELASTIC:9200",
+        "172.31.12.175:9200",
+        "-r", "hello", "-s", "test"
         // "-p", "info2",
         // "-rp", "info2",
         // "-P",
         // "-t", "clients"
         // "-T",
-        "-rp", "info2",
+        // "-rp", "info2",
         // "-S",
       ],
       "skipFiles": [
