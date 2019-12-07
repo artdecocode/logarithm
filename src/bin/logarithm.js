@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-import { _url, _pipeline, _version, _help, _listPipelines, _removePipeline, _replicas, _shards, _template, _delete, _listTemplates, _stats } from './get-args'
+import { _url, _pipeline, _version, _help, _pipelines, _removePipeline, _replicas, _shards, _template, _delete, _templates, _stats, _snapshots, _snapshot, _bucket, _repositoryS3 } from './get-args'
 import loading from 'indicatrix'
 import { c, b } from 'erte'
 import usage from './usage'
@@ -9,23 +9,21 @@ import { putHitsTemplate, deleteIndex } from './commands/put-index'
 import { confirm } from 'reloquent'
 import listTemplates from './commands/list-templates'
 import stats from './commands/stats'
+import snapshots, { s3, unregisterSnapshot } from './commands/snapshots'
 
 if (_version) {
   const v = require('../../package.json')
   console.log(v)
   process.exit()
 } else if (_help) {
-  const u = usage()
-  console.log(u)
+  usage()
   process.exit()
 }
 
 (async () => {
   try {
-    if (!_url) {
-      throw new Error('No ElasticSearch URL.')
-    }
-    if (_listPipelines) {
+    if (!_url) throw new Error('No ElasticSearch URL.')
+    if (_pipelines) {
       return await listPipelines(_url)
     } else if (_pipeline) {
       await loading(
@@ -53,7 +51,7 @@ if (_version) {
           replicas: _replicas,
         }),
       )
-    } else if (_delete) {
+    } else if (_template && _delete) {
       const conf = await confirm(`Are you sure you want to delete index ${c(_delete, 'yellow')}`, {
         defaultYes: false,
       })
@@ -65,11 +63,13 @@ if (_version) {
         deleteIndex(_url, _delete),
       )
       console.log('Successfully deleted index %s', c(_delete, 'red'))
-    } else if (_listTemplates) {
-      return await listTemplates(_url)
-    } else if (_stats) {
-      return await stats(_url)
     }
+
+    if (_templates) return await listTemplates(_url)
+    if (_stats) return await stats(_url)
+    if (_snapshots) return await snapshots(_url)
+    if (_snapshot && _delete) return await unregisterSnapshot(_url, _snapshot)
+    if (_repositoryS3) return await s3(_url, _repositoryS3, _bucket)
   } catch (err) {
     console.log(process.env['DEBUG'] ? err.stack : b(err.message, 'red'))
   }

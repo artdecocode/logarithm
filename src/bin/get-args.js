@@ -1,77 +1,166 @@
 import argufy from 'argufy'
 
-const args = argufy({
-  'url': { command: true },
-  'help': { short: 'h', boolean: true },
-  'template': { short: 't' },
-  /*template*/ 'shards': { short: 's', type: 'number' },
-  /*template*/ 'replicas': { short: 'r', type: 'number' },
-  'templates': { short: 'T', boolean: true },
-  'stats': { short: 'S', boolean: true },
-  'delete': { short: 'd' },
-  'pipeline': { short: 'p' },
-  'pipelines': { short: 'P', boolean: true },
-  'remove-pipeline': { },
-  'version': { short: 'v', boolean: true },
-})
+export const argsConfig = {
+  'url': {
+    description: 'The ElasticSearch URL.\nIf protocol is not given, `http` is assumed.',
+    command: true,
+  },
+  'template': {
+    description: 'Create an index template for storing\nlog data in `name-*` index.',
+    short: 't',
+  },
+  'shards': {
+    description: 'Number of shards for index template.',
+    default: '1',
+    short: 's',
+  },
+  'replicas': {
+    description: 'Number of replicas for index template.',
+    short: 'r',
+  },
+  'templates': {
+    description: 'List index templates.',
+    boolean: true,
+    short: 'T',
+  },
+  'stats': {
+    description: 'Display statistics by indices.',
+    boolean: true,
+    short: 'S',
+  },
+  'delete': {
+    description: 'Delete an index, snapshot or pipeline.\nUsed with the relevant flag.',
+    boolean: true,
+    short: 'd',
+  },
+  'pipeline': {
+    description: 'Create a pipeline with `User-Agent`\nand `GeoIp` plugins.',
+    short: 'p',
+  },
+  'pipelines': {
+    description: 'Display installed pipelines.',
+    boolean: true,
+    short: 'P',
+  },
+  'remove-pipeline': {
+    description: 'Removes the pipeline.',
+  },
+  'help': {
+    description: 'Print the help information and exit.',
+    boolean: true,
+    short: 'h',
+  },
+  'version': {
+    description: 'Show the version\'s number and exit.',
+    boolean: true,
+    short: 'v',
+  },
+}
+const args = argufy(argsConfig)
 
 /**
- * ElasticSearch URL.
- * @type {string}
+ * The ElasticSearch URL.
+    If protocol is not given, `http` is assumed.
  */
-export const _url = args['url']
+export const _url = /** @type {string} */ (args['url'])
+
 /**
- * Show help.
- * @type {boolean}
+ * Create an index template for storing
+    log data in `name-*` index.
  */
-export const _help = args['help']
+export const _template = /** @type {string} */ (args['template'])
+
 /**
- * Show version.
- * @type {boolean}
+ * Number of shards for index template. Default `1`.
  */
-export const _version = args['version']
+export const _shards = /** @type {string} */ (args['shards'] || '1')
+
 /**
- * Add pipeline.
- * @type {string}
+ * Number of replicas for index template. Default `0`.
  */
-export const _pipeline = args['pipeline']
+export const _replicas = /** @type {string} */ (args['replicas'] || '0')
+
 /**
- * Create index template.
- * @type {string}
+ * List index templates.
  */
-export const _template = args['template']
+export const _templates = /** @type {boolean} */ (args['templates'])
+
 /**
- * Delete index.
- * @type {string}
+ * Display statistics by indices.
  */
-export const _delete = args['delete']
+export const _stats = /** @type {boolean} */ (args['stats'])
+
 /**
- * Shards in the index template.
- * @type {string}
+ * Delete an index, snapshot or pipeline.
+    Used with the relevant flag.
  */
-export const _shards = args['shards']
+export const _delete = /** @type {boolean} */ (args['delete'])
+
 /**
- * Replicas in the index template.
- * @type {string}
+ * Create a pipeline with `User-Agent`
+    and `GeoIp` plugins.
  */
-export const _replicas = args['replicas']
+export const _pipeline = /** @type {string} */ (args['pipeline'])
+
 /**
- * List existing pipelines.
- * @type {boolean}
+ * Display installed pipelines.
  */
-export const _listPipelines = args['pipelines']
-/**
- * Shows stats for indices.
- * @type {boolean}
- */
-export const _stats = args['stats']
-/**
- * List existing templates.
- * @type {boolean}
- */
-export const _listTemplates = args['templates']
+export const _pipelines = /** @type {boolean} */ (args['pipelines'])
+
 /**
  * Removes the pipeline.
- * @type {string}
  */
-export const _removePipeline = args['remove-pipeline']
+export const _removePipeline = /** @type {string} */ (args['remove-pipeline'])
+
+/**
+ * Print the help information and exit.
+ */
+export const _help = /** @type {boolean} */ (args['help'])
+
+/**
+ * Show the version's number and exit.
+ */
+export const _version = /** @type {boolean} */ (args['version'])
+
+export const argsConfigSnapshot = {
+  'snapshots': {
+    description: 'List registered snapshot repositories.',
+    boolean: true,
+  },
+  'repository-s3': {
+    description: 'Create a new `s3` snapshot repo with this name.',
+    short: 's3',
+  },
+  'bucket': {
+    description: 'The bucket name for the `s3` snapshot repository.',
+  },
+  'snapshot': {
+    description: 'The name of the snapshot, e.g., for deletion.',
+  },
+}
+const argsSnapshot = argufy(argsConfigSnapshot, [process.argv[0], process.argv[1], ...args._argv])
+
+/**
+ * List registered snapshot repositories.
+ */
+export const _snapshots = /** @type {boolean} */ (argsSnapshot['snapshots'])
+
+/**
+ * Create a new `s3` snapshot repo with this name.
+ */
+export const _repositoryS3 = /** @type {string} */ (argsSnapshot['repository-s3'])
+
+/**
+ * The bucket name for the `s3` snapshot repository.
+ */
+export const _bucket = /** @type {string} */ (argsSnapshot['bucket'])
+
+/**
+ * The name of the snapshot, e.g., for deletion.
+ */
+export const _snapshot = /** @type {string} */ (argsSnapshot['snapshot'])
+
+/**
+ * The additional arguments passed to the program.
+ */
+export const _argv = /** @type {!Array<string>} */ (argsSnapshot._argv)

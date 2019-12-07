@@ -60,6 +60,56 @@ export const deletePipeline = async (url, id) => {
   return res
 }
 
+export const snapshots = async (url) => {
+  const u = `${url}/_snapshot`
+  const res = await req(u, {
+    spec: {
+      // method: 'DELETE',
+      timeout: 5000,
+    },
+  })
+  return res
+}
+
+/**
+ * Registers an s3 snapshot repo.
+ * @param {string} url ElasticSearch URL.
+ * @param {string} name The name of the snapshot.
+ * @param {string} bucket The bucket name.
+ */
+export const registerS3 = async (url, name, bucket) => {
+  const u = `${url}/_snapshot/${name}`
+  const res = await req(u, {
+    spec: {
+      method: 'PUT',
+      timeout: 5000,
+    },
+  }, {
+    'type': 's3',
+    'settings': {
+      'bucket': bucket,
+    },
+  })
+  return res
+}
+
+/**
+ * Unregisters a snapshot repo.
+ * @param {string} url ElasticSearch URL.
+ * @param {string} name The name of the snapshot.
+ * @param {string} bucket The bucket name.
+ */
+export const unregisterSnapshotRepo = async (url, name) => {
+  const u = `${url}/_snapshot/${name}`
+  const res = await req(u, {
+    spec: {
+      method: 'DELETE',
+      timeout: 5000,
+    },
+  })
+  return res
+}
+
 /**
  * Make the request.
  * @param {string} url The URL.

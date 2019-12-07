@@ -59,10 +59,10 @@ alamode@^3.0.0, alamode@^3.2.0:
   resolved "https://registry.yarnpkg.com/alamode/-/alamode-3.2.0.tgz#ee79dcf2483b5e28e9aac8cd0dfdc692aa333ca5"
   integrity sha512-jDV6kYpIf9jHJUre1OOotW8EM2Qy58S/eOks2MWhjNz2xJQdEfyzFKbcdaZowC8sk5DKxsnapf/mZNE53B3haQ==
 
-argufy@^1.7.1:
-  version "1.7.1"
-  resolved "https://registry.yarnpkg.com/argufy/-/argufy-1.7.1.tgz#9ce00778d9d404e083c5e5dd0ac1677c950d4d4b"
-  integrity sha512-xsy9ooVGfFn0V2J7IbsCPg5Hx6Qw93jnBMl/I35qt9lRS+53ioLdAOvStYSdI6sdCCTnrw1fZFR5m16FIcfPCg==
+argufy@^1.7.2:
+  version "1.7.2"
+  resolved "https://registry.yarnpkg.com/argufy/-/argufy-1.7.2.tgz#45ae43835f77b3f185a4030b2c0e290ce81d1c29"
+  integrity sha512-yB2QqK06t3+kPGLEEufUvaEQkJCGyywBKCPbsUyELwuamAcWFC99jAZpsugqohLMUWSvSXJ5/wAEbQLo9zdfZQ==
 
 catchment@^3.3.0:
   version "3.3.0"

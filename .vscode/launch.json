@@ -29,13 +29,14 @@
       "type": "node",
       "request": "launch",
       "name": "Launch Example",
-      "program": "${workspaceFolder}/example/index.js",
+      "program": "${workspaceFolder}/node_modules/.bin/alanode",
       "env": {
+        "ELASTIC": "http://192.168.1.2:9200",
         "NODE_DEBUG": "logarithm",
       },
       "console": "integratedTerminal",
       "args": [
-        "example/example.js"
+        "example"
       ],
       "skipFiles": [
         "<node_internals>/**/*.js"

@@ -1,0 +1,42 @@
+<arguments>
+  <arg command name="url">
+    The ElasticSearch URL.
+    If protocol is not given, `http` is assumed.
+  </arg>
+  <arg name="template" short="t">
+    Create an index template for storing
+    log data in `name-*` index.
+  </arg>
+  <arg name="shards" short="s" default="1">
+    Number of shards for index template.
+  </arg>
+  <arg name="replicas" short="r" default="0">
+    Number of replicas for index template.
+  </arg>
+  <arg boolean name="templates" short="T">
+    List index templates.
+  </arg>
+  <arg boolean name="stats" short="S">
+    Display statistics by indices.
+  </arg>
+  <arg boolean name="delete" short="d">
+    Delete an index, snapshot or pipeline.
+    Used with the relevant flag.
+  </arg>
+  <arg string name="pipeline" short="p">
+    Create a pipeline with `User-Agent`
+    and `GeoIp` plugins.
+  </arg>
+  <arg boolean name="pipelines" short="P">
+    Display installed pipelines.
+  </arg>
+  <arg name="remove-pipeline">
+    Removes the pipeline.
+  </arg>
+  <arg boolean name="help" short="h">
+    Print the help information and exit.
+  </arg>
+  <arg boolean name="version" short="v">
+    Show the version's number and exit.
+  </arg>
+</arguments>

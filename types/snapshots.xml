@@ -1,0 +1,14 @@
+<arguments name="Snapshot">
+  <arg boolean name="snapshots">
+    List registered snapshot repositories.
+  </arg>
+  <arg string name="repository-s3" short="s3">
+    Create a new `s3` snapshot repo with this name.
+  </arg>
+  <arg string name="bucket">
+    The bucket name for the `s3` snapshot repository.
+  </arg>
+  <arg name="snapshot">
+    The name of the snapshot, e.g., for deletion.
+  </arg>
+</arguments>
