@@ -2,53 +2,80 @@ import tablature from 'tablature'
 import loading from 'indicatrix'
 import { c } from 'erte'
 import { confirm } from 'reloquent'
-import { snapshots, unregisterSnapshotRepo, req, registerS3Repo } from '../../lib'
+import { req } from '../../lib'
 import { inspect } from 'util'
 
 export const snapshotStatus = async (url, repo, name) => {
-  const n = c(`${repo}/${name}`, 'yellow')
-  const p = req(`${url}/_snapshot/${repo}/${name}/_status`, {
-    spec: {
-      timeout: 5000,
-    },
-  })
-  try {
-    const { 'snapshots': _snapshots } = await loading(`Getting ${n} snapshot status`, p)
-    console.log(inspect(_snapshots, { colors: true, depth: Infinity }))
-  } catch (err) {
-    if (err.type != 'snapshot_missing_exception') throw err
-    console.log('Snapshot %s does not exist.', n)
-    const y = await confirm('Create snapshot')
-    if (!y) throw err
-    const { 'snapshot': snapshot } = await loading('Creating snapshot', req(`${url}/_snapshot/${repo}/${name}`, {
-      spec: {
-        method: 'PUT',
-        timeout: 5000,
-      },
-      query: {
-        'wait_for_completion': true,
-      },
-    }))
-    console.log(inspect(snapshot, { colors: true }))
-  }
-}
+  // try {
 
-export const unregisterRepo = async (url, name) => {
-  const y = await confirm(`Are you sure you want to unregister ${c(name, 'yellow')} backup repository`)
-  if (!y) return
-  const res = await loading(`Unregistering ${c(name, 'yellow')} snapshot repository`, unregisterSnapshotRepo(url, name))
-  console.log('Successfully unregistered %s', c(name, 'yellow'))
+  // } catch (err) {
+  //   if (err.type != 'snapshot_missing_exception') throw err
+  //   console.log('Snapshot %s does not exist.', n)
+  //   const y = await confirm('Create snapshot')
+  //   if (!y) throw err
+  //   const { 'snapshot': snapshot } = await loading('Creating snapshot', req(`${url}/_snapshot/${repo}/${name}`, {
+  //     spec: {
+  //       method: 'PUT',
+  //       timeout: 5000,
+  //     },
+  //     query: {
+  //       'wait_for_completion': true,
+  //     },
+  //   }))
+  //   console.log(inspect(snapshot, { colors: true }))
+  // }
 }
 
 export default class Client {
+  /**
+   * @param {string} url ElasticSearch URL.
+   */
   constructor(url, timeout = 5000) {
     this.url = url
     this.timeout = timeout
   }
+  /**
+   * Registers an s3 snapshot repo.
+   * @param {string} name The name of the snapshot.
+   * @param {string} bucket The bucket name.
+   */
+  async s3(name, bucket) {
+    if (!bucket) throw new Error('Bucket name is required (use --bucket).')
+    const n = c(name, 'yellow')
+    const u = `_snapshot/${name}`
+    const p = this.req(u, {
+      method: 'PUT',
+    }, {}, {
+      'type': 's3',
+      'settings': {
+        'bucket': bucket,
+      },
+    })
+    const res = await loading(`Registering ${n} snapshot repository`, p)
+    console.log('Successfully registered %s', n)
+
+    return res
+  }
+  async unregisterRepo(repo) {
+    const n = c(repo, 'yellow')
+    const y = await confirm(`Are you sure you want to unregister ${n} backup repository`)
+    if (!y) return
+    const p = this.req(`_snapshot/${repo}`, {
+      method: 'DELETE',
+    })
+    await loading(`Unregistering ${n} snapshot repository`, p)
+    console.log('Successfully unregistered %s', c(repo, 'yellow'))
+  }
+  async snapshotStatus(repo, name) {
+    const n = c(`${repo}/${name}`, 'yellow')
+    const p = this.req(`_snapshot/${repo}/${name}/_status`)
+    const { 'snapshots': _snapshots } = await loading(`Getting ${n} snapshot status`, p)
+    console.log(inspect(_snapshots, { colors: true, depth: Infinity }))
+  }
   async listRepos() {
     const snaps = await loading(
       'Fetching snapshot repositories',
-      snapshots(this.url),
+      this.req('_snapshot'),
     )
     printRepos(snaps)
   }
@@ -118,20 +145,14 @@ export default class Client {
   }
 }
 
-export const s3 = async (url, name, bucket) => {
-  if (!bucket) throw new Error('Bucket name is required (use --bucket).')
-  const res = await loading(`Registering ${c(name, 'yellow')} snapshot repository`, registerS3Repo(url, name, bucket))
-  console.log('Successfully registered %s', c(name, 'yellow'))
-}
-
 const printRepos = (snaps) => {
   if (!Object.keys(snaps).length) return console.log('No registered snapshot repositories.')
 
-  const d = Object.entries(snaps).map(([key, { type, settings }]) => {
+  const d = Object.entries(snaps).map(([key, { 'type': type, 'settings': settings }]) => {
     const sets = Object.entries(settings).map(([k, v]) => {
       return `${c(k, 'green')}: ${v}`
     }).join('\n')
-    return { key, type, settings: sets }
+    return { 'key': key, 'type': type, 'settings': sets }
   })
   const s = tablature({
     keys: ['key', 'type', 'settings'],
@@ -149,9 +170,9 @@ const printSnapshots = (data) => {
   const s = tablature({
     keys: ['snapshot', 'version', 'start_time', 'end_time', 'indices'],
     data: data.map((d) => {
-      d.indices = d.indices.join('\n')
-      d.start_time = new Date(d.start_time).toLocaleString()
-      d.end_time = new Date(d.end_time).toLocaleString()
+      d['indices'] = d['indices'].join('\n')
+      d['start_time'] = new Date(d['start_time']).toLocaleString()
+      d['end_time'] = new Date(d['end_time']).toLocaleString()
       return d
     }),
     headings: {

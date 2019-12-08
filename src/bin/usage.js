@@ -1,17 +1,25 @@
 import usually from 'usually'
-import { b } from 'erte'
-import { argsConfig, argsConfigSnapshot } from './get-args'
+import { b, c } from 'erte'
+import { argsConfig, argsConfigSnapshot, argsConfigTemplates } from './get-args'
 import { reduceUsage } from 'argufy'
 
 export default () => {
   const u = usually({
     description: `ElasticSearch utility for creating a pipeline and index templates\nfor logging request using ${b('logarithm', 'green')} middleware.`,
-    line: 'logarithm url [-TPS] [-t index -sr] [-p|rp pipeline] [-s3] [-d index]',
+    line: 'logarithm <url> [-TPS] [-p pipeline] [-d]',
     usage: reduceUsage(argsConfig),
   })
   console.log(u)
   const snapshots = usually({
+    description: `${c('Snapshots', 'cyan')}: used to print info, create and restore snapshots.`,
+    line: 'logarithm <url> [-r repo] [-s snapshot] [-s3 snapshot --bucket bucket] [--status|-d]',
     usage: reduceUsage(argsConfigSnapshot),
   })
   console.log(snapshots)
+  const templates = usually({
+    description: `${c('Templates', 'red')}: creates a template for an app.`,
+    line: 'lagarithm <url> -t {app-name} [-s shards] [-r replicas] [-d]',
+    usage: reduceUsage(argsConfigTemplates),
+  })
+  console.log(templates)
 }

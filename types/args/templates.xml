@@ -1,0 +1,12 @@
+<arguments name="Templates">
+  <arg name="template" short="t">
+    Create an index template for storing
+    log data in the `{template}-*` index.
+  </arg>
+  <arg name="shards" number short="s" default="1">
+    The number of shards for index template.
+  </arg>
+  <arg name="replicas" number short="r" default="0">
+    The number of replicas for index template.
+  </arg>
+</arguments>

@@ -23,13 +23,12 @@
     "compile": "depack src/bin/logarithm.js -c -o compile/bin -a -p -w -S -s",
     "logarithm": "node compile/bin/logarithm.js $ELASTIC:9200",
     "rec": "NODE_DEBUG=appshot appshot -T 23 -a Terminal -y 150 -f",
-    "args": "argufy types/arguments.xml types/snapshots.xml -o src/bin/get-args.js",
+    "args": "argufy types/args/* -o src/bin/get-args.js",
     "e": "alanode example",
     "example/": "yarn e example"
   },
   "files": [
     "compile",
-    "build",
     "src",
     "types/externs.js"
   ],

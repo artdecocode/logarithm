@@ -3,21 +3,11 @@
     The ElasticSearch URL.
     If protocol is not given, `http` is assumed.
   </arg>
-  <arg name="template" short="t">
-    Create an index template for storing
-    log data in `name-*` index.
-  </arg>
-  <arg name="shards" number short="s" default="1">
-    Number of shards for index template.
-  </arg>
-  <arg name="replicas" number short="r" default="0">
-    Number of replicas for index template.
+  <arg boolean name="stats" short="s">
+    Display statistics by indices.
   </arg>
   <arg boolean name="templates" short="T">
-    List index templates.
-  </arg>
-  <arg boolean name="stats" short="S">
-    Display statistics by indices.
+    List all index templates.
   </arg>
   <arg boolean name="delete" short="d">
     Delete an index, snapshot or pipeline.
@@ -30,8 +20,8 @@
   <arg boolean name="pipelines" short="P">
     Display installed pipelines.
   </arg>
-  <arg name="remove-pipeline">
-    Removes the pipeline.
+  <arg boolean name="snapshots" short="S">
+    List registered snapshot repositories.
   </arg>
   <arg boolean name="help" short="h">
     Print the help information and exit.

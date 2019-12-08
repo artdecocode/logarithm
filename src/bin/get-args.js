@@ -5,30 +5,15 @@ export const argsConfig = {
     description: 'The ElasticSearch URL.\nIf protocol is not given, `http` is assumed.',
     command: true,
   },
-  'template': {
-    description: 'Create an index template for storing\nlog data in `name-*` index.',
-    short: 't',
-  },
-  'shards': {
-    description: 'Number of shards for index template.',
-    number: true,
-    default: '1',
-    short: 's',
-  },
-  'replicas': {
-    description: 'Number of replicas for index template.',
-    number: true,
-    short: 'r',
-  },
-  'templates': {
-    description: 'List index templates.',
-    boolean: true,
-    short: 'T',
-  },
   'stats': {
     description: 'Display statistics by indices.',
     boolean: true,
-    short: 'S',
+    short: 's',
+  },
+  'templates': {
+    description: 'List all index templates.',
+    boolean: true,
+    short: 'T',
   },
   'delete': {
     description: 'Delete an index, snapshot or pipeline.\nUsed with the relevant flag.',
@@ -44,8 +29,10 @@ export const argsConfig = {
     boolean: true,
     short: 'P',
   },
-  'remove-pipeline': {
-    description: 'Removes the pipeline.',
+  'snapshots': {
+    description: 'List registered snapshot repositories.',
+    boolean: true,
+    short: 'S',
   },
   'help': {
     description: 'Print the help information and exit.',
@@ -60,10 +47,6 @@ export const argsConfig = {
 }
 
 export const argsConfigSnapshot = {
-  'snapshots': {
-    description: 'List registered snapshot repositories.',
-    boolean: true,
-  },
   'repository-s3': {
     description: 'Create a new `s3` snapshot repo with this name.',
     short: 's3',
@@ -89,7 +72,25 @@ export const argsConfigSnapshot = {
   },
 }
 
-const args = argufy({ ...argsConfig, ...argsConfigSnapshot })
+export const argsConfigTemplates = {
+  'template': {
+    description: 'Create an index template for storing\nlog data in the `{template}-*` index.',
+    short: 't',
+  },
+  'shards': {
+    description: 'The number of shards for index template.',
+    number: true,
+    default: '1',
+    short: 's',
+  },
+  'replicas': {
+    description: 'The number of replicas for index template.',
+    number: true,
+    short: 'r',
+  },
+}
+
+const args = argufy({ ...argsConfig, ...argsConfigSnapshot, ...argsConfigTemplates })
 
 /**
  * The ElasticSearch URL.
@@ -98,30 +99,14 @@ const args = argufy({ ...argsConfig, ...argsConfigSnapshot })
 export const _url = /** @type {string} */ (args['url'])
 
 /**
- * Create an index template for storing
-    log data in `name-*` index.
- */
-export const _template = /** @type {string} */ (args['template'])
-
-/**
- * Number of shards for index template. Default `1`.
- */
-export const _shards = /** @type {number} */ (args['shards'] || 1)
-
-/**
- * Number of replicas for index template. Default `0`.
- */
-export const _replicas = /** @type {number} */ (args['replicas'] || 0)
-
-/**
- * List index templates.
- */
-export const _templates = /** @type {boolean} */ (args['templates'])
-
-/**
  * Display statistics by indices.
  */
 export const _stats = /** @type {boolean} */ (args['stats'])
+
+/**
+ * List all index templates.
+ */
+export const _templates = /** @type {boolean} */ (args['templates'])
 
 /**
  * Delete an index, snapshot or pipeline.
@@ -141,9 +126,9 @@ export const _pipeline = /** @type {string} */ (args['pipeline'])
 export const _pipelines = /** @type {boolean} */ (args['pipelines'])
 
 /**
- * Removes the pipeline.
+ * List registered snapshot repositories.
  */
-export const _removePipeline = /** @type {string} */ (args['remove-pipeline'])
+export const _snapshots = /** @type {boolean} */ (args['snapshots'])
 
 /**
  * Print the help information and exit.
@@ -154,11 +139,6 @@ export const _help = /** @type {boolean} */ (args['help'])
  * Show the version's number and exit.
  */
 export const _version = /** @type {boolean} */ (args['version'])
-
-/**
- * List registered snapshot repositories.
- */
-export const _snapshots = /** @type {boolean} */ (args['snapshots'])
 
 /**
  * Create a new `s3` snapshot repo with this name.
@@ -189,6 +169,22 @@ export const _restore = /** @type {boolean} */ (args['restore'])
  * Fetch the status.
  */
 export const _status = /** @type {boolean} */ (args['status'])
+
+/**
+ * Create an index template for storing
+    log data in the `{template}-*` index.
+ */
+export const _template = /** @type {string} */ (args['template'])
+
+/**
+ * The number of shards for index template. Default `1`.
+ */
+export const _shards = /** @type {number} */ (args['shards'] || 1)
+
+/**
+ * The number of replicas for index template. Default `0`.
+ */
+export const _replicas = /** @type {number} */ (args['replicas'] || 0)
 
 /**
  * The additional arguments passed to the program.

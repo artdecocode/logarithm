@@ -1,5 +1,6 @@
 import rqt from 'rqt'
 import { stringify } from 'querystring'
+import erotic from 'erotic'
 
 /**
  * Sets up the info pipeline for parsing of user-agent and extracting GEOIP info from IP address.
@@ -60,56 +61,6 @@ export const deletePipeline = async (url, id) => {
   return res
 }
 
-export const snapshots = async (url) => {
-  const u = `${url}/_snapshot`
-  const res = await req(u, {
-    spec: {
-      // method: 'DELETE',
-      timeout: 5000,
-    },
-  })
-  return res
-}
-
-/**
- * Registers an s3 snapshot repo.
- * @param {string} url ElasticSearch URL.
- * @param {string} name The name of the snapshot.
- * @param {string} bucket The bucket name.
- */
-export const registerS3Repo = async (url, name, bucket) => {
-  const u = `${url}/_snapshot/${name}`
-  const res = await req(u, {
-    spec: {
-      method: 'PUT',
-      timeout: 5000,
-    },
-  }, {
-    'type': 's3',
-    'settings': {
-      'bucket': bucket,
-    },
-  })
-  return res
-}
-
-/**
- * Unregisters a snapshot repo.
- * @param {string} url ElasticSearch URL.
- * @param {string} name The name of the snapshot.
- * @param {string} bucket The bucket name.
- */
-export const unregisterSnapshotRepo = async (url, name) => {
-  const u = `${url}/_snapshot/${name}`
-  const res = await req(u, {
-    spec: {
-      method: 'DELETE',
-      timeout: 5000,
-    },
-  })
-  return res
-}
-
 /**
  * Make the request.
  * @param {string} url The URL.
@@ -117,6 +68,7 @@ export const unregisterSnapshotRepo = async (url, name) => {
  * @param {!Object} [body]
  */
 export const req = async (url, { spec, query = {} } = {}, body = undefined) => {
+  const er = erotic()
   const q = stringify(query)
   const p = /^https?:\/\//.test(url) ? url : `http://${url}`
   const u = `${p}${q ? `?${q}` : ''}`
@@ -128,7 +80,7 @@ export const req = async (url, { spec, query = {} } = {}, body = undefined) => {
     const e = typeof error == 'string' ? error : error['reason']
     const E = new Error(e)
     if (error['type']) E.type = error['type']
-    throw E
+    throw er(E)
   }
   return rest
 }

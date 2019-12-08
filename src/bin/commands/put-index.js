@@ -15,21 +15,21 @@ export const makeKind = (pp) => {
   return { 'properties': properties }
 }
 
-const HIT = { 'ip': 'ip', 'date': 'date' }
+// const HIT = { 'ip': 'ip', 'date': 'date' }
 
 export const putHitsTemplate = async (url, appName, {
   shards = 1, replicas = 0,
 }) => {
   const patterns = `${appName}-*`
   const name = `hits-${appName}`
-  const hit = makeKind(HIT)
+  // const hit = makeKind(HIT)
   const body = {
     'settings': {
       'number_of_shards': shards,
       'number_of_replicas': replicas,
     },
     'version': 1,
-    'mappings': { 'hit': hit },
+    // 'mappings': { 'hit': hit },
     'index_patterns': [patterns],
   }
   const u = `${url}/_template/${name}`
@@ -40,8 +40,8 @@ export const putHitsTemplate = async (url, appName, {
     },
   }, body)
   setTimeout(() => {
-    console.log('Created %s%s', co(name, 'red'), ' template')
-    console.log('%s%s indices with %s shards and %s replicas', 'for     ', co(patterns, 'grey'), shards, replicas,)
+    console.log('Created %s%s', co(name, 'green'), ' template')
+    console.log('%s%s indices with %s shard%s and %s replica%s', 'for     ', co(patterns, 'grey'), shards, shards > 1 ? 's' : '', replicas,replicas == 0 || replicas > 1 ? 's' : '')
   }, 1)
 
   return res
