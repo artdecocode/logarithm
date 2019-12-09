@@ -20,5 +20,5 @@ module.exports.ping = ping
 /* typal types/index.xml namespace */
 
 /**
- * @typedef {import('@typedefs/goa').Middleware} Middleware
+ * @typedef {import('@typedefs/goa').Middleware} _goa.Middleware
  */
