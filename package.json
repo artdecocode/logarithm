@@ -1,6 +1,6 @@
 {
   "name": "logarithm",
-  "version": "1.0.1",
+  "version": "2.0.0",
   "description": "The Middleware For Web-Server To Record Hits In ElasticSearch.",
   "main": "compile/index.js",
   "module": "src/index.js",
