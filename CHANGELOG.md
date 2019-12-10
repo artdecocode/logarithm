@@ -1,3 +1,10 @@
+## 10 December 2019
+
+### [2.0.1](https://github.com/artdecocode/logarithm/compare/v2.0.0...v2.0.1)
+
+- [fix] Snapshot fixes for binary.
+- [fix] Send empty user-agent instead of null.
+
 ## 9 December 2019
 
 ### [2.0.0](https://github.com/artdecocode/logarithm/compare/v1.0.1...v2.0.0)
