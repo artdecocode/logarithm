@@ -30,7 +30,7 @@ export default class Client {
   /**
    * @param {string} url ElasticSearch URL.
    */
-  constructor(url, timeout = 5000) {
+  constructor(url, timeout = 15000) {
     this.url = url
     this.timeout = timeout
   }
@@ -43,9 +43,7 @@ export default class Client {
     if (!bucket) throw new Error('Bucket name is required (use --bucket).')
     const n = c(name, 'yellow')
     const u = `_snapshot/${name}`
-    const p = this.req(u, {
-      method: 'PUT',
-    }, {}, {
+    const p = this.put(u, {}, {
       'type': 's3',
       'settings': {
         'bucket': bucket,
@@ -60,14 +58,12 @@ export default class Client {
     const n = c(repo, 'yellow')
     const y = await confirm(`Are you sure you want to unregister ${n} backup repository`)
     if (!y) return
-    const p = this.req(`_snapshot/${repo}`, {
-      method: 'DELETE',
-    })
+    const p = this.delete(`_snapshot/${repo}`)
     await loading(`Unregistering ${n} snapshot repository`, p)
     console.log('Successfully unregistered %s', c(repo, 'yellow'))
   }
   async snapshotStatus(repo, name) {
-    const n = c(`${repo}/${name}`, 'yellow')
+    const n = this.fullName(repo, name)
     const p = this.req(`_snapshot/${repo}/${name}/_status`)
     const { 'snapshots': _snapshots } = await loading(`Getting ${n} snapshot status`, p)
     console.log(inspect(_snapshots, { colors: true, depth: Infinity }))
@@ -80,20 +76,26 @@ export default class Client {
     printRepos(snaps)
   }
   async deleteSnapshot(repo, name) {
-    const n = c(repo, 'yellow') + '/' + c(name, 'yellow')
+    const n = this.fullName(repo, name)
     const y = await confirm(`Are you sure you want to delete ${n} snapshot`)
     if (!y) return
-    const res = await loading(`Deleting ${n} snapshot`, this.req(`_snapshot/${repo}/${name}`, {
-      method: 'DELETE',
-    }))
-    console.log(res)
-    // console.log('Successfully deleted %s', c(name, 'yellow'))
+    const { acknowledged } = await loading(`Deleting ${n} snapshot`, this.delete(`_snapshot/${repo}/${name}`))
+    if (acknowledged)
+      console.log('Successfully deleted %s', n)
+    else throw new Error('not acknowledged')
+    // console.log(res)
+  }
+  async delete(endpoint, spec = {}, query, data) {
+    return await this.req(endpoint, { ...spec, method: 'DELETE' }, query, data)
+  }
+  async put(endpoint, query, data, spec = {}) {
+    return await this.req(endpoint, { ...spec, method: 'PUT' }, query, data)
   }
   async req(endpoint, spec = {}, query, data) {
     return await req(`${this.url}/${endpoint}`, {
       spec: {
-        ...spec,
         timeout: this.timeout,
+        ...spec,
       },
       query,
     }, data)
@@ -116,32 +118,34 @@ export default class Client {
     printRepos(res)
 
     const p1 = this.req(`_snapshot/${repo}/_all`)
-    const { snapshots: _snapshots } = await loading(`Getting ${n} repository snapshots`, p1)
+    const { 'snapshots': _snapshots } = await loading(`Getting ${n} repository snapshots`, p1)
     console.log()
     printSnapshots(_snapshots)
     // console.log('Successfully unregistered %s', c(name, 'yellow'))
   }
   async restore(repo, name) {
-    const n = c(repo, 'yellow')
+    const n = this.fullName(repo, name)
     const y = await confirm(`Are you sure you want to restore ${n} snapshot`)
     if (!y) return
     const p = this.req(`_snapshot/${repo}/${name}/_restore`, {
       method: 'POST',
+      timeout: null,
     }, { 'wait_for_completion': true })
     const res = await loading(`Restoring ${n} snapshot`, p)
     console.log(res)
   }
   async snapshot(repo, name) {
-    const n = c(repo, 'yellow') + c('/', 'magenta') + c(name, 'yellow')
+    const n = this.fullName(repo, name)
     const y = await confirm(`Continue with ${n} snapshot`)
     if (!y) return
-    const { 'snapshot': snapshot } = await loading(`Creating snapshot ${n}`, this.req(`_snapshot/${repo}/${name}`, {
-      method: 'PUT',
-    },
-    {
-      'wait_for_completion': true,
+    const { 'snapshot': snapshot } = await loading(`Creating snapshot ${n}`, this.put(`_snapshot/${repo}/${name}`, { 'wait_for_completion': true }, null, {
+      timeout: null,
     }))
-    printSnapshots(snapshot)
+    printSnapshots([snapshot])
+  }
+  fullName(repo, name) {
+    const n = c(repo, 'yellow') + c('/', 'magenta') + c(name, 'yellow')
+    return n
   }
 }
 

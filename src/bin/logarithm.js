@@ -25,9 +25,9 @@ if (_version) {
 (async () => {
   try {
     if (!_url) throw new Error('No ElasticSearch URL.')
-    if (_pipelines) {
-      return await listPipelines(_url)
-    } else if (_pipeline) {
+
+    if (_pipelines) return await listPipelines(_url)
+    if (_pipeline) {
       await loading(
         `Creating a pipeline ${
           c(_pipeline, 'yellow')
@@ -35,7 +35,9 @@ if (_version) {
         setupPipeline(_url, _pipeline),
       )
       console.log('Pipeline %s created.', c(_pipeline, 'green'))
-    } else if (_pipeline && _delete) {
+      return
+    }
+    if (_pipeline && _delete) {
       await loading(
         `Removing ${
           c(_pipeline, 'yellow')
@@ -43,7 +45,9 @@ if (_version) {
         deletePipeline(_url, _pipeline),
       )
       console.log('Pipeline %s removed.', b(_pipeline, 'red'))
-    } else if (_template) {
+      return
+    }
+    if (_template) {
       const y = await confirm(`Create template ${c(_template, 'yellow')}-* with ${_shards} shard${_shards > 1 ? 's' : ''} and ${_replicas} replica${_replicas == 0 ||_replicas > 1 ? 's' : ''}`)
       if (!y) return
       return await loading(
@@ -71,20 +75,21 @@ if (_version) {
     }
 
     if (_templates) return await listTemplates(_url)
-    if (_stats) return await stats(_url)
 
     // snapshots
     const snapshots = new SnapshotsClient(_url, 5000)
     if (_snapshots && _status) return await snapshots.status()
     if (_repo && _snapshot && _status) return await snapshots.snapshotStatus(_repo, _snapshot)
-    if (_repo && _status) return await snapshots.repoStatus(_repo)
     if (_repo && _snapshot && _delete) return await snapshots.deleteSnapshot(_repo, _snapshot)
     if (_repo && _snapshot && _restore) return await snapshots.restore(_repo, _snapshot)
     if (_repo && _snapshot) return await snapshots.snapshot(_repo, _snapshot)
+    if (_repo && _status) return await snapshots.repoStatus(_repo)
     if (_repo && _delete) return await snapshots.unregisterRepo(_repo)
     if (_repo) return await snapshots.repo(_repo)
     if (_snapshots) return await snapshots.listRepos()
     if (_repositoryS3) return await snapshots.s3(_repositoryS3, _bucket)
+
+    if (_stats) return await stats(_url)
   } catch (err) {
     console.log(process.env['DEBUG'] ? err.stack : b(err.message, 'red'))
   }

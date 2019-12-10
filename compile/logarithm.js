@@ -207,7 +207,7 @@ module.exports = {_logarithm:a => {
     }
     const {request:{ip:m, path:h}, headers:{...r}, status:v} = e;
     e = new Date;
-    f = {app:b, ip:m, path:decodeURI(h), headers:{"user-agent":null, ...r, cookie:void 0}, status:v, date:e};
+    f = {app:b, ip:m, path:decodeURI(h), headers:{"user-agent":"", ...r, cookie:void 0}, status:v, date:e};
     fa(`${d}/${`${c}-${e.getFullYear()}.${e.getMonth() + 1}`}/_doc`, {i:{method:"POST", timeout:5000}, query:{pipeline:g}}, f).then(() => {
     }).catch(({message:t}) => {
       console.log(`Logarithm ERROR: ${t}`);

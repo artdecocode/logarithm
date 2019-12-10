@@ -30,7 +30,7 @@ const logarithm = (options) => {
       'ip': ip,
       'path': decodeURI(path),
       'headers': {
-        'user-agent': null,
+        'user-agent': '',
         ...headers,
         'cookie': undefined,
       },
