@@ -10,20 +10,7 @@ logarithm -h
 
 %~ width="15"%
 
-### Create Template, `-t`
-
-If an index for a particular client, e.g., `client` needs to be created and logs recorded in indices like `client-2019.2`, the template with a number of shards and replicas can be installed depending on the volume of data that the server is going to be receiving. This means that the default of 10 shards and 5 replicas might not be required for a small-volume website, so that a template with just 1 shard and no replicas can be created.
-
-```sh
-logarithm 192.168.0.1:9200 -t client [-s 1 -r 0]
-```
-
-```fs
-Created hits-client2 template
-for     client2-* indices with 1 shards and 0 replicas
-```
-
-%~ width="15"%
+<kbd>📙 [Read Wiki](../../wiki) For More Documentation</kbd>
 
 ### List Templates, `-T`
 

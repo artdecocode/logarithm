@@ -1,17 +1,20 @@
 #!/usr/bin/env node
 import { _url, _pipeline, _version, _help, _pipelines,
   _replicas, _shards, _template, _delete, _templates, _stats, _snapshots,
-  _bucket, _repositoryS3, _repo, _snapshot, _restore, _status } from './get-args'
+  _bucket, _repositoryS3, _repo, _snapshot, _restore, _status,
+  _index } from './get-args'
 import loading from 'indicatrix'
 import { c, b } from 'erte'
 import usage from './usage'
 import { setupPipeline, deletePipeline } from '../lib'
 import listPipelines from './commands/list-pipelines'
-import { putHitsTemplate, deleteIndex } from './commands/put-index'
+import { putHitsTemplate, deleteIndex, addTemplate } from './commands/put-index'
 import { confirm } from 'reloquent'
 import listTemplates from './commands/list-templates'
 import stats from './commands/stats'
 import SnapshotsClient from './commands/snapshots'
+import { join, parse } from 'path'
+import { inspect } from 'util'
 
 if (_version) {
   const v = require('../../package.json')
@@ -47,6 +50,34 @@ if (_version) {
       console.log('Pipeline %s removed.', b(_pipeline, 'red'))
       return
     }
+    if (_index && _delete) {
+      const conf = await confirm(`Are you sure you want to delete index ${c(_index, 'yellow')}`, {
+        defaultYes: false,
+      })
+      if (!conf) return
+      await loading(
+        `Deleting ${
+          c(_index, 'yellow')
+        } index`,
+        deleteIndex(_url, _index),
+      )
+      console.log('Successfully deleted index %s', c(_index, 'red'))
+      return
+    }
+    if (_index && _template) {
+      const t = require(join(process.cwd(), _template))
+      const { name }  = parse(_template)
+
+      const y = await confirm(`Create template ${c(name, 'magenta')} for index ${c(_index, 'yellow')}\n${inspect({
+        ...t, 'index_patterns': [_index],
+      }, { colors: true, depth: null, breakLength: 20 })}`)
+      if (!y) return
+      return await loading(
+        `Creating template on index ${
+          c(_index, 'yellow')}`,
+        addTemplate(_url, name, _index, t)
+      )
+    }
     if (_template) {
       const y = await confirm(`Create template ${c(_template, 'yellow')}-* with ${_shards} shard${_shards > 1 ? 's' : ''} and ${_replicas} replica${_replicas == 0 ||_replicas > 1 ? 's' : ''}`)
       if (!y) return
@@ -59,19 +90,6 @@ if (_version) {
           replicas: _replicas,
         }),
       )
-    } else if (_template && _delete) {
-      const conf = await confirm(`Are you sure you want to delete index ${c(_delete, 'yellow')}`, {
-        defaultYes: false,
-      })
-      if (!conf) return
-      await loading(
-        `Deleting ${
-          c(_delete, 'yellow')
-        } index`,
-        deleteIndex(_url, _delete),
-      )
-      console.log('Successfully deleted index %s', c(_delete, 'red'))
-      return
     }
 
     if (_templates) return await listTemplates(_url)

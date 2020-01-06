@@ -1,0 +1,14 @@
+{
+  "_logarithm.ping": {
+    "link": "https://github.com/artdecocode/logarithm#async-pingurl-stringtimeout-number-void",
+    "description": "Check that a connection to the _ElasticSearch_ server can be established. Will throw an error after timeout."
+  },
+  "_logarithm.logarithm": {
+    "link": "https://github.com/artdecocode/logarithm#logarithmoptions-config-_goamiddleware",
+    "description": "Creates a middleware for logging requests in _Koa_/_Goa_ web-server and returns it."
+  },
+  "_logarithm.Config": {
+    "link": "https://github.com/artdecocode/logarithm#type-config",
+    "description": "Options for the program."
+  }
+}

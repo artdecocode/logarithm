@@ -17,6 +17,20 @@ export const makeKind = (pp) => {
 
 // const HIT = { 'ip': 'ip', 'date': 'date' }
 
+export const addTemplate = async (url, name, index, body) => {
+  const u = `${url}/_template/${name}`
+  const res = await req(u, {
+    spec: {
+      method: 'PUT',
+      timeout: 5000,
+    },
+  }, {
+    ...body,
+    'index_patterns': [index],
+  })
+  return res
+}
+
 export const putHitsTemplate = async (url, appName, {
   shards = 1, replicas = 0,
 }) => {
@@ -47,6 +61,10 @@ export const putHitsTemplate = async (url, appName, {
   return res
 }
 
+/**
+ * @param {string} url
+ * @param {string} index
+ */
 export const deleteIndex = async (url, index) => {
   const u = `${url}/${index}`
   const res = await req(u, {

@@ -20,6 +20,10 @@ export const argsConfig = {
     boolean: true,
     short: 'd',
   },
+  'index': {
+    description: 'Select an index for operations.',
+    short: 'i',
+  },
   'pipeline': {
     description: 'Create a pipeline with `User-Agent`\nand `GeoIp` plugins.',
     short: 'p',
@@ -113,6 +117,11 @@ export const _templates = /** @type {boolean} */ (args['templates'])
     Used with the relevant flag.
  */
 export const _delete = /** @type {boolean} */ (args['delete'])
+
+/**
+ * Select an index for operations.
+ */
+export const _index = /** @type {string} */ (args['index'])
 
 /**
  * Create a pipeline with `User-Agent`

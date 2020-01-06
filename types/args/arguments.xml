@@ -13,6 +13,9 @@
     Delete an index, snapshot or pipeline.
     Used with the relevant flag.
   </arg>
+  <arg string name="index" short="i">
+    Select an index for operations.
+  </arg>
   <arg string name="pipeline" short="p">
     Create a pipeline with `User-Agent`
     and `GeoIp` plugins.

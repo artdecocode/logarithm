@@ -9,11 +9,22 @@ export default async (url) => {
   )
   const d = Object.keys(templates).map((key) => {
     const v = templates[key]
+    let shards = '-', replicas = '-'
+    try {
+      shards = v['settings']['index']['number_of_shards']
+    } catch (err) {
+      //
+    }
+    try {
+      replicas = v['settings']['index']['number_of_replicas']
+    } catch (err) {
+      //
+    }
     return {
       'name': key,
       'patterns': v['index_patterns'].join('\n'),
-      'shards': v['settings']['index']['number_of_shards'],
-      'replicas': v['settings']['index']['number_of_replicas'] || '',
+      'shards': shards,
+      'replicas': replicas,
     }
   })
   const s = tablature({

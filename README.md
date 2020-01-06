@@ -2,21 +2,24 @@
 
 [![npm version](https://badge.fury.io/js/logarithm.svg)](https://www.npmjs.com/package/logarithm)
 
-`logarithm` Is A Koa Middleware That Records Logs In _ElasticSearch_.
+`logarithm` Is A Koa Middleware That Records Logs In _ElasticSearch_. The CLI binary also allows to execute commands on the _ElasticSearch_ instance via the API, such as:
+
+- creating snapshots,
+- installing templates,
+- _etc_
 
 ```sh
-yarn add -E logarithm
+yarn add logarithm
 ```
 
 ## Table Of Contents
 
 - [Table Of Contents](#table-of-contents)
 - [API](#api)
-- [`logarithm(options: Config): void`](#logarithmoptions-config-void)
+- [`logarithm(options: !Config): !_goa.Middleware`](#logarithmoptions-config-_goamiddleware)
   * [`Config`](#type-config)
-  * [`async ping(url: string, timeout: number)`](#async-pingurl-stringtimeout-number-void)
+- [`async ping(url: string, timeout: number): void`](#async-pingurl-stringtimeout-number-void)
 - [CLI](#cli)
-  * [Create Template, `-t`](#create-template--t)
   * [List Templates, `-T`](#list-templates--t)
   * [Statistics, `-S`](#statistics--s)
   * [Delete Index, `-d`](#delete-index--d)
@@ -41,23 +44,22 @@ import logarithm, { ping } from 'logarithm'
   <img src="/.documentary/section-breaks/1.svg?sanitize=true">
 </a></p>
 
-## <code><ins>logarithm</ins>(</code><sub><br/>&nbsp;&nbsp;`options: Config,`<br/></sub><code>): <i>void</i></code>
+## <code><ins>logarithm</ins>(</code><sub><br/>&nbsp;&nbsp;`options: !Config,`<br/></sub><code>): <i>!_goa.Middleware</i></code>
 Creates a middleware for logging requests in _Koa_/_Goa_ web-server and returns it.
 
- - <kbd><strong>options*</strong></kbd> <em><code><a href="#type-config" title="Options for the program.">Config</a></code></em>: Options for the middleware.
+ - <kbd><strong>options*</strong></kbd> <em><code><a href="#type-config" title="Options for the program.">!Config</a></code></em>: Options for the middleware.
 
 __<a name="type-config">`Config`</a>__: Options for the program.
 
 
-|   Name   |        Type        |                                               Description                                                |  Default  |
-| -------- | ------------------ | -------------------------------------------------------------------------------------------------------- | --------- |
-| __app*__ | <em>string</em>    | The name of the website application.                                                                     | -         |
-| __url*__ | <em>string</em>    | ElasticSearch endpoint URL, e.g., `http://192.168.0.1:9200`.                                             | -         |
-| timeout  | <em>number</em>    | Timeout for the connection after which an error is shown.                                                | `5000`    |
-| type     | <em>string</em>    | The type of the document.                                                                                | `hit`     |
-| pipeline | <em>string</em>    | The pipeline in ElasticSearch, for example to parse GeoIP info and User-Agent.                           | `info`    |
-| index    | <em>string</em>    | The name of the index. Defaults to the app name if not specified as well as monthly strategy.            | -         |
-| strategy | <em>'monthly'</em> | How to construct the index name. E.g., the monthly strategy will result in `${index}-${y}.${m}` indexes. | `monthly` |
+|   Name   |      Type       |                                               Description                                                |  Default  |
+| -------- | --------------- | -------------------------------------------------------------------------------------------------------- | --------- |
+| __app*__ | <em>string</em> | The name of the website application.                                                                     | -         |
+| __url*__ | <em>string</em> | ElasticSearch endpoint URL, e.g., `http://192.168.0.1:9200`.                                             | -         |
+| timeout  | <em>number</em> | Timeout for the connection after which an error is shown.                                                | `5000`    |
+| pipeline | <em>string</em> | The pipeline in ElasticSearch, for example to parse GeoIP info and User-Agent.                           | `info`    |
+| index    | <em>string</em> | The name of the index. Defaults to the app name if not specified as well as monthly strategy.            | -         |
+| strategy | <em>string</em> | How to construct the index name. E.g., the monthly strategy will result in `${index}-${y}.${m}` indexes. | `monthly` |
 
 ```js
 /* yarn example/ */
@@ -86,9 +88,11 @@ import logarithm, { ping } from 'logarithm'
   <img src="/.documentary/section-breaks/2.svg?sanitize=true" width="15">
 </a></p>
 
-### <code>async <ins>ping</ins>(</code><sub><br/>&nbsp;&nbsp;`url: string,`<br/>&nbsp;&nbsp;`timeout: number,`<br/></sub><code>): <i>void</i></code>
+## <code>async <ins>ping</ins>(</code><sub><br/>&nbsp;&nbsp;`url: string,`<br/>&nbsp;&nbsp;`timeout: number,`<br/></sub><code>): <i>void</i></code>
+Check that a connection to the _ElasticSearch_ server can be established. Will throw an error after timeout.
 
-Makes sure that `ElasticSearch` is available for connections. Will throw an error after the timeout (default `30000`).
+ - <kbd><strong>url*</strong></kbd> <em>`string`</em>: The ElasticSearch URL.
+ - <kbd><strong>timeout*</strong></kbd> <em>`number`</em>: The timeout for the request in ms.
 
 <p align="center"><a href="#table-of-contents">
   <img src="/.documentary/section-breaks/3.svg?sanitize=true">
@@ -106,45 +110,49 @@ logarithm -h
 ElasticSearch utility for creating a pipeline and index templates
 for logging request using logarithm middleware.
 
-  logarithm $ELASTIC [-TPS] [-t index -sr] [-p|rp pipeline] [-d index]
+  logarithm <url> [-TPS] [-p pipeline] [-d]
 
-	-t, --template name	Create an index template for storing
-	                   	log data in name-* index.
-	 -s, --shards      	Number of shards for index template.
-	                   	Default 1.
-	 -r, --replicas    	Number of replicas for index template.
-	                   	Default 0.
-	-T, --templates    	List index templates.
-	-S, --stats        	Display statistics by indices.
-	-d, --delete name  	Delete an index.
-	-P, --pipelines    	Display installed pipelines.
-	-p, --pipeline name	Create a pipeline with User-Agent
-	                   	and GeoIp plugins.
-	--remove-pipeline  	Removes the pipeline.
-	-h, --help         	Show the help message.
-	-v, --version      	Show the version information.
+	url            	The ElasticSearch URL.
+	               	If protocol is not given, `http` is assumed.
+	--stats, -s    	Display statistics by indices.
+	--templates, -T	List all index templates.
+	--delete, -d   	Delete an index, snapshot or pipeline.
+	               	Used with the relevant flag.
+	--index, -i    	Select an index for operations.
+	--pipeline, -p 	Create a pipeline with `User-Agent`
+	               	and `GeoIp` plugins.
+	--pipelines, -P	Display installed pipelines.
+	--snapshots, -S	List registered snapshot repositories.
+	--help, -h     	Print the help information and exit.
+	--version, -v  	Show the version's number and exit.
+
+Snapshots: used to print info, create and restore snapshots.
+
+  logarithm <url> [-r repo] [-s snapshot] [-s3 snapshot --bucket bucket] [--status|-d]
+
+	--repository-s3, -s3	Create a new `s3` snapshot repo with this name.
+	--bucket            	The bucket name for the `s3` snapshot repository.
+	--repo, -r          	The name of the repo.
+	--snapshot, -s      	The name of the snapshot.
+	--restore           	Restore this snapshot.
+	--status            	Fetch the status.
+
+Templates: creates a template for an app.
+
+  lagarithm <url> -t {app-name} [-s shards] [-r replicas] [-d]
+
+	--template, -t	Create an index template for storing
+	              	log data in the `{template}-*` index.
+	--shards, -s  	The number of shards for index template.
+	              	Default: 1.
+	--replicas, -r	The number of replicas for index template.
 ```
 
 <p align="center"><a href="#table-of-contents">
   <img src="/.documentary/section-breaks/4.svg?sanitize=true" width="15">
 </a></p>
 
-### Create Template, `-t`
-
-If an index for a particular client, e.g., `client` needs to be created and logs recorded in indices like `client-2019.2`, the template with a number of shards and replicas can be installed depending on the volume of data that the server is going to be receiving. This means that the default of 10 shards and 5 replicas might not be required for a small-volume website, so that a template with just 1 shard and no replicas can be created.
-
-```sh
-logarithm 192.168.0.1:9200 -t client [-s 1 -r 0]
-```
-
-```fs
-Created hits-client2 template
-for     client2-* indices with 1 shards and 0 replicas
-```
-
-<p align="center"><a href="#table-of-contents">
-  <img src="/.documentary/section-breaks/5.svg?sanitize=true" width="15">
-</a></p>
+<kbd>📙 [Read Wiki](../../wiki) For More Documentation</kbd>
 
 ### List Templates, `-T`
 
@@ -163,7 +171,7 @@ hits-client2                   client2-*           1       0
 ```
 
 <p align="center"><a href="#table-of-contents">
-  <img src="/.documentary/section-breaks/6.svg?sanitize=true" width="15">
+  <img src="/.documentary/section-breaks/5.svg?sanitize=true" width="15">
 </a></p>
 
 ### Statistics, `-S`
@@ -184,7 +192,7 @@ technation.sucks-2019.1   120.7 KB  5747  2.2 MB
 ```
 
 <p align="center"><a href="#table-of-contents">
-  <img src="/.documentary/section-breaks/7.svg?sanitize=true" width="15">
+  <img src="/.documentary/section-breaks/6.svg?sanitize=true" width="15">
 </a></p>
 
 ### Delete Index, `-d`
@@ -201,7 +209,7 @@ Successfully deleted index clients-2019.2
 ```
 
 <p align="center"><a href="#table-of-contents">
-  <img src="/.documentary/section-breaks/8.svg?sanitize=true" width="15">
+  <img src="/.documentary/section-breaks/7.svg?sanitize=true" width="15">
 </a></p>
 
 ### Pipelines, `-P`
@@ -219,7 +227,7 @@ info  IP Address And UserAgent  geoip: ip
 ```
 
 <p align="center"><a href="#table-of-contents">
-  <img src="/.documentary/section-breaks/9.svg?sanitize=true" width="15">
+  <img src="/.documentary/section-breaks/8.svg?sanitize=true" width="15">
 </a></p>
 
 ### Add Pipeline, `-p`
@@ -235,7 +243,7 @@ Pipeline info2 created.
 ```
 
 <p align="center"><a href="#table-of-contents">
-  <img src="/.documentary/section-breaks/10.svg?sanitize=true" width="15">
+  <img src="/.documentary/section-breaks/9.svg?sanitize=true" width="15">
 </a></p>
 
 ### Remove Pipeline, `--remove-pipeline`
@@ -251,7 +259,7 @@ Pipeline info2 removed.
 ```
 
 <p align="center"><a href="#table-of-contents">
-  <img src="/.documentary/section-breaks/11.svg?sanitize=true">
+  <img src="/.documentary/section-breaks/10.svg?sanitize=true">
 </a></p>
 
 ## Copyright
@@ -264,7 +272,7 @@ Pipeline info2 removed.
           alt="Art Deco">
       </a>
     </th>
-    <th>© <a href="https://artd.eco">Art Deco</a>   2019</th>
+    <th>© <a href="https://artd.eco">Art Deco</a>   2020</th>
     <th>
       <a href="https://www.technation.sucks" title="Tech Nation Visa">
         <img width="100" src="https://raw.githubusercontent.com/idiocc/cookies/master/wiki/arch4.jpg"
