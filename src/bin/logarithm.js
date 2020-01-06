@@ -30,6 +30,20 @@ if (_version) {
     if (!_url) throw new Error('No ElasticSearch URL.')
 
     if (_pipelines) return await listPipelines(_url)
+    if (_pipeline && _delete) {
+      const conf = await confirm(`Are you sure you want to delete pipeline ${c(_pipeline, 'yellow')}`, {
+        defaultYes: false,
+      })
+      if (!conf) return
+      await loading(
+        `Removing ${
+          c(_pipeline, 'yellow')
+        } pipeline`,
+        deletePipeline(_url, _pipeline),
+      )
+      console.log('Pipeline %s removed.', b(_pipeline, 'red'))
+      return
+    }
     if (_pipeline) {
       await loading(
         `Creating a pipeline ${
@@ -38,16 +52,6 @@ if (_version) {
         setupPipeline(_url, _pipeline),
       )
       console.log('Pipeline %s created.', c(_pipeline, 'green'))
-      return
-    }
-    if (_pipeline && _delete) {
-      await loading(
-        `Removing ${
-          c(_pipeline, 'yellow')
-        } pipeline`,
-        deletePipeline(_url, _pipeline),
-      )
-      console.log('Pipeline %s removed.', b(_pipeline, 'red'))
       return
     }
     if (_index && _delete) {

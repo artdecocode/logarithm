@@ -9,17 +9,15 @@
     "test": "yarn t test/spec test/mask",
     "spec": "yarn t test/spec",
     "mask": "yarn t test/mask",
-    "test-build": "ALAMODE_ENV=test-build yarn test",
+    "test-compile": "ALAMODE_ENV=test-compile yarn test",
     "lint": "eslint .",
     "doc": "doc -o README.md -n _logarithm -d -a",
     "wiki": "doc wiki -W wiki.git -n _logarithm -d -a",
     "dev": "node src/bin",
-    "b": "alamode src -o build -i bin -s",
     "d": "yarn-s template d1 externs",
     "d1": "typal compile/index.js -u -t types/api.xml,types/index.xml",
     "template": "typal compile/template.js -T compile/index.js -t types/api.xml,types/index.xml",
     "externs": "typal types/externs.js",
-    "build": "yarn-s d b doc",
     "lib": "depack src/depack -c -o compile/logarithm.js -a -p -s",
     "compile": "depack src/bin/logarithm.js -c -o compile/bin -a -p -w -S -s",
     "logarithm": "node compile/bin/logarithm.js $ELASTIC:9200",
@@ -59,7 +57,7 @@
   "bugs": {
     "url": "https://github.com/artdecocode/logarithm/issues"
   },
-  "homepage": "https://github.com/artdecocode/logarithm#readme",
+  "homepage": "https://www.idio.cc",
   "devDependencies": {
     "@demimonde/dotenv": "^1.1.0",
     "@externs/goa": "^1.0.1",

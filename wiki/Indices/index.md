@@ -8,13 +8,19 @@ Logarithm supports some operations on indices.
 
 ## Delete
 
-An index can be deleted using the `-i {index-pattern-*} -d` command:
+An index (or wildcard indices) can be deleted using the `-i {index-pattern-*} -d` command:
 
 ```console
-user:~$ logarithm es.local:9200 -i old-client-* -d
+user:~$ logarithm es.local:9200 -i clients-2019.2 -d
+user:~$ logarithm es.local:9200 -i clients-* -d
 ```
 
-%~%
+```fs
+Are you sure you want to delete index clients-2019.2 (y/n): [n] y
+Successfully deleted index clients-2019.2
+```
+
+%~ width="15"%
 
 ## Assign Template
 
