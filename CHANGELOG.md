@@ -1,3 +1,10 @@
+## 9 January 2020
+
+### [2.1.0](https://github.com/artdecocode/logarithm/compare/v2.0.1...v2.1.0)
+
+- [feature] Install templates from JSON.
+- [doc] Update documentation to place more info in Wiki.
+
 ## 10 December 2019
 
 ### [2.0.1](https://github.com/artdecocode/logarithm/compare/v2.0.0...v2.0.1)
