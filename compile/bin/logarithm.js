@@ -251,7 +251,7 @@ const Fa = (a, b, c = {}) => {
       if (d) {
         m.destroy();
       } else {
-        var x = "gzip" == m.headers.v;
+        var x = "gzip" == m.headers["content-encoding"];
         m.on("data", y => n += y.byteLength);
         m = x ? m.pipe(Ea()) : m;
         k = await Da(m, {binary:f});
@@ -275,8 +275,7 @@ const Ga = (a = {}) => Object.keys(a).reduce((b, c) => {
   const {a:g, f:h} = Fa(a, b, {justHeaders:d, binary:f, c:e});
   g.end(c);
   a = await h;
-  ({"content-type":b = ""} = a.headers);
-  if ((b = b.startsWith("application/json")) && a.body) {
+  if ((a.headers["content-type"] || "").startsWith("application/json") && a.body) {
     try {
       a.h = JSON.parse(a.body);
     } catch (l) {
