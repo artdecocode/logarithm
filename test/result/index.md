@@ -7,7 +7,7 @@ test
   "ip": "127.0.0.1",
   "path": "/test",
   "headers": {
-    "user-agent": "Mozilla/5.0 (Node.js) aqt/1.2.3",
+    "user-agent": "Mozilla/5.0 (Node.JS) @rqt/aqt via rqt/4.0.0",
     "accept-encoding": "gzip, deflate",
     "connection": "close"
   },

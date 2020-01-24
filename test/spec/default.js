@@ -9,7 +9,7 @@ const T = {
   'is a function'() {
     equal(typeof logarithm, 'function')
   },
-  async '!logs data'({ start }, { url, setDefer }) {
+  async 'logs data'({ start }, { url, setDefer }) {
     const app = 'test.com'
     const u = await start({
       log: {
