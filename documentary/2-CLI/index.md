@@ -8,9 +8,9 @@ logarithm -h
 
 %FORK-Dockerfile src/bin/logarithm -h%
 
-%~ width="15"%
-
 <kbd>📙 [Read Wiki](../../wiki) For More Documentation</kbd>
+
+%~ width="15"%
 
 ### List Templates, `-T`
 

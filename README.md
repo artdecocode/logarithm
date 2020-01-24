@@ -135,20 +135,27 @@ Snapshots: used to print info, create and restore snapshots.
 
 Templates: creates a template for an app.
 
-  lagarithm <url> -t {app-name} [-s shards] [-r replicas] [-d]
+  logarithm <url> -t {app-name} [-s shards] [-r replicas] [-d]
 
 	--template, -t	Create an index template for storing
 	              	log data in the `{template}-*` index.
 	--shards, -s  	The number of shards for index template.
 	              	Default: 1.
 	--replicas, -r	The number of replicas for index template.
+
+Methods: send data from JSON files.
+
+  logarithm <url> --[post] -p path
+
+	--post    	Send post request with data from the file.
+	--path, -p	The path to send a request to.
 ```
+
+<kbd>📙 [Read Wiki](../../wiki) For More Documentation</kbd>
 
 <p align="center"><a href="#table-of-contents">
   <img src="/.documentary/section-breaks/4.svg?sanitize=true" width="15">
 </a></p>
-
-<kbd>📙 [Read Wiki](../../wiki) For More Documentation</kbd>
 
 ### List Templates, `-T`
 
