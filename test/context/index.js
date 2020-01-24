@@ -1,6 +1,7 @@
 import { resolve } from 'path'
 import { debuglog } from 'util'
-import core from '@idio/core'
+import idio from '@idio/idio'
+import { collect } from 'catchment'
 
 const LOG = debuglog('logarithm')
 
@@ -14,10 +15,10 @@ export default class Context {
     LOG('init context')
   }
   /**
-   * @param {import('@idio/core').MiddlewareConfig} conf
+   * @param {import('@idio/idio').MiddlewareConfig} conf
    */
   async start(conf) {
-    const { app, url } = await core(conf, { port: null })
+    const { app, url } = await idio(conf, { port: null })
     this.app = app
     return url
   }
@@ -46,9 +47,11 @@ export default class Context {
 
 export class Elastic {
   async _init() {
-    const { app, url } = await core({
-      bodyparser: {
-        use: true,
+    const { app, url } = await idio({
+      async bodyparser(ctx, next) {
+        const data = await collect(ctx.req)
+        ctx.request.body = JSON.parse(data)
+        await next()
       },
       req: (ctx) => {
         ctx.body = {}

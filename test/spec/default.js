@@ -1,4 +1,4 @@
-import { equal } from 'zoroaster/assert'
+import { equal } from '@zoroaster/assert'
 import rqt from 'rqt'
 import Context, { Elastic } from '../context'
 import logarithm from '../../src'
@@ -9,13 +9,14 @@ const T = {
   'is a function'() {
     equal(typeof logarithm, 'function')
   },
-  async 'logs the data'({ start }, { url, setDefer }) {
+  async '!logs data'({ start }, { url, setDefer }) {
+    const app = 'test.com'
     const u = await start({
       log: {
         use: true,
         middlewareConstructor() {
           return logarithm({
-            app: 'test.com',
+            app,
             url,
           })
         },
@@ -29,6 +30,8 @@ const T = {
     const [r] = await Promise.all([setDefer(), rqt(uu)])
     const { body } = r
     equal(body.path, `/${path}`)
+    equal(body.status, 200)
+    equal(body.app, app)
   },
 }
 
