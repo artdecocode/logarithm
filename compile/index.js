@@ -38,6 +38,14 @@ module.exports.ping = ping
  * @prop {string} [pipeline="info"] The pipeline in ElasticSearch, for example to parse GeoIP info and User-Agent. Default `info`.
  * @prop {string} [index] The name of the index. Defaults to the app name if not specified as well as monthly strategy.
  * @prop {string} [strategy="monthly"] How to construct the index name. E.g., the monthly strategy will result in `${index}-${y}.${m}` indexes. Default `monthly`.
+ * @typedef {_logarithm.Hit} Hit `＠record` A record sent to ElasticSearch.
+ * @typedef {Object} _logarithm.Hit `＠record` A record sent to ElasticSearch.
+ * @prop {string} app The application name from the config.
+ * @prop {string} ip Client IP address.
+ * @prop {string} path The decoded request path.
+ * @prop {!Object} headers The request headers.
+ * @prop {number} status The status code.
+ * @prop {!Date} date The date of the request.
  */
 
 /**

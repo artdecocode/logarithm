@@ -40,3 +40,38 @@ _logarithm.Config.prototype.index
  * @type {string|undefined}
  */
 _logarithm.Config.prototype.strategy
+/**
+ * A record sent to ElasticSearch.
+ * @record
+ */
+_logarithm.Hit
+/**
+ * The application name from the config.
+ * @type {string}
+ */
+_logarithm.Hit.prototype.app
+/**
+ * Client IP address.
+ * @type {string}
+ */
+_logarithm.Hit.prototype.ip
+/**
+ * The decoded request path.
+ * @type {string}
+ */
+_logarithm.Hit.prototype.path
+/**
+ * The request headers.
+ * @type {!Object}
+ */
+_logarithm.Hit.prototype.headers
+/**
+ * The status code.
+ * @type {number}
+ */
+_logarithm.Hit.prototype.status
+/**
+ * The date of the request.
+ * @type {!Date}
+ */
+_logarithm.Hit.prototype.date

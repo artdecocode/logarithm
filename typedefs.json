@@ -10,5 +10,9 @@
   "_logarithm.Config": {
     "link": "https://github.com/artdecocode/logarithm#type-config",
     "description": "Options for the program."
+  },
+  "_logarithm.Hit": {
+    "link": "https://github.com/artdecocode/logarithm#type-hit",
+    "description": "A record sent to ElasticSearch."
   }
 }

@@ -18,11 +18,12 @@ yarn add logarithm
 - [API](#api)
 - [`logarithm(options: !Config): !_goa.Middleware`](#logarithmoptions-config-_goamiddleware)
   * [`Config`](#type-config)
+  * [`Hit`](#type-hit)
 - [`async ping(url: string, timeout: number): void`](#async-pingurl-stringtimeout-number-void)
 - [CLI](#cli)
   * [List Templates, `-T`](#list-templates--t)
   * [Statistics, `-s`](#statistics--s)
-- [Copyright](#copyright)
+- [Copyright & License](#copyright--license)
 
 <p align="center"><a href="#table-of-contents">
   <img src="/.documentary/section-breaks/0.svg?sanitize=true">
@@ -46,16 +47,79 @@ Creates a middleware for logging requests in _Koa_/_Goa_ web-server and returns 
  - <kbd><strong>options*</strong></kbd> <em><code><a href="#type-config" title="Options for the program.">!Config</a></code></em>: Options for the middleware.
 
 __<a name="type-config">`Config`</a>__: Options for the program.
-
-
-|   Name   |      Type       |                                               Description                                                |  Default  |
-| -------- | --------------- | -------------------------------------------------------------------------------------------------------- | --------- |
-| __app*__ | <em>string</em> | The name of the website application.                                                                     | -         |
-| __url*__ | <em>string</em> | ElasticSearch endpoint URL, e.g., `http://192.168.0.1:9200`.                                             | -         |
-| timeout  | <em>number</em> | Timeout for the connection after which an error is shown.                                                | `5000`    |
-| pipeline | <em>string</em> | The pipeline in ElasticSearch, for example to parse GeoIP info and User-Agent.                           | `info`    |
-| index    | <em>string</em> | The name of the index. Defaults to the app name if not specified as well as monthly strategy.            | -         |
-| strategy | <em>string</em> | How to construct the index name. E.g., the monthly strategy will result in `${index}-${y}.${m}` indexes. | `monthly` |
+<table>
+ <thead><tr>
+  <th>Name</th>
+  <th>Type &amp; Description</th>
+  <th>Default</th>
+ </tr></thead>
+ <tr>
+  <td rowSpan="3" align="center"><strong>app*</strong></td>
+  <td><em>string</em></td>
+  <td rowSpan="3">-</td>
+ </tr>
+ <tr></tr>
+ <tr>
+  <td>
+   The name of the website application.
+  </td>
+ </tr>
+ <tr>
+  <td rowSpan="3" align="center"><strong>url*</strong></td>
+  <td><em>string</em></td>
+  <td rowSpan="3">-</td>
+ </tr>
+ <tr></tr>
+ <tr>
+  <td>
+   ElasticSearch endpoint URL, e.g., <code>http://192.168.0.1:9200</code>.
+  </td>
+ </tr>
+ <tr>
+  <td rowSpan="3" align="center">timeout</td>
+  <td><em>number</em></td>
+  <td rowSpan="3"><code>5000</code></td>
+ </tr>
+ <tr></tr>
+ <tr>
+  <td>
+   Timeout for the connection after which an error is shown.
+  </td>
+ </tr>
+ <tr>
+  <td rowSpan="3" align="center">pipeline</td>
+  <td><em>string</em></td>
+  <td rowSpan="3"><code>info</code></td>
+ </tr>
+ <tr></tr>
+ <tr>
+  <td>
+   The pipeline in ElasticSearch, for example to parse GeoIP info and User-Agent.
+  </td>
+ </tr>
+ <tr>
+  <td rowSpan="3" align="center">index</td>
+  <td><em>string</em></td>
+  <td rowSpan="3">-</td>
+ </tr>
+ <tr></tr>
+ <tr>
+  <td>
+   The name of the index. Defaults to the app name if not specified as well as monthly strategy.
+  </td>
+ </tr>
+ <tr>
+  <td rowSpan="3" align="center">strategy</td>
+  <td><em>string</em></td>
+  <td rowSpan="3"><code>monthly</code></td>
+ </tr>
+ <tr></tr>
+ <tr>
+  <td>
+   How to construct the index name. E.g., the monthly strategy will result in <code>${index}-${y}.${m}</code> indexes.
+  </td>
+ </tr>
+</table>
 
 ```js
 /* yarn example/ */
@@ -79,6 +143,20 @@ import logarithm, { ping } from 'logarithm'
   console.log(url)
 })()
 ```
+
+The following data structure is sent to the server:
+
+__<a name="type-hit">`Hit`</a>__: A record sent to ElasticSearch.
+
+
+|     Name     |       Type       |              Description              |
+| ------------ | ---------------- | ------------------------------------- |
+| __app*__     | <em>string</em>  | The application name from the config. |
+| __ip*__      | <em>string</em>  | Client IP address.                    |
+| __path*__    | <em>string</em>  | The decoded request path.             |
+| __headers*__ | <em>!Object</em> | The request headers.                  |
+| __status*__  | <em>number</em>  | The status code.                      |
+| __date*__    | <em>!Date</em>   | The date of the request.              |
 
 <p align="center"><a href="#table-of-contents">
   <img src="/.documentary/section-breaks/2.svg?sanitize=true" width="15">
@@ -196,24 +274,19 @@ logarithm.page-2019.1   120.7 KB  5747  2.2 MB
 
 
 
-## Copyright
+## Copyright & License
+
+GNU Affero General Public License v3.0
 
 <table>
   <tr>
     <th>
-      <a href="https://artd.eco">
+      <a href="https://www.artd.eco">
         <img width="100" src="https://raw.githubusercontent.com/wrote/wrote/master/images/artdeco.png"
           alt="Art Deco">
       </a>
     </th>
-    <th>© <a href="https://artd.eco">Art Deco</a>   2020</th>
-    <th>
-      <a href="https://www.technation.sucks" title="Tech Nation Visa">
-        <img width="100" src="https://raw.githubusercontent.com/idiocc/cookies/master/wiki/arch4.jpg"
-          alt="Tech Nation Visa">
-      </a>
-    </th>
-    <th><a href="https://www.technation.sucks">Tech Nation Visa Sucks</a></th>
+    <th>© <a href="https://www.artd.eco">Art Deco™</a>   2020</th>
   </tr>
 </table>
 

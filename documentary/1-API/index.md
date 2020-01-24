@@ -10,9 +10,13 @@ import logarithm, { ping } from 'logarithm'
 
 <typedef name="logarithm">types/api.xml</typedef>
 
-<typedef>types/index.xml</typedef>
+<typedef name="Config" narrow>types/index.xml</typedef>
 
 %EXAMPLE: example, ../src => logarithm%
+
+The following data structure is sent to the server:
+
+<typedef name="Hit">types/index.xml</typedef>
 
 %~ width="15"%
 

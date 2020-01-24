@@ -1,5 +1,5 @@
 <types namespace="_logarithm">
-  <type record name="Config" desc="Options for the program.">
+  <record name="Config" desc="Options for the program.">
     <prop string name="app">
       The name of the website application.
     </prop>
@@ -18,5 +18,25 @@
     <prop type="string" name="strategy" default="monthly">
       How to construct the index name. E.g., the monthly strategy will result in `${index}-${y}.${m}` indexes.
     </prop>
-  </type>
+  </record>
+  <record name="Hit" desc="A record sent to ElasticSearch.">
+    <prop string name="app">
+      The application name from the config.
+    </prop>
+    <prop string name="ip">
+      Client IP address.
+    </prop>
+    <prop string name="path">
+      The decoded request path.
+    </prop>
+    <prop type="!Object" name="headers">
+      The request headers.
+    </prop>
+    <prop number name="status">
+      The status code.
+    </prop>
+    <prop type="!Date" name="date">
+      The date of the request.
+    </prop>
+  </record>
 </types>

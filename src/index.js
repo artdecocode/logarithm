@@ -25,21 +25,23 @@ const logarithm = (options) => {
       status,
     } = ctx
     const date = new Date()
+    /** @type {!_logarithm.Hit} */
     const body = {
-      'app': app,
-      'ip': ip,
-      'path': decodeURI(path),
-      'headers': {
+      app,
+      ip,
+      path: decodeURI(path),
+      headers: {
         'user-agent': '',
         ...headers,
         'cookie': undefined,
       },
-      'status': status,
-      'date': date,
+      status,
+      date,
     }
 
     const i = getIndex(index, date)
     const u = `${url}/${i}/_doc`
+    // todo: batch
     req(u, {
       spec: {
         method: 'POST',
@@ -78,6 +80,10 @@ export default logarithm
 /**
  * @suppress {nonStandardJsDocs}
  * @typedef {import('../').Config} _logarithm.Config
+ */
+/**
+ * @suppress {nonStandardJsDocs}
+ * @typedef {import('../').Hit} _logarithm.Hit
  */
 /**
  * @suppress {nonStandardJsDocs}
