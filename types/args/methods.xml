@@ -1,7 +1,10 @@
 <arguments name="Method">
   <arg name="post">
-    Send post request with data from the file.
+    Send POST request with data from the file.
   </arg>
+  <!-- <arg1 name="get" boolean>
+    Send GET request without data.
+  </arg1> -->
   <arg name="path" short="p">
     The path to send a request to.
   </arg>

@@ -49,7 +49,7 @@ const aa = (a, b, c, d = !1, f = !1) => {
   return b;
 }, {});
 const t = {url:{description:"The ElasticSearch URL.\nIf protocol is not given, `http` is assumed.", command:!0}, stats:{description:"Display statistics by indices.", boolean:!0, short:"s"}, templates:{description:"List all index templates.", boolean:!0, short:"T"}, "delete":{description:"Delete an index, snapshot or pipeline.\nUsed with the relevant flag.", boolean:!0, short:"d"}, index:{description:"Select an index for operations.", short:"i"}, pipeline:{description:"Create a pipeline with `User-Agent`\nand `GeoIp` plugins.", 
-short:"p"}, pipelines:{description:"Display installed pipelines.", boolean:!0, short:"P"}, snapshots:{description:"List registered snapshot repositories.", boolean:!0, short:"S"}, help:{description:"Print the help information and exit.", boolean:!0, short:"h"}, version:{description:"Show the version's number and exit.", boolean:!0, short:"v"}}, u = {post:{description:"Send post request with data from the file."}, path:{description:"The path to send a request to.", short:"p"}}, w = {"repository-s3":{description:"Create a new `s3` snapshot repo with this name.", 
+short:"p"}, pipelines:{description:"Display installed pipelines.", boolean:!0, short:"P"}, snapshots:{description:"List registered snapshot repositories.", boolean:!0, short:"S"}, help:{description:"Print the help information and exit.", boolean:!0, short:"h"}, version:{description:"Show the version's number and exit.", boolean:!0, short:"v"}}, u = {post:{description:"Send POST request with data from the file."}, path:{description:"The path to send a request to.", short:"p"}}, w = {"repository-s3":{description:"Create a new `s3` snapshot repo with this name.", 
 short:"s3"}, bucket:{description:"The bucket name for the `s3` snapshot repository."}, repo:{description:"The name of the repo.", short:"r"}, snapshot:{description:"The name of the snapshot.", short:"s"}, restore:{description:"Restore this snapshot.", boolean:!0}, status:{description:"Fetch the status.", boolean:!0}}, A = {template:{description:"Create an index template for storing\nlog data in the `{template}-*` index.", short:"t"}, shards:{description:"The number of shards for index template.", 
 number:!0, default:"1", short:"s"}, replicas:{description:"The number of replicas for index template.", number:!0, short:"r"}}, B = function(a = {}, b = process.argv) {
   let [, , ...c] = b;
@@ -675,7 +675,7 @@ async function Gb(a) {
       console.log(b);
       const c = S({description:`${Q("Templates", "red")}: creates a template for an app.`, line:"logarithm <url> -t {app-name} [-s shards] [-r replicas] [-d]", usage:q(A)});
       console.log(c);
-      const d = S({description:`${Q("Methods", "blue")}: send data from JSON files.`, line:"logarithm <url> --[post] -p path", usage:q(u)});
+      const d = S({description:`${Q("Methods", "blue")}: send data from JSON files.`, line:"logarithm <url> [--post data.json] -p path", usage:q(u)});
       console.log(d);
     }
     process.exit();

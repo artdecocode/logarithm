@@ -24,7 +24,7 @@ export default () => {
   console.log(templates)
   const methods = usually({
     description: `${c('Methods', 'blue')}: send data from JSON files.`,
-    line: 'logarithm <url> --[post] -p path',
+    line: 'logarithm <url> [--post data.json] -p path',
     usage: reduceUsage(argsConfigMethod),
   })
   console.log(methods)

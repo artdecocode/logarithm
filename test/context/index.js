@@ -7,10 +7,20 @@ const LOG = debuglog('logarithm')
 
 const FIXTURE = resolve(__dirname, '../fixture')
 
+let BIN
+if (process.env.ALAMODE_ENV == 'test-compile') {
+  console.log('testing compile bin')
+  BIN = 'compile/bin/logarithm'
+}
+BIN = 'src/bin'
+
 /**
  * A testing context for the package.
  */
 export default class Context {
+  static get BIN() {
+    return BIN
+  }
   async _init() {
     LOG('init context')
   }

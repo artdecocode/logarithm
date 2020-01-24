@@ -52,7 +52,7 @@ export const argsConfig = {
 
 export const argsConfigMethod = {
   'post': {
-    description: 'Send post request with data from the file.',
+    description: 'Send POST request with data from the file.',
   },
   'path': {
     description: 'The path to send a request to.',
@@ -160,7 +160,7 @@ export const _help = /** @type {boolean} */ (args['help'])
 export const _version = /** @type {boolean} */ (args['version'])
 
 /**
- * Send post request with data from the file.
+ * Send POST request with data from the file.
  */
 export const _post = /** @type {string} */ (args['post'])
 
