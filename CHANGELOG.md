@@ -1,3 +1,11 @@
+## 24 January 2020
+
+### [2.2.0](https://github.com/artdecocode/logarithm/compare/v2.1.2...v2.2.0)
+
+- [feature] Add the post method.
+- [license] Move to AGPLv3.
+- [test] Add mask-testing for BIN.
+
 ## 9 January 2020
 
 ### [2.1.2](https://github.com/artdecocode/logarithm/compare/v2.1.1...v2.1.2)
