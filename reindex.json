@@ -1,0 +1,11 @@
+{
+  "source": {
+    "remote": {
+      "host": "http://13.81.242.64:9200"
+    },
+    "index": "knedv.ru-2019.2"
+  },
+  "dest": {
+    "index": "knedv.ru-2019"
+  }
+}

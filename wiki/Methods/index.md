@@ -1,0 +1,1 @@
+You can send data from JSON files using HTTP methods, such as GET, POST or PUT. The path must be given in the `-p path` argument.

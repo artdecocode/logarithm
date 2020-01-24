@@ -1,0 +1,11 @@
+{
+  "source": {
+    "remote": {
+      "host": "http://my-remote-host.com:9200"
+    },
+    "index": "clients-2019.*"
+  },
+  "dest": {
+    "index": "clients-2019"
+  }
+}

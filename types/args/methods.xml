@@ -1,0 +1,8 @@
+<arguments name="Method">
+  <arg name="post">
+    Send post request with data from the file.
+  </arg>
+  <arg name="path" short="p">
+    The path to send a request to.
+  </arg>
+</arguments>

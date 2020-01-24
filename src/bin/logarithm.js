@@ -2,6 +2,7 @@
 import { _url, _pipeline, _version, _help, _pipelines,
   _replicas, _shards, _template, _delete, _templates, _stats, _snapshots,
   _bucket, _repositoryS3, _repo, _snapshot, _restore, _status,
+  _post, _path,
   _index } from './get-args'
 import loading from 'indicatrix'
 import { c, b } from 'erte'
@@ -14,7 +15,9 @@ import listTemplates from './commands/list-templates'
 import stats from './commands/stats'
 import SnapshotsClient from './commands/snapshots'
 import { join, parse } from 'path'
+import { parse as parseUrl } from 'url'
 import { inspect } from 'util'
+import post from './commands/post'
 
 if (_version) {
   const v = require('../../package.json')
@@ -28,8 +31,12 @@ if (_version) {
 (async () => {
   try {
     if (!_url) throw new Error('No ElasticSearch URL.')
+    let url = _url
+    if (!/:\d+$/.test(url)) url = `${url}:9200`
 
-    if (_pipelines) return await listPipelines(_url)
+    if (_post) return await post(url, _post, _path)
+
+    if (_pipelines) return await listPipelines(url)
     if (_pipeline && _delete) {
       const conf = await confirm(`Are you sure you want to delete pipeline ${c(_pipeline, 'yellow')}`, {
         defaultYes: false,
@@ -39,7 +46,7 @@ if (_version) {
         `Removing ${
           c(_pipeline, 'yellow')
         } pipeline`,
-        deletePipeline(_url, _pipeline),
+        deletePipeline(url, _pipeline),
       )
       console.log('Pipeline %s removed.', b(_pipeline, 'red'))
       return
@@ -49,7 +56,7 @@ if (_version) {
         `Creating a pipeline ${
           c(_pipeline, 'yellow')
         }`,
-        setupPipeline(_url, _pipeline),
+        setupPipeline(url, _pipeline),
       )
       console.log('Pipeline %s created.', c(_pipeline, 'green'))
       return
@@ -63,7 +70,7 @@ if (_version) {
         `Deleting ${
           c(_index, 'yellow')
         } index`,
-        deleteIndex(_url, _index),
+        deleteIndex(url, _index),
       )
       console.log('Successfully deleted index %s', c(_index, 'red'))
       return
@@ -79,7 +86,7 @@ if (_version) {
       return await loading(
         `Creating template on index ${
           c(_index, 'yellow')}`,
-        addTemplate(_url, name, _index, t)
+        addTemplate(url, name, _index, t)
       )
     }
     if (_template) {
@@ -89,17 +96,17 @@ if (_version) {
         `Creating ${
           c(_template, 'yellow')
         } template`,
-        putHitsTemplate(_url, _template, {
+        putHitsTemplate(url, _template, {
           shards: _shards,
           replicas: _replicas,
         }),
       )
     }
 
-    if (_templates) return await listTemplates(_url)
+    if (_templates) return await listTemplates(url)
 
     // snapshots
-    const snapshots = new SnapshotsClient(_url, 5000)
+    const snapshots = new SnapshotsClient(url, 5000)
     if (_snapshots && _status) return await snapshots.status()
     if (_repo && _snapshot && _status) return await snapshots.snapshotStatus(_repo, _snapshot)
     if (_repo && _snapshot && _delete) return await snapshots.deleteSnapshot(_repo, _snapshot)
@@ -111,7 +118,7 @@ if (_version) {
     if (_snapshots) return await snapshots.listRepos()
     if (_repositoryS3) return await snapshots.s3(_repositoryS3, _bucket)
 
-    if (_stats) return await stats(_url)
+    if (_stats) return await stats(url)
   } catch (err) {
     console.log(process.env['DEBUG'] ? err.stack : b(err.message, 'red'))
   }

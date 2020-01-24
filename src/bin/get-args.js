@@ -50,6 +50,16 @@ export const argsConfig = {
   },
 }
 
+export const argsConfigMethod = {
+  'post': {
+    description: 'Send post request with data from the file.',
+  },
+  'path': {
+    description: 'The path to send a request to.',
+    short: 'p',
+  },
+}
+
 export const argsConfigSnapshot = {
   'repository-s3': {
     description: 'Create a new `s3` snapshot repo with this name.',
@@ -94,7 +104,7 @@ export const argsConfigTemplates = {
   },
 }
 
-const args = argufy({ ...argsConfig, ...argsConfigSnapshot, ...argsConfigTemplates })
+const args = argufy({ ...argsConfig, ...argsConfigMethod, ...argsConfigSnapshot, ...argsConfigTemplates })
 
 /**
  * The ElasticSearch URL.
@@ -148,6 +158,16 @@ export const _help = /** @type {boolean} */ (args['help'])
  * Show the version's number and exit.
  */
 export const _version = /** @type {boolean} */ (args['version'])
+
+/**
+ * Send post request with data from the file.
+ */
+export const _post = /** @type {string} */ (args['post'])
+
+/**
+ * The path to send a request to.
+ */
+export const _path = /** @type {string} */ (args['path'])
 
 /**
  * Create a new `s3` snapshot repo with this name.

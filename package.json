@@ -61,7 +61,7 @@
   "devDependencies": {
     "@demimonde/dotenv": "^1.1.0",
     "@externs/goa": "^1.0.1",
-    "@idio/idio": "^1.0.1",
+    "@idio/idio": "^1.2.3",
     "@rqt/aqt": "^1.4.0",
     "@typedefs/goa": "^0.1.5",
     "alamode": "^3.3.0",

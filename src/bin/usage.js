@@ -1,6 +1,6 @@
 import usually from 'usually'
 import { b, c } from 'erte'
-import { argsConfig, argsConfigSnapshot, argsConfigTemplates } from './get-args'
+import { argsConfig, argsConfigSnapshot, argsConfigTemplates, argsConfigMethod } from './get-args'
 import { reduceUsage } from 'argufy'
 
 export default () => {
@@ -18,8 +18,14 @@ export default () => {
   console.log(snapshots)
   const templates = usually({
     description: `${c('Templates', 'red')}: creates a template for an app.`,
-    line: 'lagarithm <url> -t {app-name} [-s shards] [-r replicas] [-d]',
+    line: 'logarithm <url> -t {app-name} [-s shards] [-r replicas] [-d]',
     usage: reduceUsage(argsConfigTemplates),
   })
   console.log(templates)
+  const methods = usually({
+    description: `${c('Methods', 'blue')}: send data from JSON files.`,
+    line: 'logarithm <url> --[post] -p path',
+    usage: reduceUsage(argsConfigMethod),
+  })
+  console.log(methods)
 }

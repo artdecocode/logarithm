@@ -27,12 +27,12 @@
   resolved "https://registry.yarnpkg.com/@externs/nodejs/-/nodejs-1.5.0.tgz#88ff9e7a03c53d19101ee49768e598ff0f39c9ad"
   integrity sha512-2J+FRDjGfKKldTQ5YqLmhQ04/sA9swTQ6OTtPzo4xhg41u1+eiufciXiqW6u3UXEcmm413a27NakgnLbzfp0wQ==
 
-"@idio/idio@^1.0.1":
-  version "1.0.1"
-  resolved "https://registry.yarnpkg.com/@idio/idio/-/idio-1.0.1.tgz#e8e13df52200891994cd87f75ba87fc92768339f"
-  integrity sha512-g4ZbLVF6SUZEBRHBFpSf6GDFGBCc4ofOdgfI4Z/zjb8MNB2QcGWML0Lhd0iI/iixxBdyift0gnTphElwHu11sA==
+"@idio/idio@^1.2.3":
+  version "1.2.3"
+  resolved "https://registry.yarnpkg.com/@idio/idio/-/idio-1.2.3.tgz#a4ff69648ff95db683ba67660fb7dd36dc34983a"
+  integrity sha512-jYQmoMigAyCxwPvJQ89F1fODL5m9DYn+QFo861E1LBI1d/cWkp4AQur2BIh9tRzrsSAXYurqSFWRNcL+rlCLYA==
   dependencies:
-    mime-db "^1.42.0"
+    mime-db "^1.43.0"
     text-decoding "^1.0.0"
 
 "@rqt/aqt@^1.4.0":
@@ -112,7 +112,7 @@ indicatrix@^1.4.0:
   resolved "https://registry.yarnpkg.com/indicatrix/-/indicatrix-1.4.0.tgz#544c3c9a12485f4a62a88e849819bd3245b3d756"
   integrity sha512-35LB8ClUvqFFRJhEpllq5H8lnKrQa4CFJapjC0hsU+c8Qr0PCCASf4iffDW28EMHn1AxeY/jTh/ayOpAanUbbQ==
 
-mime-db@^1.42.0:
+mime-db@^1.43.0:
   version "1.43.0"
   resolved "https://registry.yarnpkg.com/mime-db/-/mime-db-1.43.0.tgz#0a12e0502650e473d735535050e7c8f4eb4fae58"
   integrity sha512-+5dsGEEovYbT8UY9yD7eE4XTc4UwJ1jBYlgaQQF38ENsKR3wj/8q8RFZrF9WIZpB2V1ArTVFUva8sAul1NzRzQ==
