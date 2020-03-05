@@ -2,60 +2,76 @@ import { aqt } from 'rqt'
 import { req } from './lib'
 
 /**
+ * @param {_goa.Context} ctx
+ * @param {_logarithm.Config} options Options for the program.
+ */
+const process = (ctx, options) => {
+  const {
+    app, index = app, pipeline = 'info', url, timeout = 5000,
+    strategy = monthly,
+  } = options
+
+  const {
+    request: { ip, path },
+    headers: {
+      // closure compiler bug
+      // cookie, // eslint-disable-line no-unused-vars
+      ...headers
+    },
+    method,
+    status,
+  } = ctx
+  const date = new Date()
+  /** @type {!_logarithm.Hit} */
+  const body = {
+    app,
+    method,
+    ip,
+    path: decodeURI(path),
+    headers: {
+      'user-agent': '',
+      ...headers,
+      'cookie': undefined,
+    },
+    status,
+    date,
+  }
+
+  const i = strategy(index, date)
+  const u = `${url}/${i}/_doc`
+  // todo: batch
+  req(u, {
+    spec: {
+      method: 'POST',
+      timeout,
+    },
+    query: { pipeline },
+  }, body).then(() => {
+    // process.stdout.write('.')
+  }).catch(({ message }) => {
+    console.log(`Logarithm ERROR: ${message}`)
+  })
+}
+
+/**
  * Create a middleware for logging requests.
  * @param {_logarithm.Config} options Options for the program.
  */
 const logarithm = (options) => {
   if (!options) throw new Error('Options are not given')
-  const {
-    app, index = app, pipeline = 'info', url, timeout = 5000,
-    strategy = monthly,
-  } = options
+  const { app } = options
   if (!app) throw new Error('The app is not defined')
 
   /** @type {!_goa.Middleware} */
   const es = async (ctx, next) => {
-    let e; try { await next() } catch (err) { e = err }
-    const {
-      request: { ip, path },
-      headers: {
-        // closure compiler bug
-        // cookie, // eslint-disable-line no-unused-vars
-        ...headers
-      },
-      status,
-    } = ctx
-    const date = new Date()
-    /** @type {!_logarithm.Hit} */
-    const body = {
-      app,
-      ip,
-      path: decodeURI(path),
-      headers: {
-        'user-agent': '',
-        ...headers,
-        'cookie': undefined,
-      },
-      status,
-      date,
+    const onerror = ctx.onerror
+    // override error handler which sets status
+    ctx.onerror = (err) => {
+      onerror(err)
+      if (err) process(ctx, options)
     }
-
-    const i = strategy(index, date)
-    const u = `${url}/${i}/_doc`
-    // todo: batch
-    req(u, {
-      spec: {
-        method: 'POST',
-        timeout,
-      },
-      query: { pipeline },
-    }, body).then(() => {
-      // process.stdout.write('.')
-    }).catch(({ message }) => {
-      console.log(`Logarithm ERROR: ${message}`)
-    })
-
-    if (e) throw e
+    await next()
+    process(ctx, options)
   }
   return es
 }

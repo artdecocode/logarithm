@@ -46,6 +46,7 @@ module.exports.ping = ping
  * @prop {!Object} headers The request headers.
  * @prop {number} status The status code.
  * @prop {!Date} date The date of the request.
+ * @prop {string} method The method of the request, e.g., `GET` or `POST`.
  */
 
 /**

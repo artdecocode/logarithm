@@ -44,5 +44,8 @@
     <prop type="!Date" name="date">
       The date of the request.
     </prop>
+    <prop string name="method">
+      The method of the request, e.g., `GET` or `POST`.
+    </prop>
   </record>
 </types>

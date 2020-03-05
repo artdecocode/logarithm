@@ -58,11 +58,7 @@ export default class Context {
 export class Elastic {
   async _init() {
     const { app, url } = await idio({
-      async bodyparser(ctx, next) {
-        const data = await collect(ctx.req)
-        ctx.request.body = JSON.parse(data)
-        await next()
-      },
+      jsonBody: { use: true },
       req: (ctx) => {
         ctx.body = {}
         if (this.d) {

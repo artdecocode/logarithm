@@ -75,3 +75,8 @@ _logarithm.Hit.prototype.status
  * @type {!Date}
  */
 _logarithm.Hit.prototype.date
+/**
+ * The method of the request, e.g., `GET` or `POST`.
+ * @type {string}
+ */
+_logarithm.Hit.prototype.method
