@@ -150,14 +150,15 @@ The following data structure is sent to the server:
 __<a name="type-hit">`Hit`</a>__: A record sent to ElasticSearch.
 
 
-|     Name     |       Type       |              Description              |
-| ------------ | ---------------- | ------------------------------------- |
-| __app*__     | <em>string</em>  | The application name from the config. |
-| __ip*__      | <em>string</em>  | Client IP address.                    |
-| __path*__    | <em>string</em>  | The decoded request path.             |
-| __headers*__ | <em>!Object</em> | The request headers.                  |
-| __status*__  | <em>number</em>  | The status code.                      |
-| __date*__    | <em>!Date</em>   | The date of the request.              |
+|     Name     |       Type       |                    Description                    |
+| ------------ | ---------------- | ------------------------------------------------- |
+| __app*__     | <em>string</em>  | The application name from the config.             |
+| __ip*__      | <em>string</em>  | Client IP address.                                |
+| __path*__    | <em>string</em>  | The decoded request path.                         |
+| __headers*__ | <em>!Object</em> | The request headers.                              |
+| __status*__  | <em>number</em>  | The status code.                                  |
+| __date*__    | <em>!Date</em>   | The date of the request.                          |
+| __method*__  | <em>string</em>  | The method of the request, e.g., `GET` or `POST`. |
 
 <p align="center"><a href="#table-of-contents">
   <img src="/.documentary/section-breaks/2.svg?sanitize=true" width="15">
