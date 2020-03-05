@@ -4,6 +4,7 @@ test
 /* expected */
 {
   "app": "test.com",
+  "method": "GET",
   "ip": "127.0.0.1",
   "path": "/test",
   "headers": {

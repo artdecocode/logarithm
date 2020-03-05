@@ -66,12 +66,19 @@ const logarithm = (options) => {
   const es = async (ctx, next) => {
     const onerror = ctx.onerror
     // override error handler which sets status
+    let handled = false
     ctx.onerror = (err) => {
-      onerror(err)
-      if (err) process(ctx, options)
+      onerror.call(ctx, err)
+      if (err) {
+        handled = true
+        process(ctx, options)
+      }
     }
     await next()
-    process(ctx, options)
+    if (handled)
+      console.log('[logarithm] Error has been handled by context but not thrown in middleware chain.')
+    else
+      process(ctx, options)
   }
   return es
 }

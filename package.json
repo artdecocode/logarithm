@@ -29,7 +29,8 @@
   "files": [
     "compile",
     "src",
-    "types"
+    "types",
+    "typedefs.json"
   ],
   "externs": "types/externs.js",
   "bin": {
