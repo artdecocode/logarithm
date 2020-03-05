@@ -1,3 +1,10 @@
+## 5 March 2020
+
+### [2.3.0](https://github.com/artdecocode/logarithm/compare/v2.2.0...v2.3.0)
+
+- [feature] Strategy as a function.
+- [fix] Publish types.
+
 ## 24 January 2020
 
 ### [2.2.0](https://github.com/artdecocode/logarithm/compare/v2.1.2...v2.2.0)
