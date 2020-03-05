@@ -31,15 +31,15 @@ _logarithm.Config.prototype.timeout
  */
 _logarithm.Config.prototype.pipeline
 /**
- * The name of the index. Defaults to the app name if not specified as well as monthly strategy.
+ * The name of the index. Defaults to the app name if not specified.
  * @type {string|undefined}
  */
 _logarithm.Config.prototype.index
 /**
- * How to construct the index name. E.g., the monthly strategy will result in `${index}-${y}.${m}` indexes. Default `monthly`.
- * @type {string|undefined}
+ * How to construct the index name. By default, monthly strategy is used: `${index}-${yyyy}.${mm}`.
+ * @type {(function(string,!Date): string)|undefined}
  */
-_logarithm.Config.prototype.strategy
+_logarithm.Config.prototype.strategy = function(index, date) {}
 /**
  * A record sent to ElasticSearch.
  * @record

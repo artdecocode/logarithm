@@ -8,7 +8,8 @@ import { req } from './lib'
 const logarithm = (options) => {
   if (!options) throw new Error('Options are not given')
   const {
-    app, index = app, pipeline = 'info', url,
+    app, index = app, pipeline = 'info', url, timeout = 5000,
+    strategy = monthly,
   } = options
   if (!app) throw new Error('The app is not defined')
 
@@ -39,13 +40,13 @@ const logarithm = (options) => {
       date,
     }
 
-    const i = getIndex(index, date)
+    const i = strategy(index, date)
     const u = `${url}/${i}/_doc`
     // todo: batch
     req(u, {
       spec: {
         method: 'POST',
-        timeout: 5000,
+        timeout,
       },
       query: { pipeline },
     }, body).then(() => {
@@ -69,7 +70,12 @@ export const ping = async (url, timeout = 30000) => {
   if (statusCode != 200) throw new Error(`Server responded with status code ${statusCode}`)
 }
 
-const getIndex = (index, date) => {
+/**
+ * Returns an index name by months.
+ * @param {string} index The name of the index.
+ * @param {!Date} date The date of the request.
+ */
+const monthly = (index, date) => {
   const y = date.getFullYear()
   const m = date.getMonth() + 1
   return `${index}-${y}.${m}`

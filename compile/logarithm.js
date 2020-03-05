@@ -8,7 +8,7 @@ const os = require('os');
 const zlib = require('zlib');
 const stream = require('stream');
 const querystring = require('querystring');             
-const u = https.request;
+const t = https.request;
 const x = http.request;
 const y = util.debuglog;
 const z = (a, b = 0, c = !1) => {
@@ -23,23 +23,23 @@ const z = (a, b = 0, c = !1) => {
 };
 const F = os.homedir;
 const G = /\s+at.*(?:\(|\s)(.*)\)?/, H = /^(?:(?:(?:node|(?:internal\/[\w/]*|.*node_modules\/(?:IGNORED_MODULES)\/.*)?\w+)\.js:\d+:\d+)|native)/, I = F(), J = a => {
-  const {pretty:b = !1, ignoredModules:c = ["pirates"]} = {}, g = new RegExp(H.source.replace("IGNORED_MODULES", c.join("|")));
+  const {pretty:b = !1, ignoredModules:c = ["pirates"]} = {}, f = new RegExp(H.source.replace("IGNORED_MODULES", c.join("|")));
   return a.replace(/\\/g, "/").split("\n").filter(d => {
     d = d.match(G);
     if (null === d || !d[1]) {
       return !0;
     }
     d = d[1];
-    return d.includes(".app/Contents/Resources/electron.asar") || d.includes(".app/Contents/Resources/default_app.asar") ? !1 : !g.test(d);
-  }).filter(d => d.trim()).map(d => b ? d.replace(G, (e, f) => e.replace(f, f.replace(I, "~"))) : d).join("\n");
+    return d.includes(".app/Contents/Resources/electron.asar") || d.includes(".app/Contents/Resources/default_app.asar") ? !1 : !f.test(d);
+  }).filter(d => d.trim()).map(d => b ? d.replace(G, (e, k) => e.replace(k, k.replace(I, "~"))) : d).join("\n");
 };
 function K(a, b, c = !1) {
-  return function(g) {
+  return function(f) {
     var d = B(arguments), {stack:e} = Error();
-    const f = z(e, 2, !0), k = (e = g instanceof Error) ? g.message : g;
-    d = [`Error: ${k}`, ...null !== d && a === d || c ? [b] : [f, b]].join("\n");
+    const k = z(e, 2, !0), m = (e = f instanceof Error) ? f.message : f;
+    d = [`Error: ${m}`, ...null !== d && a === d || c ? [b] : [k, b]].join("\n");
     d = J(d);
-    return Object.assign(e ? g : Error(), {message:k, stack:d});
+    return Object.assign(e ? f : Error(), {message:m, stack:d});
   };
 }
 ;function L(a) {
@@ -58,25 +58,25 @@ const O = (a, b) => {
 };
 class P extends N {
   constructor(a) {
-    const {binary:b = !1, rs:c = null, ...g} = a || {}, {a:d = L(!0), proxyError:e} = a || {}, f = (k, m) => d(m);
-    super(g);
+    const {binary:b = !1, rs:c = null, ...f} = a || {}, {a:d = L(!0), proxyError:e} = a || {}, k = (m, l) => d(l);
+    super(f);
     this.b = [];
-    this.g = new Promise((k, m) => {
+    this.g = new Promise((m, l) => {
       this.on("finish", () => {
-        let h;
-        b ? h = Buffer.concat(this.b) : h = this.b.join("");
-        k(h);
+        let g;
+        b ? g = Buffer.concat(this.b) : g = this.b.join("");
+        m(g);
         this.b = [];
       });
-      this.once("error", h => {
-        if (-1 == h.stack.indexOf("\n")) {
-          f`${h}`;
+      this.once("error", g => {
+        if (-1 == g.stack.indexOf("\n")) {
+          k`${g}`;
         } else {
-          const r = J(h.stack);
-          h.stack = r;
-          e && f`${h}`;
+          const r = J(g.stack);
+          g.stack = r;
+          e && k`${g}`;
         }
-        m(h);
+        l(g);
       });
       c && O(this, c).pipe(this);
     });
@@ -95,44 +95,44 @@ const Q = async(a, b = {}) => {
 };
 const R = zlib.createGunzip;
 const S = (a, b, c = {}) => {
-  const {justHeaders:g, binary:d, a:e = L(!0)} = c;
-  let f, k, m, h, r = 0, v = 0;
-  c = (new Promise((t, w) => {
-    f = a(b, async l => {
-      ({headers:k} = l);
-      m = {statusMessage:l.statusMessage, statusCode:l.statusCode};
-      if (g) {
-        l.destroy();
+  const {justHeaders:f, binary:d, a:e = L(!0)} = c;
+  let k, m, l, g, r = 0, u = 0;
+  c = (new Promise((v, w) => {
+    k = a(b, async h => {
+      ({headers:m} = h);
+      l = {statusMessage:h.statusMessage, statusCode:h.statusCode};
+      if (f) {
+        h.destroy();
       } else {
-        var n = "gzip" == l.headers["content-encoding"];
-        l.on("data", q => r += q.byteLength);
-        l = n ? l.pipe(R()) : l;
-        h = await Q(l, {binary:d});
-        v = h.length;
+        var n = "gzip" == h.headers["content-encoding"];
+        h.on("data", q => r += q.byteLength);
+        h = n ? h.pipe(R()) : h;
+        g = await Q(h, {binary:d});
+        u = g.length;
       }
-      t();
-    }).on("error", l => {
-      l = e(l);
-      w(l);
+      v();
+    }).on("error", h => {
+      h = e(h);
+      w(h);
     }).on("timeout", () => {
-      f.abort();
+      k.abort();
     });
-  })).then(() => ({body:h, headers:k, ...m, h:r, byteLength:v, f:null}));
-  return {req:f, c};
+  })).then(() => ({body:g, headers:m, ...l, h:r, byteLength:u, f:null}));
+  return {req:k, c};
 };
 const T = (a = {}) => Object.keys(a).reduce((b, c) => {
-  const g = a[c];
-  c = `${encodeURIComponent(c)}=${encodeURIComponent(g)}`;
+  const f = a[c];
+  c = `${encodeURIComponent(c)}=${encodeURIComponent(f)}`;
   return [...b, c];
-}, []).join("&").replace(/%20/g, "+"), U = async(a, b, {data:c, justHeaders:g, binary:d, a:e = L(!0)}) => {
-  const {req:f, c:k} = S(a, b, {justHeaders:g, binary:d, a:e});
-  f.end(c);
-  a = await k;
+}, []).join("&").replace(/%20/g, "+"), U = async(a, b, {data:c, justHeaders:f, binary:d, a:e = L(!0)}) => {
+  const {req:k, c:m} = S(a, b, {justHeaders:f, binary:d, a:e});
+  k.end(c);
+  a = await m;
   if ((a.headers["content-type"] || "").startsWith("application/json") && a.body) {
     try {
       a.f = JSON.parse(a.body);
-    } catch (m) {
-      throw e = e(m), e.response = a.body, e;
+    } catch (l) {
+      throw e = e(l), e.response = a.body, e;
     }
   }
   return a;
@@ -145,11 +145,11 @@ try {
   V = "@aqt/rqt";
 }
 const W = y("aqt"), X = async(a, b = {}) => {
-  const {data:c, type:g = "json", headers:d = {"User-Agent":`Mozilla/5.0 (Node.JS) ${V}`}, compress:e = !0, binary:f = !1, justHeaders:k = !1, method:m, timeout:h} = b;
+  const {data:c, type:f = "json", headers:d = {"User-Agent":`Mozilla/5.0 (Node.JS) ${V}`}, compress:e = !0, binary:k = !1, justHeaders:m = !1, method:l, timeout:g} = b;
   b = L(!0);
-  const {hostname:r, protocol:v, port:t, path:w} = M(a), l = "https:" === v ? u : x, n = {hostname:r, port:t, path:w, headers:{...d}, timeout:h, method:m};
+  const {hostname:r, protocol:u, port:v, path:w} = M(a), h = "https:" === u ? t : x, n = {hostname:r, port:v, path:w, headers:{...d}, timeout:g, method:l};
   if (c) {
-    var q = g;
+    var q = f;
     var p = c;
     switch(q) {
       case "json":
@@ -162,12 +162,12 @@ const W = y("aqt"), X = async(a, b = {}) => {
     p = {data:p, contentType:q};
     ({data:q} = p);
     p = p.contentType;
-    n.method = m || "POST";
+    n.method = l || "POST";
     "Content-Type" in n.headers || (n.headers["Content-Type"] = p);
     "Content-Length" in n.headers || (n.headers["Content-Length"] = Buffer.byteLength(q));
   }
   !e || "Accept-Encoding" in n.headers || (n.headers["Accept-Encoding"] = "gzip, deflate");
-  const {body:Y, headers:Z, byteLength:C, statusCode:aa, statusMessage:ba, h:D, f:E} = await U(l, n, {data:q, justHeaders:k, binary:f, a:b});
+  const {body:Y, headers:Z, byteLength:C, statusCode:aa, statusMessage:ba, h:D, f:E} = await U(h, n, {data:q, justHeaders:m, binary:k, a:b});
   W("%s %s B%s", a, C, `${C != D ? ` (raw ${D} B)` : ""}`);
   return {body:E ? E : Y, headers:Z, statusCode:aa, statusMessage:ba};
 };
@@ -176,39 +176,41 @@ const ca = async(a, b = {}) => {
   return a;
 };
 const da = querystring.stringify;
-const ea = async(a, {i:b, query:c = {}} = {}, g) => {
+const ea = async(a, {i:b, query:c = {}} = {}, f) => {
   const d = L();
   c = da(c);
-  const {error:e, ...f} = await ca(`${/^https?:\/\//.test(a) ? a : `http://${a}`}${c ? `?${c}` : ""}`, {...b, data:g});
+  const {error:e, ...k} = await ca(`${/^https?:\/\//.test(a) ? a : `http://${a}`}${c ? `?${c}` : ""}`, {...b, data:f});
   if (e) {
     throw a = Error("string" == typeof e ? e : e.reason), e.type && (a.type = e.type), d(a);
   }
-  return f;
+  return k;
 };
+const fa = (a, b) => `${a}-${b.getFullYear()}.${b.getMonth() + 1}`;
 module.exports = {_logarithm:a => {
   if (!a) {
     throw Error("Options are not given");
   }
-  const {app:b, index:c = b, pipeline:g = "info", url:d} = a;
+  const {app:b, index:c = b, pipeline:f = "info", url:d, timeout:e = 5000, strategy:k = fa} = a;
   if (!b) {
     throw Error("The app is not defined");
   }
-  return async(e, f) => {
-    let k;
+  return async(m, l) => {
+    let g;
     try {
-      await f();
-    } catch (t) {
-      k = t;
+      await l();
+    } catch (h) {
+      g = h;
     }
-    const {request:{ip:m, path:h}, headers:{...r}, status:v} = e;
-    e = new Date;
-    f = {app:b, ip:m, path:decodeURI(h), headers:{"user-agent":"", ...r, cookie:void 0}, status:v, date:e};
-    ea(`${d}/${`${c}-${e.getFullYear()}.${e.getMonth() + 1}`}/_doc`, {i:{method:"POST", timeout:5000}, query:{pipeline:g}}, f).then(() => {
-    }).catch(({message:t}) => {
-      console.log(`Logarithm ERROR: ${t}`);
+    const {request:{ip:r, path:u}, headers:{...v}, status:w} = m;
+    l = new Date;
+    m = {app:b, ip:r, path:decodeURI(u), headers:{"user-agent":"", ...v, cookie:void 0}, status:w, date:l};
+    l = k(c, l);
+    ea(`${d}/${l}/_doc`, {i:{method:"POST", timeout:e}, query:{pipeline:f}}, m).then(() => {
+    }).catch(({message:h}) => {
+      console.log(`Logarithm ERROR: ${h}`);
     });
-    if (k) {
-      throw k;
+    if (g) {
+      throw g;
     }
   };
 }, _ping:async(a, b = 30000) => {

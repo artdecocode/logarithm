@@ -29,7 +29,7 @@
   "files": [
     "compile",
     "src",
-    "types/externs.js"
+    "types"
   ],
   "externs": "types/externs.js",
   "bin": {
@@ -61,25 +61,25 @@
   "devDependencies": {
     "@demimonde/dotenv": "^1.1.0",
     "@externs/goa": "^1.0.1",
-    "@idio/idio": "^1.2.3",
+    "@idio/idio": "^1.5.1",
     "@rqt/aqt": "^1.4.0",
     "@typedefs/goa": "^0.1.5",
-    "alamode": "^3.3.0",
+    "alamode": "^3.5.2",
     "argufy": "^1.7.5",
     "catchment": "^3.3.0",
     "clearr": "^1.0.0",
-    "depack": "^1.0.1",
-    "documentary": "^1.35.9",
+    "depack": "^1.1.2",
+    "documentary": "^1.37.1",
     "erotic": "^2.1.1",
     "erte": "^1.2.0",
     "eslint-config-artdeco": "1.0.1",
-    "indicatrix": "^1.4.0",
-    "reloquent": "^1.3.2",
+    "indicatrix": "^1.4.1",
+    "reloquent": "^1.4.1",
     "rqt": "^4.0.0",
     "tablature": "^1.2.0",
     "usually": "^1.2.0",
-    "yarn-s": "^1.2.1",
-    "zoroaster": "^4.1.2"
+    "yarn-s": "^1.2.3",
+    "zoroaster": "^4.3.0"
   },
   "dependencies": {}
 }

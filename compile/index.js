@@ -7,8 +7,8 @@ const { _logarithm, _ping } = require('./logarithm')
  * @param {string} options.url ElasticSearch endpoint URL, e.g., `http://192.168.0.1:9200`.
  * @param {number} [options.timeout=5000] Timeout for the connection after which an error is shown. Default `5000`.
  * @param {string} [options.pipeline="info"] The pipeline in ElasticSearch, for example to parse GeoIP info and User-Agent. Default `info`.
- * @param {string} [options.index] The name of the index. Defaults to the app name if not specified as well as monthly strategy.
- * @param {string} [options.strategy="monthly"] How to construct the index name. E.g., the monthly strategy will result in `${index}-${y}.${m}` indexes. Default `monthly`.
+ * @param {string} [options.index] The name of the index. Defaults to the app name if not specified.
+ * @param {(index: string, date: !Date) => string} [options.strategy] How to construct the index name. By default, monthly strategy is used: `${index}-${yyyy}.${mm}`.
  * @return {!_goa.Middleware}
  */
 function logarithm(options) {
@@ -36,8 +36,8 @@ module.exports.ping = ping
  * @prop {string} url ElasticSearch endpoint URL, e.g., `http://192.168.0.1:9200`.
  * @prop {number} [timeout=5000] Timeout for the connection after which an error is shown. Default `5000`.
  * @prop {string} [pipeline="info"] The pipeline in ElasticSearch, for example to parse GeoIP info and User-Agent. Default `info`.
- * @prop {string} [index] The name of the index. Defaults to the app name if not specified as well as monthly strategy.
- * @prop {string} [strategy="monthly"] How to construct the index name. E.g., the monthly strategy will result in `${index}-${y}.${m}` indexes. Default `monthly`.
+ * @prop {string} [index] The name of the index. Defaults to the app name if not specified.
+ * @prop {(index: string, date: !Date) => string} [strategy] How to construct the index name. By default, monthly strategy is used: `${index}-${yyyy}.${mm}`.
  * @typedef {_logarithm.Hit} Hit `＠record` A record sent to ElasticSearch.
  * @typedef {Object} _logarithm.Hit `＠record` A record sent to ElasticSearch.
  * @prop {string} app The application name from the config.

@@ -13,11 +13,17 @@
       The pipeline in ElasticSearch, for example to parse GeoIP info and User-Agent.
     </prop>
     <prop opt string name="index">
-      The name of the index. Defaults to the app name if not specified as well as monthly strategy.
+      The name of the index. Defaults to the app name if not specified.
     </prop>
-    <prop type="string" name="strategy" default="monthly">
-      How to construct the index name. E.g., the monthly strategy will result in `${index}-${y}.${m}` indexes.
-    </prop>
+    <fn return="string" name="strategy" opt>
+      <arg string name="index">
+        The general name of the index.
+      </arg>
+      <arg type="!Date" name="date">
+        The date of the request.
+      </arg>
+      How to construct the index name. By default, monthly strategy is used: `${index}-${yyyy}.${mm}`.
+    </fn>
   </record>
   <record name="Hit" desc="A record sent to ElasticSearch.">
     <prop string name="app">

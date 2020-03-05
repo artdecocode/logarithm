@@ -105,18 +105,19 @@ __<a name="type-config">`Config`</a>__: Options for the program.
  <tr></tr>
  <tr>
   <td>
-   The name of the index. Defaults to the app name if not specified as well as monthly strategy.
+   The name of the index. Defaults to the app name if not specified.
   </td>
  </tr>
  <tr>
   <td rowSpan="3" align="center">strategy</td>
-  <td><em>string</em></td>
-  <td rowSpan="3"><code>monthly</code></td>
+  <td colSpan="2"><em>(index: string, date: !Date) => string</em></td>
  </tr>
  <tr></tr>
  <tr>
-  <td>
-   How to construct the index name. E.g., the monthly strategy will result in <code>${index}-${y}.${m}</code> indexes.
+  <td colSpan="2">
+   How to construct the index name. By default, monthly strategy is used: <code>${index}-${yyyy}.${mm}</code>.<br/>
+   <kbd><strong>index*</strong></kbd> <em><code>string</code></em>: The general name of the index.<br/>
+   <kbd><strong>date*</strong></kbd> <em><code>!Date</code></em>: The date of the request.
   </td>
  </tr>
 </table>
@@ -223,9 +224,9 @@ Templates: creates a template for an app.
 
 Methods: send data from JSON files.
 
-  logarithm <url> --[post] -p path
+  logarithm <url> [--post data.json] -p path
 
-	--post    	Send post request with data from the file.
+	--post    	Send POST request with data from the file.
 	--path, -p	The path to send a request to.
 ```
 
