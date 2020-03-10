@@ -20,6 +20,7 @@ const process = (ctx, options) => {
     },
     method,
     status,
+    query,
   } = ctx
   const date = new Date()
   /** @type {!_logarithm.Hit} */
@@ -36,6 +37,8 @@ const process = (ctx, options) => {
     status,
     date,
   }
+  const q = /** @type {!Object} */ (query)
+  if (Object.keys(q).length) body.query = q
 
   const i = strategy(index, date)
   const u = `${url}/${i}/_doc`
@@ -116,5 +119,9 @@ export default logarithm
  */
 /**
  * @suppress {nonStandardJsDocs}
- * @typedef {import('../').Middleware} _goa.Middleware
+ * @typedef {import('@typedefs/goa').Middleware} _goa.Middleware
+ */
+/**
+ * @suppress {nonStandardJsDocs}
+ * @typedef {import('@typedefs/goa').Context} _goa.Context
  */

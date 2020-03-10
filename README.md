@@ -159,6 +159,7 @@ __<a name="type-hit">`Hit`</a>__: A record sent to ElasticSearch.
 | __status*__  | <em>number</em>  | The status code.                                  |
 | __date*__    | <em>!Date</em>   | The date of the request.                          |
 | __method*__  | <em>string</em>  | The method of the request, e.g., `GET` or `POST`. |
+| query        | <em>!Object</em> | Possible query from the request.                  |
 
 <p align="center"><a href="#table-of-contents">
   <img src="/.documentary/section-breaks/2.svg?sanitize=true" width="15">

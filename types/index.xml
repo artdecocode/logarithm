@@ -47,5 +47,8 @@
     <prop string name="method">
       The method of the request, e.g., `GET` or `POST`.
     </prop>
+    <prop opt type="!Object" name="query">
+      Possible query from the request.
+    </prop>
   </record>
 </types>

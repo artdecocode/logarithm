@@ -97,7 +97,7 @@ const R = zlib.createGunzip;
 const S = (a, b, c = {}) => {
   const {justHeaders:f, binary:d, a:e = L(!0)} = c;
   let g, l, m, h, r = 0, u = 0;
-  c = (new Promise((v, w) => {
+  c = (new Promise((w, v) => {
     g = a(b, async k => {
       ({headers:l} = k);
       m = {statusMessage:k.statusMessage, statusCode:k.statusCode};
@@ -110,10 +110,10 @@ const S = (a, b, c = {}) => {
         h = await Q(k, {binary:d});
         u = h.length;
       }
-      v();
+      w();
     }).on("error", k => {
       k = e(k);
-      w(k);
+      v(k);
     }).on("timeout", () => {
       g.abort();
     });
@@ -147,7 +147,7 @@ try {
 const W = y("aqt"), X = async(a, b = {}) => {
   const {data:c, type:f = "json", headers:d = {"User-Agent":`Mozilla/5.0 (Node.JS) ${V}`}, compress:e = !0, binary:g = !1, justHeaders:l = !1, method:m, timeout:h} = b;
   b = L(!0);
-  const {hostname:r, protocol:u, port:v, path:w} = M(a), k = "https:" === u ? t : x, n = {hostname:r, port:v, path:w, headers:{...d}, timeout:h, method:m};
+  const {hostname:r, protocol:u, port:w, path:v} = M(a), k = "https:" === u ? t : x, n = {hostname:r, port:w, path:v, headers:{...d}, timeout:h, method:m};
   if (c) {
     var q = f;
     var p = c;
@@ -186,13 +186,14 @@ const fa = async(a, {i:b, query:c = {}} = {}, f) => {
   return g;
 };
 const Y = (a, b) => {
-  const {app:c, index:f = c, pipeline:d = "info", url:e, timeout:g = 5000, strategy:l = ha} = b, {request:{ip:m, path:h}, headers:{...r}, method:u, status:v} = a;
+  const {app:c, index:f = c, pipeline:d = "info", url:e, timeout:g = 5000, strategy:l = ha} = b, {request:{ip:m, path:h}, headers:{...r}, method:u, status:w, query:v} = a;
   b = new Date;
-  a = {app:c, method:u, ip:m, path:decodeURI(h), headers:{"user-agent":"", ...r, cookie:void 0}, status:v, date:b};
+  a = {app:c, method:u, ip:m, path:decodeURI(h), headers:{"user-agent":"", ...r, cookie:void 0}, status:w, date:b};
+  Object.keys(v).length && (a.query = v);
   b = l(f, b);
   fa(`${e}/${b}/_doc`, {i:{method:"POST", timeout:g}, query:{pipeline:d}}, a).then(() => {
-  }).catch(({message:w}) => {
-    console.log(`Logarithm ERROR: ${w}`);
+  }).catch(({message:k}) => {
+    console.log(`Logarithm ERROR: ${k}`);
   });
 }, ha = (a, b) => `${a}-${b.getFullYear()}.${b.getMonth() + 1}`;
 module.exports = {_logarithm:a => {

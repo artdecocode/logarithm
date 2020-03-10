@@ -80,3 +80,8 @@ _logarithm.Hit.prototype.date
  * @type {string}
  */
 _logarithm.Hit.prototype.method
+/**
+ * Possible query from the request.
+ * @type {(!Object)|undefined}
+ */
+_logarithm.Hit.prototype.query
