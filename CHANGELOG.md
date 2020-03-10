@@ -1,3 +1,9 @@
+## 10 March 2020
+
+### [2.4.0](https://github.com/artdecocode/logarithm/compare/v2.3.1...v2.4.0)
+
+- [feature] Log query against hits.
+
 ## 5 March 2020
 
 ### [2.3.1](https://github.com/artdecocode/logarithm/compare/v2.3.0...v2.3.1)
